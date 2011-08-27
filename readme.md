@@ -10,9 +10,9 @@ To use ManyConsole:
 
 - Create a command line app referencing the ManyConsole nuget.
 - Have Program.Main call ConsoleCommandDispatcher (see https://github.com/fschwiet/ManyConsole/blob/master/SampleConsole/Program.cs)
--- You can use ConsoleCommandDispatcher to find commands in an assembly, or not.
+  - You can use ConsoleCommandDispatcher to find commands in an assembly, or not.
 - To add a command to your console application, inherit from ConsoleCommand.
--- See the sample comands at https://github.com/fschwiet/ManyConsole/tree/master/SampleConsole
+  - See the sample comands at https://github.com/fschwiet/ManyConsole/tree/master/SampleConsole
 
 Each command exposes an OptionSet, the docs on how to define an OptionSet are here: http://www.ndesk.org/Options
 
