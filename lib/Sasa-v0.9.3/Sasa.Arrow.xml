@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Arrow</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Arrow.Arrow`2">
+            <summary>
+            Represents a computation from <typeparamref name="T"/> to <typeparamref name="U"/>.
+            </summary>
+            <typeparam name="T">The type of the input.</typeparam>
+            <typeparam name="R">The type of the output.</typeparam>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.First``1">
+            <summary>
+            Given a computation from <typeparamref name="T"/> to <typeparamref name="R"/>, construct
+            a computation that transforms the first argument and passes the second argument with no change.
+            </summary>
+            <typeparam name="U">The type of the second argument.</typeparam>
+            <returns>A computation that transforms the first argument.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.Second``1">
+            <summary>
+            Given a computation from <typeparamref name="T"/> to <typeparamref name="R"/>, construct
+            a computation that transforms the second argument and passes the first argument with no change.
+            </summary>
+            <typeparam name="U">The type of the first argument.</typeparam>
+            <returns>A computation that transforms the second argument.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.Select``1(System.Func{`1,``0})">
+            <summary>
+            Transforms the computation from <typeparamref name="T"/> to <typeparamref name="R"/>, to
+            <typeparamref name="T"/> to <typeparamref name="U"/>.
+            </summary>
+            <typeparam name="U">The new result type.</typeparam>
+            <param name="selector">The transformation function.</param>
+            <returns>A new computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.SelectMany``1(System.Func{`1,Sasa.Arrow.Arrow{`0,``0}})">
+            <summary>
+            Project result <typeparamref name="R"/> into a new computation.
+            </summary>
+            <typeparam name="U">The result type.</typeparam>
+            <param name="selector">The projection function.</param>
+            <returns>A new computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.SelectMany``2(System.Func{`1,Sasa.Arrow.Arrow{`0,``0}},System.Func{`1,``0,``1})">
+            <summary>
+            Project result <typeparamref name="R"/> into a new computation of type <typeparamref name="U"/>,
+            and collect and project into a final computation of type <typeparamref name="V"/>.
+            </summary>
+            <typeparam name="U">The intermediate result type.</typeparam>
+            <typeparam name="V">The final result type.</typeparam>
+            <param name="selector">The intermediate projection.</param>
+            <param name="resultSelector">The final projection.</param>
+            <returns>A new computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.Do(System.Action{`1},System.Func{System.Exception,`1})">
+            <summary>
+            Return a computation that executes in an exception handler.
+            </summary>
+            <param name="onNext">The computation that runs in the try block.</param>
+            <param name="onError">The computation that runs if an exception is thrown.</param>
+            <returns>A new computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.Concat(System.Collections.Generic.IEnumerable{Sasa.Arrow.Arrow{`0,`1}})">
+            <summary>
+            Collects the results of a series of computations.
+            </summary>
+            <param name="sources">The sequence of computations.</param>
+            <returns>A computation returning a sequence of results.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.SplitCombine``1(Sasa.Arrow.Arrow{`0,``0})">
+            <summary>
+            Merges two computation results.
+            </summary>
+            <typeparam name="U">The return type of the other computation.</typeparam>
+            <param name="other">The computation to merge with.</param>
+            <returns>A combined computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.Fanout``2(Sasa.Arrow.Arrow{``0,``1})">
+            <summary>
+            Combines two computations into a computation that accepts a pair that is split,
+            fed to each computation separately, then combined.
+            </summary>
+            <typeparam name="U">The input of the other computation.</typeparam>
+            <typeparam name="V">The output of the other computation.</typeparam>
+            <param name="other">The other computation.</param>
+            <returns>A combined computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.If(System.Predicate{`0},Sasa.Arrow.Arrow{`0,`1})">
+            <summary>
+            Runs one computation or the other based on a condition.
+            </summary>
+            <param name="condition">The conditional.</param>
+            <param name="_else">The computation to run if the conditional returns false.</param>
+            <returns>A new computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow`2.op_Implicit(System.Func{`0,`1})~Sasa.Arrow.Arrow{`0,`1}">
+            <summary>
+            Implicitly convert delegates to arrows.
+            </summary>
+            <param name="thunk">The delegate to convert.</param>
+            <returns>A new arrow.</returns>
+        </member>
+        <member name="P:Sasa.Arrow.Arrow`2.Value">
+            <summary>
+            The encapsulated computation.
+            </summary>
+        </member>
+        <member name="T:Sasa.Arrow.Arrow">
+            <summary>
+            Utility functions on arrows.
+            </summary>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Return``2(System.Func{``0,``1})">
+            <summary>
+            Return an arrow from <typeparamref name="T"/> to <typeparamref name="R"/>.
+            </summary>
+            <typeparam name="T">The input type.</typeparam>
+            <typeparam name="R">The return type.</typeparam>
+            <param name="thunk">The delegate representing the computation.</param>
+            <returns>A computation arrow.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Return``1(System.Func{``0})">
+            <summary>
+            Return an arrow for a zero-argument computation.
+            </summary>
+            <typeparam name="R">The return type.</typeparam>
+            <param name="thunk">The delegate representing the computation.</param>
+            <returns>A computation arrow.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Return``1(System.Action{``0})">
+            <summary>
+            Return an arrow for a computation that returns no value.
+            </summary>
+            <typeparam name="T">The argument type.</typeparam>
+            <param name="thunk">The delegate representing the computation.</param>
+            <returns>A computation arrow.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Run``2(Sasa.Arrow.Arrow{``0,``1},``0)">
+            <summary>
+            Run the computation with the given input.
+            </summary>
+            <param name="arrow">The computation to run.</param>
+            <param name="value">The input value.</param>
+            <returns>The result of the computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Run``3(Sasa.Arrow.Arrow{Sasa.Pair{``0,``1},``2},``0,``1)">
+            <summary>
+            Run the computation with the given input.
+            </summary>
+            <param name="arrow">The computation to run.</param>
+            <param name="value">The input value.</param>
+            <returns>The result of the computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Run``1(Sasa.Arrow.Arrow{Sasa.Empty,``0})">
+            <summary>
+            Run the computation with the given input.
+            </summary>
+            <param name="arrow">The computation to run.</param>
+            <returns>The result of the computation.</returns>
+        </member>
+        <member name="M:Sasa.Arrow.Arrow.Loop``4(Sasa.Arrow.Arrow{Sasa.Pair{``0,``1},Sasa.Pair{``2,``3}})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <typeparam name="R"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="arrow"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

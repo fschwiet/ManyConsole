@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Net.Mail.QuotedPrintable">
+            <summary>
+            A quoted-printable encoder/decoder.
+            </summary>
+            <remarks>
+            References:
+            http://www.freesoft.org/CIE/RFC/1521/6.htm
+            http://www.technology.niagarac.on.ca/courses/comp530/images/AsciiTable.jpg
+            </remarks>
+        </member>
+        <member name="M:Sasa.Net.Mail.QuotedPrintable.ToQuotedPrintable(System.String)">
+            <summary>
+            Encode the given string in quoted-printable encoding.
+            </summary>
+            <param name="input">The string to encode.</param>
+            <returns>The quoted-printable encoded string.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.QuotedPrintable.ToQuotedPrintable(System.Char)">
+            <summary>
+            Encode a character in quoted-printable encoding.
+            </summary>
+            <param name="c">The character to encode.</param>
+            <returns>The encoded character.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.QuotedPrintable.FromQuotedPrintable(System.String,System.Int32)">
+            <summary>
+            Decodes a quoted-printable encoded character.
+            </summary>
+            <param name="input">The string to decode.</param>
+            <param name="index">The index to start decoding.</param>
+            <returns>The decoded char.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.QuotedPrintable.FromQuotedPrintable(System.String)">
+            <summary>
+            Decodes a quoted-printable encoded string.
+            </summary>
+            <param name="input">The string to decode.</param>
+            <returns>The decoded string.</returns>
+        </member>
+        <member name="T:Sasa.Net.Pop3.Pop3">
+            <summary>
+            Implements the low-level pop3 protocol on a Texty instance.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3.ExecuteChecked(Sasa.Net.Texty,System.String)">
+            <summary>
+            Runs a server command and checks for a valid response code.
+            </summary>
+            <param name="server">The server connection.</param>
+            <param name="command">The command to run.</param>
+            <returns>The checked response string.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3.CheckOk(System.String,System.String)">
+            <summary>
+            Checks a response for a valid response code.
+            </summary>
+            <param name="response">The response to check.</param>
+            <param name="cmd">The command that was run.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3.IsCRLF(System.String,System.Int32)">
+            <summary>
+            Checks that a CRLF is at the given index.
+            </summary>
+            <param name="line"></param>
+            <param name="starts"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Sasa.Net.Mail.Message">
+            <summary>
+            Extension methods to parse and process MailMessages.
+            </summary>
+        </member>
+        <member name="F:Sasa.Net.Mail.Message.LineLength">
+            <summary>
+            The line length for e-mail messages.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ParseMailMessage(System.String)">
+            <summary>
+            Parse a string into a MailMessage.
+            </summary>
+            <param name="raw">The e-mail in raw string format.</param>
+            <returns>A MailMessage object initialized from parsing the raw string.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.DecodeSubject(System.String)">
+            <summary>
+            Decodes a subject line.
+            </summary>
+            <param name="subject">The encoded subject line.</param>
+            <returns>A decoded subject line.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.split(System.Net.Mail.MailAddressCollection,System.Collections.Generic.KeyValuePair{System.String,System.String})">
+            <summary>
+            Split the header value into multiple addresses and add them to the collection.
+            </summary>
+            <param name="m">The address collection to modify.</param>
+            <param name="nv">The header.</param>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.DecodeBody(System.String,System.Int32,System.Int32,System.Net.Mime.TransferEncoding)">
+            <summary>
+            Decode the e-mail body given the raw message string, and the Content-Transfer-Encoding.
+            </summary>
+            <param name="raw">The raw message string.</param>
+            <param name="start">The index at which to start decoding.</param>
+            <param name="length">The length of the message body.</param>
+            <param name="contentTransferEncoding">The Content-Transfer-Encoding of the body.</param>
+            <returns>The decoded body of the e-mail.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.EncodeBody(System.Net.Mail.MailMessage)">
+            <summary>
+            Encode the e-mail body given the raw body string, and the Content-Transfer-Encoding.
+            </summary>
+            <param name="email">The e-mail message.</param>
+            <returns>The encoded body of the e-mail.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ContentType(System.Net.Mail.MailMessage)">
+            <summary>
+            Returns the Content-Type for the e-mail.
+            </summary>
+            <param name="email">The e-mail to inspect.</param>
+            <returns>The Content-Type in the e-mail headers.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.MessageId(System.Net.Mail.MailMessage)">
+            <summary>
+            Returns the Message-ID header of the e-mail.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <returns>The Message-ID header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ContentTransferEncoding(System.Net.Mail.MailMessage)">
+            <summary>
+            Returns the Content-Transfer-Encoding header of the e-mail.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <returns>The Content-Transfer-Encoding header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ContentTransferEncoding(System.Net.Mail.MailMessage,System.Net.Mime.TransferEncoding)">
+            <summary>
+            Sets the Content-Transfer-Encoding header.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <param name="value">The value of the header.</param>
+            <returns>The In-Reply-To header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.MessageId(System.Net.Mail.MailMessage,System.String)">
+            <summary>
+            Sets the Message-ID header.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <param name="value">The value of the header.</param>
+            <returns>The In-Reply-To header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ThreadIndex(System.Net.Mail.MailMessage)">
+            <summary>
+            Returns the Thread-Index header.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <returns>The Thread-Index header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.InReplyTo(System.Net.Mail.MailMessage)">
+            <summary>
+            Returns the In-Reply-To header.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <returns>The In-Reply-To header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.InReplyTo(System.Net.Mail.MailMessage,System.String)">
+            <summary>
+            Sets the In-Reply-To header.
+            </summary>
+            <param name="email">The e-mail message to process.</param>
+            <param name="value">The value of the header.</param>
+            <returns>The In-Reply-To header value.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.Reply(System.Net.Mail.MailMessage,System.String)">
+            <summary>
+            Construct a reply from the original MailMessage.
+            </summary>
+            <param name="email">The e-mail to reply to.</param>
+            <param name="txt">The body of the reply.</param>
+            <returns>A new MailMessage corresponding to a reply to the given MailMessage.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Message.ToRaw(System.Net.Mail.MailMessage)">
+            <summary>
+            Writes the message to a string in the given encoding.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Sasa.Net.Pop3.Pop3Header">
+            <summary>
+            Represents a pop3 header.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.#ctor(System.String)">
+            <summary>
+            Parse a header returned by a pop3 server.
+            </summary>
+            <param name="line">The header returned by the server.</param>
+            <remarks>The format of a header is:
+            MessageNumber[whitespace]ByteCount</remarks>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.ToString">
+            <summary>
+            Return a string representation of this header.
+            </summary>
+            <returns>The header formatted as a pop3 server would return it.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.Equals(Sasa.Net.Pop3.Pop3Header)">
+            <summary>
+            Compare two Pop3Header for equality.
+            </summary>
+            <param name="other">The instance to compare against.</param>
+            <returns>True if they are equal, false otherwise.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.Equals(System.Object)">
+            <summary>
+            Compare two objects for equality.
+            </summary>
+            <param name="obj">The object to compare against.</param>
+            <returns>True if equal, false otherwise.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.GetHashCode">
+            <summary>
+            Hash code of the header.
+            </summary>
+            <returns>Hash code of the header.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.op_Equality(Sasa.Net.Pop3.Pop3Header,Sasa.Net.Pop3.Pop3Header)">
+            <summary>
+            Compares two Pop3Header values for equality.
+            </summary>
+            <param name="first">The first Pop3Header.</param>
+            <param name="second">The second Pop3Header.</param>
+            <returns>Returns true if the Pop3Headers are equal, and false otherwise.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Header.op_Inequality(Sasa.Net.Pop3.Pop3Header,Sasa.Net.Pop3.Pop3Header)">
+            <summary>
+            Compares two Pop3Header values for inequality.
+            </summary>
+            <param name="first">The first Pop3Header.</param>
+            <param name="second">The second Pop3Header.</param>
+            <returns>Returns true if the Pop3Headers are not equal, and false otherwise.</returns>>
+        </member>
+        <member name="P:Sasa.Net.Pop3.Pop3Header.MessageNumber">
+            <summary>
+            The message number on the server.
+            </summary>
+        </member>
+        <member name="P:Sasa.Net.Pop3.Pop3Header.ByteCount">
+            <summary>
+            The alleged number of bytes in the message.
+            </summary>
+        </member>
+        <member name="T:Sasa.Net.Mail.Mime">
+            <summary>
+            MIME parsing functions.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.ToTransferEncoding(System.String)">
+            <summary>
+            Parse the given string for a Content-Transfer-Encoding value.
+            </summary>
+            <param name="transferEncoding">The string to parse.</param>
+            <returns>The TransferEncoding embedded in the string.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.FromTransferEncoding(System.Net.Mime.TransferEncoding)">
+            <summary>
+            Returns a string representation of the Content-Transfer-Encoding.
+            </summary>
+            <param name="transferEncoding">The TransferEncoding to transform.</param>
+            <returns>The canonical string representation of the TransferEncoding.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.RealBoundary(System.Net.Mime.ContentType)">
+            <summary>
+            Creates a boundary string as in raw messages.
+            </summary>
+            <param name="contentType">The ContentType whose boundary we use.</param>
+            <returns>Returns the string that is used as a real boundary in a raw message.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.ParseMime(System.String,System.Int32,System.Net.Mime.ContentType,System.Net.Mime.ContentDisposition,System.Net.Mime.TransferEncoding)">
+            <summary>
+            Parse a MIME message.
+            </summary>
+            <param name="message">The raw message string.</param>
+            <param name="offset">The index at which to begin parsing.</param>
+            <param name="contentType">The Content-Type at 'offset'.</param>
+            <param name="contentDisposition">The Content-Disposition at 'offset'.</param>
+            <param name="transferEncoding">The Transfer-Encoding at 'offset'.</param>
+            <returns>A sequence of attachments corresponding to the embedded MIME messages.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.Decode(System.String,System.Int32,System.Int32,System.Net.Mime.TransferEncoding)">
+            <summary>
+            Decode the e-mail body given the raw message string, and the Content-Transfer-Encoding.
+            </summary>
+            <param name="raw">The raw message string.</param>
+            <param name="start">The index at which to start decoding.</param>
+            <param name="length">The length of the message body.</param>
+            <param name="contentTransferEncoding">The Content-Transfer-Encoding of the body.</param>
+            <returns>The decoded body of the e-mail.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.Encode(System.Byte[],System.Net.Mime.TransferEncoding)">
+            <summary>
+            Encode the raw bytes as a string according to the Content-Transfer-Encoding.
+            </summary>
+            <param name="data">The raw data bytes.</param>
+            <param name="contentTransferEncoding">The Content-Transfer-Encoding of the body.</param>
+            <returns>The decoded body of the e-mail.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.HasMultipleParts(System.Net.Mime.ContentType)">
+            <summary>
+            Check if the Content-Type indicates the message has multiple parts.
+            </summary>
+            <param name="contentType">The ContentType to check.</param>
+            <returns>Returns true if the Content-Type indicates the message has multiple parts.</returns>
+        </member>
+        <member name="M:Sasa.Net.Mail.Mime.ToContentType(System.String)">
+            <summary>
+            Parse a string representation of Content-Type.
+            </summary>
+            <param name="contentType">The string to parse.</param>
+            <returns>The concrete ContentType corresponding to the string.</returns>
+        </member>
+        <member name="T:Sasa.Rfc.Rfc822">
+            <summary>
+            A parser for RFC 822 strings.
+            </summary>
+        </member>
+        <member name="M:Sasa.Rfc.Rfc822.ParseHeaders(System.String,System.Int32,System.Int32)">
+            <summary>
+            Return an enumeration of key-value pairs for all the headers in the given string.
+            </summary>
+            <param name="buffer">The raw string containing the headers.</param>
+            <param name="offset">The index to begin parsing headers.</param>
+            <param name="length">The length of the headers.</param>
+            <returns>An enumeration of header:value pairs.</returns>
+        </member>
+        <member name="M:Sasa.Rfc.Rfc822.HeaderLength(System.String,System.Int32)">
+            <summary>
+            Compute the length of the headers based on the expected terminators.
+            </summary>
+            <param name="buffer">The string containing the headers.</param>
+            <param name="start">The index to begin parsing the headers.</param>
+            <returns>The length in characters of the headers.</returns>
+        </member>
+        <member name="T:Sasa.Net.Pop3.Pop3Client">
+            <summary>
+            Implements the client-side POP3 connection protocol.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Client.#ctor(System.Net.NetworkCredential,System.Func{System.IO.TextReader},System.Func{System.IO.TextWriter})">
+            <summary>
+            Returns a Pop3Client constructed from two arbitrary text stream generators.
+            </summary>
+            <param name="read">The input stream generator.</param>
+            <param name="write">The output stream generator.</param>
+            <param name="credentials">The credentials to use when connecting.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Client.#ctor(System.Func{System.IO.TextReader},System.Func{System.IO.TextWriter})">
+            <summary>
+            Returns a Pop3Client constructed from two arbitrary text stream generators.
+            </summary>
+            <param name="read">The input stream generator.</param>
+            <param name="write">The output stream generator.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Client.Connect(System.Action{Sasa.Net.Pop3.Pop3Session})">
+            <summary>
+            Connect to the pop3 server and run a session.
+            </summary>
+            <param name="runSession">The body of the session.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Client.Connect``1(System.Func{Sasa.Net.Pop3.Pop3Session,``0})">
+            <summary>
+            Connect to the pop3 server and run a session.
+            </summary>
+            <typeparam name="R">The type of the value returned.</typeparam>
+            <param name="runSession">The body of the session.</param>
+            <returns>A value computed after a session is run.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Client.LogOn">
+            <summary>
+            Log on to the server with the given credentials.
+            </summary>
+        </member>
+        <member name="P:Sasa.Net.Pop3.Pop3Client.Credentials">
+            <summary>
+            The credentials to use when logging on.
+            </summary>
+        </member>
+        <member name="T:Sasa.Net.Texty">
+            <summary>
+            Abstracts text-based protocols.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Texty.#ctor(System.IO.TextReader,System.IO.TextWriter)">
+            <summary>
+            Construct a new instance of a Texty-protocol stream.
+            </summary>
+            <param name="input">The input text stream.</param>
+            <param name="output">The output text stream.</param>
+        </member>
+        <member name="M:Sasa.Net.Texty.Execute(System.String)">
+            <summary>
+            Sends a command to be executed on the server.
+            </summary>
+            <param name="command">The command to send.</param>
+            <returns>The response sent by the server.</returns>
+        </member>
+        <member name="M:Sasa.Net.Texty.Send(System.String)">
+            <summary>
+            Send data to the server.
+            </summary>
+            <param name="data">The data to send.</param>
+        </member>
+        <member name="M:Sasa.Net.Texty.ReadLine">
+            <summary>
+            Read the most recent response sent by the server.
+            </summary>
+            <returns>The most recent response.</returns>
+        </member>
+        <member name="M:Sasa.Net.Texty.Dispose">
+            <summary>
+            Dispose any resources used by this instance.
+            </summary>
+        </member>
+        <member name="T:Sasa.Net.Pop3.Pop3Session">
+            <summary>
+            Implements the client-side pop3 session protocol.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.#ctor(Sasa.Net.Texty)">
+            <summary>
+            Returns a Pop3Client constructed from two arbitrary text streams.
+            </summary>
+            <param name="server">The Texty instance used for communication.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.List">
+            <summary>
+            List the messages available on the server.
+            </summary>
+            <returns>The list of available messages.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.Retrieve(Sasa.Net.Pop3.Pop3Header)">
+            <summary>
+            Retrieve the given message from the server.
+            </summary>
+            <param name="header">The message to retrieve.</param>
+            <returns>The message string.</returns>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.Delete(Sasa.Net.Pop3.Pop3Header)">
+            <summary>
+            Delete the given message from the server.
+            </summary>
+            <param name="header">The message to delete.</param>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.Reset">
+            <summary>
+            Undoes any deletions made during this session.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.Quit">
+            <summary>
+            Send the QUIT command and terminate the connection.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.Pop3.Pop3Session.Dispose">
+            <summary>
+            Dispose of the pop3 connection.
+            </summary>
+        </member>
+        <member name="T:Sasa.Net.InvalidResponseException">
+            <summary>
+            An invalid response was generated from the server.
+            </summary>
+        </member>
+        <member name="M:Sasa.Net.InvalidResponseException.#ctor(System.String)">
+            <summary>
+            Construct a new InvalidResponseException.
+            </summary>
+            <param name="m">The string describing the error.</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Statistics</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Statistics.Linq.Statistics">
+            <summary>
+            Some useful statistical functions for manipulating data sets.
+            </summary>
+        </member>
+        <member name="M:Sasa.Statistics.Linq.Statistics.StandardDeviation(System.Collections.Generic.IEnumerable{System.Double},System.Double@,System.Int32@)">
+            <summary>
+            Calculate the standard deviation of the input values.
+            </summary>
+            <param name="source">A sequence of input values.</param>
+            <param name="mean">The mean of the input values.</param>
+            <param name="count">The number of input values.</param>
+            <returns>Standard deviation.</returns>
+        </member>
+        <member name="F:Sasa.Statistics.Linq.Statistics.peircesTable">
+            <summary>
+            Table used in Peirce's Criterion.
+            </summary>
+        </member>
+        <member name="M:Sasa.Statistics.Linq.Statistics.PeircesCriterion(System.Collections.Generic.IEnumerable{System.Double},System.Int32@)">
+            <summary>
+            Filter out outliers according to Peirce's Criterion.
+            </summary>
+            <param name="source">The source data set.</param>
+            <param name="eliminated">The number of outliers eliminated.</param>
+            <returns>A result set minus any outliers.</returns>
+            <remarks>
+            Peirce's table consists of R values, where:
+            <code>R = |x(i) - mean| / standard deviation</code>
+            The algorithm and test vector was derived from:
+            http://mtp.jpl.nasa.gov/missions/start-08/science/piercescriterion.pdf
+            </remarks>
+        </member>
+        <member name="M:Sasa.Statistics.Linq.Statistics.PeircesCriterion(System.Collections.Generic.IEnumerable{System.Double},System.Collections.Generic.IEnumerable{System.Int32}@,System.Int32@)">
+            <summary>
+            Filter out outliers according to Peirce's Criterion.
+            </summary>
+            <param name="source">The source data set.</param>
+            <param name="outliers">The indexes of the outliers in the data set.</param>
+            <param name="eliminated">The number of outliers eliminated.</param>
+            <returns>A result set minus any outliers.</returns>
+            <remarks>
+            Peirce's table consists of R values, where:
+            <code>R = |x(i) - mean| / standard deviation</code>
+            The algorithm and test vector was derived from:
+            http://mtp.jpl.nasa.gov/missions/start-08/science/piercescriterion.pdf
+            </remarks>
+        </member>
+        <member name="M:Sasa.Statistics.Linq.Statistics.PeircesCriterion(System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Filter out outliers according to Peirce's Criterion.
+            </summary>
+            <param name="source">The source data set.</param>
+            <returns>A result set minus any outliers.</returns>
+            <remarks>
+            Peirce's table consists of R values, where:
+            <code>R = |x(i) - mean| / standard deviation</code>
+            The algorithm and test vector was derived from:
+            http://mtp.jpl.nasa.gov/missions/start-08/science/piercescriterion.pdf
+            </remarks>
+        </member>
+    </members>
+</doc>

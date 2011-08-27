@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Operators</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Operators.Arithmetic`1">
+            <summary>
+            Class encapsulating the polymorphic number opcodes.
+            </summary>
+            <remarks>
+            WARNING: this class is only safe to use for the primitive numeric types for which add, subtract, etc. opcodes are defined.
+            </remarks>
+            <typeparam name="T">The type implementing arithmetic operators.</typeparam>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Add(`0,`0)">
+            <summary>
+            Adds two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Subtract(`0,`0)">
+            <summary>
+            Subtracts two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Divide(`0,`0)">
+            <summary>
+            Divide two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Multiply(`0,`0)">
+            <summary>
+            Multiply two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Remainder(`0,`0)">
+            <summary>
+            Modulus two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Arithmetic`1.Negate(`0)">
+            <summary>
+            Negates an argument.
+            </summary>
+            <param name="arg0"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Sasa.Operators.Logical`1">
+            <summary>
+            Class encapsulating the polymorphic number opcodes.
+            </summary>
+            <remarks>
+            WARNING: this class is only safe to use for the primitive logical types for which and, or, etc. opcodes are defined.
+            </remarks>
+            <typeparam name="T">The type implementing the logical operators.</typeparam>
+        </member>
+        <member name="M:Sasa.Operators.Logical`1.And(`0,`0)">
+            <summary>
+            AND of two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Logical`1.Or(`0,`0)">
+            <summary>
+            OR of two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Logical`1.Xor(`0,`0)">
+            <summary>
+            XOR of two arguments.
+            </summary>
+            <param name="arg0"></param>
+            <param name="arg1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Operators.Logical`1.Not(`0)">
+            <summary>
+            Negates an argument.
+            </summary>
+            <param name="arg0"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

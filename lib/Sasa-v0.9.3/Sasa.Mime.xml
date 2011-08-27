@@ -1,0 +1,334 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Mime</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Mime.FileExtensions">
+            <summary>
+            A list of standard file extensions
+            </summary>
+        </member>
+        <member name="M:Sasa.Mime.FileExtensions.MediaType(System.String)">
+            <summary>
+            Return the Mime-Type given the file extension.
+            </summary>
+            <param name="file">The file path, file name or file extension.</param>
+            <returns>The media type of the given file extension.</returns>
+        </member>
+        <member name="T:Sasa.Mime.FileExtensions.Application">
+            <summary>
+            Application-specific media types.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.Pdf">
+            <summary>
+            File extension for PDF.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.Rtf">
+            <summary>
+            File extension for RTF.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.Soap">
+            <summary>
+            File extension for SOAP messages.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.Zip">
+            <summary>
+            File extension for ZIP files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.MicrosoftWord">
+            <summary>
+            File extension for Microsoft Word documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.MicrosoftExcel">
+            <summary>
+            File extension for Microsoft Excel documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.MicrosoftPowerpoint">
+            <summary>
+            File extension for Microsoft Powerpoint documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Application.Postscript">
+            <summary>
+            File extension for Postscript documents.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.FileExtensions.Image">
+            <summary>
+            Media types for images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Png">
+            <summary>
+            File extension for PNG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Bmp">
+            <summary>
+            File extension for BMP images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Dwg">
+            <summary>
+            File extension for DWG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Jpeg">
+            <summary>
+            File extension for JPEG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.JpegShort">
+            <summary>
+            File extension for JPEG images (short version).
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Tiff">
+            <summary>
+            File extension for TIFF images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Image.Gif">
+            <summary>
+            File extension for GIF images.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.FileExtensions.Text">
+            <summary>
+            Media types for text.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Text.Plain">
+            <summary>
+            File extension for plain text files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Text.Html">
+            <summary>
+            File extension for HTML files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Text.RichText">
+            <summary>
+            File extension for rich text files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Text.Xml">
+            <summary>
+            File extension for XML files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Text.Csv">
+            <summary>
+            File extension for CSV files.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.FileExtensions.Multipart">
+            <summary>
+            Multipart media types.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Multipart.Mixed">
+            <summary>
+            multipart/mixed media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Multipart.Digest">
+            <summary>
+            multipart/digest media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Multipart.Alternative">
+            <summary>
+            multipart/alternative media type.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.FileExtensions.Message">
+            <summary>
+            Message media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.FileExtensions.Message.Rfc822">
+            <summary>
+            message/rfc822 media type.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes">
+            <summary>
+            Additional media types not ommitted for System.Net.Mime.
+            </summary>
+        </member>
+        <member name="M:Sasa.Mime.MediaTypes.GetMediaTypes">
+            <summary>
+            Return the sequence of all known media types.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Mime.MediaTypes.GetFileExtensions">
+            <summary>
+            Return the sequence of all known file extensions.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Mime.MediaTypes.FileExtension(System.String)">
+            <summary>
+            Convert the given media type into the corresponding file extension.
+            </summary>
+            <param name="mediaType">The internet media type.</param>
+            <returns>The file extension used for that media type.</returns>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes.Application">
+            <summary>
+            Application-specific media types.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Pdf">
+            <summary>
+            Media type for PDF files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Rtf">
+            <summary>
+            Media type for RTF Df files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Soap">
+            <summary>
+            Media type for SOAP messages.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Zip">
+            <summary>
+            Media type for ZIP files.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.MicrosoftWord">
+            <summary>
+            Media type for Microsoft Word documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.MicrosoftExcel">
+            <summary>
+            Media type for Microsoft Excel documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.MicrosoftPowerpoint">
+            <summary>
+            Media type for Microsoft Powerpoint documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Postscript">
+            <summary>
+            Media type for Postscript documents.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Application.Octet">
+            <summary>
+            Media type for a binary file.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes.Image">
+            <summary>
+            Media types for images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Png">
+            <summary>
+            Media type for PNG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Bmp">
+            <summary>
+            Media type for BMP images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Dwg">
+            <summary>
+            Media type for DWG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Jpeg">
+            <summary>
+            Media type for JPEG images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Tiff">
+            <summary>
+            Media type for TIFF images.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Image.Gif">
+            <summary>
+            Media type for GIF images.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes.Text">
+            <summary>
+            Media types for text.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Text.Plain">
+            <summary>
+            Media type for plain text.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Text.Html">
+            <summary>
+            Media type for HTML.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Text.RichText">
+            <summary>
+            Media type for rich text.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Text.Xml">
+            <summary>
+            Media type for XML.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Text.Csv">
+            <summary>
+            Media type for CSV.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes.Multipart">
+            <summary>
+            Multipart media types.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Multipart.Mixed">
+            <summary>
+            multipart/mixed media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Multipart.Digest">
+            <summary>
+            multipart/digest media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Multipart.Alternative">
+            <summary>
+            multipart/alternative media type.
+            </summary>
+        </member>
+        <member name="T:Sasa.Mime.MediaTypes.Message">
+            <summary>
+            Message media type.
+            </summary>
+        </member>
+        <member name="F:Sasa.Mime.MediaTypes.Message.Rfc822">
+            <summary>
+            message/rfc822 media type.
+            </summary>
+        </member>
+    </members>
+</doc>

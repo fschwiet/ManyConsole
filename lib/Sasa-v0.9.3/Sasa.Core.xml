@@ -1,0 +1,819 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.IO.Streams">
+            <summary>
+            Extension methods to System.IO.Stream
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.Streams.CopyTo(System.IO.Stream,System.IO.Stream)">
+            <summary>
+            Copy one stream to another.
+            </summary>
+            <param name="input">The input stream.</param>
+            <param name="output">The output stream.</param>
+        </member>
+        <member name="M:Sasa.IO.Streams.ToArray(System.IO.Stream)">
+            <summary>
+            Read the full stream into a byte array.
+            </summary>
+            <param name="s">The stream to read.</param>
+            <returns>The contents of the stream.</returns>
+        </member>
+        <member name="M:Sasa.IO.Streams.SpawnRead(System.IO.Stream,System.Int32)">
+            <summary>
+            Perform an async read on the given stream and return a promise.
+            </summary>
+            <param name="stream">The stream to read.</param>
+            <param name="read">The number of bytes to read.</param>
+            <returns>A promise for the bytes.</returns>
+            <remarks>This function must be used very carefully, because there is no guarantee that
+            previous calls to this function complete before later ones. Therefore futures may
+            resolve out of order to what one might expect.</remarks>
+        </member>
+        <member name="M:Sasa.IO.Streams.SpawnRead(System.IO.Stream,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Perform an async read on the given stream into the given buffer.
+            </summary>
+            <param name="stream">The stream to read.</param>
+            <param name="buffer">The buffer to read into.</param>
+            <param name="offset">The offset into the buffer at which to begin writing.</param>
+            <param name="read">The number of bytes to read.</param>
+            <returns>A promise for the bytes.</returns>
+            <remarks>This function must be used very carefully, because there is no guarantee that
+            previous calls to this function complete before later ones. Therefore futures may
+            resolve out of order to what one might expect.</remarks>
+        </member>
+        <member name="M:Sasa.IO.Streams.SpawnWrite(System.IO.Stream,System.Byte[])">
+            <summary>
+            Perform an async write on the given stream.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="buffer">The buffer to read from.</param>
+            <returns>A promise for the completion of the write operation.</returns>
+            <remarks>This function must be used very carefully, because there is no guarantee that
+            previous calls to this function complete before later ones. Therefore futures may
+            resolve out of order to what one might expect.</remarks>
+        </member>
+        <member name="M:Sasa.IO.Streams.SpawnWrite(System.IO.Stream,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Perform an async write on the given stream.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="buffer">The buffer to read from.</param>
+            <param name="offset">The offset into the buffer to begin reading.</param>
+            <param name="read">The number of bytes to write.</param>
+            <returns>A promise for the completion of the write operation.</returns>
+            <remarks>This function must be used very carefully, because there is no guarantee that
+            previous calls to this function complete before later ones. Therefore futures may
+            resolve out of order to what one might expect.</remarks>
+        </member>
+        <member name="T:Sasa.IO.FsPath">
+            <summary>
+            A structured file system path.
+            </summary>
+            <remarks>
+            This module ensures that all paths containing "." and ".." are rewritten to equivalent forms without
+            directory change operations, where possible.
+            
+            In some cases, this is not possible, such as when ".." precedes the rest of the path, ie. ../foo. In such
+            cases, the directory change operations are retained, under the assumption that a future path combination
+            will permit full resolution.
+            </remarks>
+        </member>
+        <member name="M:Sasa.IO.FsPath.#ctor(System.String)">
+            <summary>
+            Construct a structured file system path.
+            </summary>
+            <param name="path">The root path.</param>
+        </member>
+        <member name="M:Sasa.IO.FsPath.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Construct a structured path from a series of path components.
+            </summary>
+            <param name="parts">Path fragments making up the full path.</param>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Normalize(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Ensure each string in the untrusted sequence has been split into path components.
+            </summary>
+            <param name="untrusted">The untrusted sequence.</param>
+            <returns>A trustued sequence of path components.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Parse(System.Collections.Generic.IEnumerator{System.String})">
+            <summary>
+            Traverse the sequence of path fragments and construct a path fragment list,
+            stripping out any directory change fragments.
+            </summary>
+            <param name="seq">The stream of fragments to process.</param>
+            <returns>A trusted sequence of path fragments</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Tokenize(System.String)">
+            <summary>
+            Take a string assumed to be a path, and split it along directory separators.
+            </summary>
+            <param name="path">The presumed path.</param>
+            <returns>An enumerator returning each fragment of the path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Combine(Sasa.IO.FsPath)">
+            <summary>
+            Construct a combined path from two paths.
+            </summary>
+            <param name="file">The path to combine with this one.</param>
+            <returns>The combined path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Combine(Sasa.Collections.Seq{System.String},Sasa.Collections.Seq{System.String})">
+            <summary>
+            Combine two fragment lists, while performing directory change operations.
+            </summary>
+            <param name="left">The left path.</param>
+            <param name="right">The right path.</param>
+            <returns>A combined path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.GetEnumerator">
+            <summary>
+            Returns an enumerator over the file path components.
+            </summary>
+            <returns>An enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Root(System.String)">
+            <summary>
+            Declare the root path.
+            </summary>
+            <param name="path">The root path.</param>
+            <returns>A path encapsulating the given root.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Equals(Sasa.IO.FsPath)">
+            <summary>
+            Compare two paths for equality.
+            </summary>
+            <param name="other">The path to compare to.</param>
+            <returns>True if the paths are equal.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.Equals(System.Object)">
+            <summary>
+            Compare two paths for equality.
+            </summary>
+            <param name="obj">The path to compare to.</param>
+            <returns>True if the paths are equal.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.GetHashCode">
+            <summary>
+            Compute hash code of path.
+            </summary>
+            <returns>Hash code for path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.CompareTo(Sasa.IO.FsPath)">
+            <summary>
+            Order two paths.
+            </summary>
+            <param name="other">Other path to compare against.</param>
+            <returns>Returns zero if equal, less than zero if this path
+            is less than <paramref name="other"/>, else returns greater than
+            zero.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.ToString">
+            <summary>
+            Return a string representation of the path.
+            </summary>
+            <returns>A string representation of the path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(Sasa.IO.FsPath,System.String)">
+            <summary>
+            Combine the given path and string component.
+            </summary>
+            <param name="path">A structured path.</param>
+            <param name="part">An unstructured path string.</param>
+            <returns>The combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(System.String,Sasa.IO.FsPath)">
+            <summary>
+            Combine the given path and string component.
+            </summary>
+            <param name="path">A structured path.</param>
+            <param name="part">An unstructured path string.</param>
+            <returns>The combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(Sasa.IO.FsPath,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Combine the given path and string components.
+            </summary>
+            <param name="path">The structured path.</param>
+            <param name="parts">The components of a path.</param>
+            <returns>A combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(System.Collections.Generic.IEnumerable{System.String},Sasa.IO.FsPath)">
+            <summary>
+            Combine the given path and string components.
+            </summary>
+            <param name="path">The structured path.</param>
+            <param name="parts">The components of a path.</param>
+            <returns>A combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(System.String[],Sasa.IO.FsPath)">
+            <summary>
+            Combine the given path and string components.
+            </summary>
+            <param name="path">The structured path.</param>
+            <param name="parts">The components of a path.</param>
+            <returns>A combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Division(Sasa.IO.FsPath,Sasa.IO.FsPath)">
+            <summary>
+            Combine the given path and string components.
+            </summary>
+            <param name="path1">The first structured path.</param>
+            <param name="path2">The second structured path.</param>
+            <returns>The combined structured path.</returns>
+        </member>
+        <member name="M:Sasa.IO.FsPath.op_Implicit(System.String)~Sasa.IO.FsPath">
+            <summary>
+            Implicitly convert a string to a structured path.
+            </summary>
+            <param name="path">The path contained in an unstructured string.</param>
+            <returns>A structured path.</returns>
+        </member>
+        <member name="T:Sasa.IPromise`3">
+            <summary>
+            Contract for promises, which are used to resolve or fail a future.
+            </summary>
+            <typeparam name="TFuture">The type of unresolved futures.</typeparam>
+            <typeparam name="TResolved">The type of resolved futures.</typeparam>
+            <typeparam name="T">The type of the future's value.</typeparam>
+        </member>
+        <member name="M:Sasa.IPromise`3.Fulfill(`2)">
+            <summary>
+            Resolve the future to a legitimate value.
+            </summary>
+            <param name="value">Resolve this future to the given value.</param>
+        </member>
+        <member name="M:Sasa.IPromise`3.Fail(System.Exception)">
+            <summary>
+            Future failed with an exception.
+            </summary>
+            <param name="reason">The reason the future failed to resolve.</param>
+        </member>
+        <member name="P:Sasa.IPromise`3.Future">
+            <summary>
+            The future value.
+            </summary>
+        </member>
+        <member name="T:Sasa.IFuture`2">
+            <summary>
+            A future value.
+            </summary>
+            <typeparam name="TFuture">The type of the future.</typeparam>
+            <typeparam name="T">The type of the future's value.</typeparam>
+        </member>
+        <member name="M:Sasa.IFuture`2.ContinueWith(System.Action{`0})">
+            <summary>
+            Register a continuation to be invoked on future resolution.
+            </summary>
+            <param name="continuation">Continuation invoked when the future resolves to a value.</param>
+        </member>
+        <member name="T:Sasa.PromiseResolvedException">
+            <summary>
+            Exception thrown when attempting to resolve a promise that has already been resolved.
+            </summary>
+        </member>
+        <member name="M:Sasa.PromiseResolvedException.#ctor">
+            <summary>
+            Initialize a PromiseResolvedException.
+            </summary>
+        </member>
+        <member name="T:Sasa.Resolved`1">
+            <summary>
+            A resolved future.
+            </summary>
+            <typeparam name="T">The type of the future value.</typeparam>
+        </member>
+        <member name="T:Sasa.Future`1">
+            <summary>
+            A future value.
+            </summary>
+            <typeparam name="T">The type of the future value.</typeparam>
+        </member>
+        <member name="M:Sasa.Future`1.TryGetValue(`0@)">
+            <summary>
+            Attempt to extract the value.
+            </summary>
+            <param name="value">The value encapsulated in this future, or default(T) if it's not yet resolved.</param>
+            <returns>Returns true if the future has resolved.</returns>
+            <remarks>
+            This method is thread-safe. If the future has resolved to an exception, this method will return false.
+            </remarks>
+        </member>
+        <member name="M:Sasa.Future`1.Wait">
+            <summary>
+            Explicitly wait on the given future.
+            </summary>
+            <remarks>This is generally not recommended as it inhibits a program's scalability.</remarks>
+        </member>
+        <member name="M:Sasa.Future`1.op_Implicit(System.Exception)~Sasa.Future{`0}">
+            <summary>
+            Implicitly convert an exception into a failed future.
+            </summary>
+            <param name="reason">The reason the future failed.</param>
+            <returns>A failed future.</returns>
+        </member>
+        <member name="M:Sasa.Future`1.ContinueWith(System.Action{Sasa.Resolved{`0}})">
+            <summary>
+            Register a continuation to be invoked on future resolution.
+            </summary>
+            <param name="continuation">Continuation invoked when the future resolves to a value.</param>
+        </member>
+        <member name="P:Sasa.Future`1.HasValue">
+            <summary>
+            Returns true if this future has resolved to a value.
+            </summary>
+        </member>
+        <member name="P:Sasa.Future`1.HasError">
+            <summary>
+            Returns trye if this future has resolved to an error.
+            </summary>
+        </member>
+        <member name="P:Sasa.Future`1.Resolved">
+            <summary>
+            Returns the resolved future for this abstract future.
+            </summary>
+        </member>
+        <member name="T:Sasa.Future`1.Fulfilled">
+            <summary>
+            A resolved value.
+            </summary>
+        </member>
+        <member name="T:Sasa.Resolved`1">
+            <summary>
+            A resolved future.
+            </summary>
+            <typeparam name="T">The type of the future value.</typeparam>
+        </member>
+        <member name="M:Sasa.Resolved`1.op_Implicit(System.Exception)~Sasa.Resolved{`0}">
+            <summary>
+            Implicitly convert an exception into a failed future.
+            </summary>
+            <param name="reason">The reason the future failed.</param>
+            <returns>A failed future.</returns>
+        </member>
+        <member name="P:Sasa.Resolved`1.Value">
+            <summary>
+            The value computed by this future. If the future failed,
+            accessing this property will throw the exception that 
+            caused the failure.
+            </summary>
+            <exception cref="T:System.Exception">
+            If the future fails, then the exception thrown is the reason for failure.
+            </exception>
+        </member>
+        <member name="T:Sasa.Future`1.Failed">
+            <summary>
+            A failed future.
+            </summary>
+        </member>
+        <member name="T:Sasa.Future`1.Pending">
+            <summary>
+            A potentially unresolved future.
+            </summary>
+        </member>
+        <member name="F:Sasa.Future`1.Pending.settled">
+            <summary>
+            The settled value of the future.
+            </summary>
+        </member>
+        <member name="F:Sasa.Future`1.Pending.queue">
+            <summary>
+            Threads can manually block.
+            </summary>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.OnSettle">
+            <summary>
+            Invoked once the future is resolved.
+            </summary>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.Block">
+            <summary>
+            Block current thread until the wait handler fires.
+            </summary>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.Wait(System.Action{Sasa.Resolved{`0}})">
+            <summary>
+            Register a continuation to be invoked on future resolution.
+            </summary>
+            <param name="continuation">Continuation invoked when the future resolves to a value.</param>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.Settle(Sasa.Resolved{`0})">
+            <summary>
+            Used internally to set the value of the future and trigger
+            the evaluation of the observers.
+            </summary>
+            <param name="fut">The settled future value.</param>
+            <returns>The settled future value.</returns>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.ToString">
+            <summary>
+            Returns a string representation of the future.
+            </summary>
+            <returns>String representation of the current future.</returns>
+        </member>
+        <member name="M:Sasa.Future`1.Pending.async(System.IAsyncResult)">
+            <summary>
+            The AsyncCallback invoked on async completion.
+            </summary>
+            <param name="result">The result of an asynchronous operation.</param>
+        </member>
+        <member name="T:Sasa.Promise`1">
+            <summary>
+            Used to resolve or fail a future.
+            </summary>
+            <typeparam name="T">The type of the promised future.</typeparam>
+        </member>
+        <member name="M:Sasa.Promise`1.#ctor">
+            <summary>
+            Constructs a new Promise bound to an unresolved future.
+            </summary>
+        </member>
+        <member name="M:Sasa.Promise`1.Fulfill(`0)">
+            <summary>
+            Resolve the future to a legitimate value.
+            </summary>
+            <param name="value">Resolve this future to the given value.</param>
+            <exception cref="T:Sasa.PromiseResolvedException">Thrown if the promise is already resolved.</exception>
+        </member>
+        <member name="M:Sasa.Promise`1.EnsureNotResolved">
+            <summary>
+            Checks whether the current promise is already resolved. If so, it releases
+            the current lock on the object and throws an exception.
+            </summary>
+            <exception cref="T:Sasa.PromiseResolvedException">Thrown if the promise is already resolved.</exception>
+        </member>
+        <member name="M:Sasa.Promise`1.Fail(System.Exception)">
+            <summary>
+            Future failed with an exception.
+            </summary>
+            <param name="reason">The reason the future failed to resolve.</param>
+            <exception cref="T:Sasa.PromiseResolvedException">Thrown if the promise is already resolved.</exception>
+        </member>
+        <member name="P:Sasa.Promise`1.Future">
+            <summary>
+            The future this promise is bound to.
+            </summary>
+        </member>
+        <member name="T:Sasa.Future">
+            <summary>
+            Functions on Future values.
+            </summary>
+        </member>
+        <member name="M:Sasa.Future.Do``2(Sasa.Future{``0},System.Func{Sasa.Future{``0},Sasa.Future{``1}})">
+            <summary>
+            Creates a new future of type <typeparamref name="U"/> which will be computed from the result of
+            the future of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The current future's type.</typeparam>
+            <typeparam name="U">The new future's type.</typeparam>
+            <param name="future">The future to transform.</param>
+            <param name="selector">The function creating the new future's type.</param>
+            <returns>A new future constructed from the existing future.</returns>
+        </member>
+        <member name="M:Sasa.Future.Select``2(Sasa.Future{``0},System.Func{``0,``1},System.Func{System.Exception,``1})">
+            <summary>
+            Project a future of type <typeparamref name="T"/> to a future of type <typeparamref name="U"/>. This
+            overload specifies an exception handler.
+            </summary>
+            <typeparam name="T">The current future's type.</typeparam>
+            <typeparam name="U">The new future's type.</typeparam>
+            <param name="future">The future to transform.</param>
+            <param name="selector">The selection function.</param>
+            <param name="handler">The function invoked if the future resolved to an exception.</param>
+            <returns>A new future constructed from the existing future.</returns>
+        </member>
+        <member name="M:Sasa.Future.Select``2(Sasa.Future{``0},System.Func{``0,``1})">
+            <summary>
+            Project a future of type <typeparamref name="T"/> to a future of type <typeparamref name="U"/>.
+            </summary>
+            <typeparam name="T">The current future's type.</typeparam>
+            <typeparam name="U">The new future's type.</typeparam>
+            <param name="future">The future to transform.</param>
+            <param name="selector">The selection function.</param>
+            <returns>A new future constructed from the existing future.</returns>
+        </member>
+        <member name="M:Sasa.Future.SelectMany``2(Sasa.Future{``0},System.Func{Sasa.Future{``0},Sasa.Future{``1}})">
+            <summary>
+            Project a future to another future.
+            </summary>
+            <typeparam name="T">The type of the source future.</typeparam>
+            <typeparam name="U">The type of the returned future.</typeparam>
+            <param name="future">The source future.</param>
+            <param name="selector">
+            A selection function used to map values of type <typeparamref name="T"/>
+            to futures of type <typeparamref name="U"/>.
+            </param>
+            <returns>A new future of type <typeparamref name="U"/>.</returns>
+        </member>
+        <member name="M:Sasa.Future.SelectMany``3(Sasa.Future{``0},System.Func{Sasa.Future{``0},Sasa.Future{``1}},System.Func{``0,``1,``2})">
+            <summary>
+            Projects a sequence of futures to a final future.
+            </summary>
+            <typeparam name="T">The type of the first future.</typeparam>
+            <typeparam name="U">The type of the intermediate future.</typeparam>
+            <typeparam name="R">The type of the returned future.</typeparam>
+            <param name="future ">The first future.</param>
+            <param name="selector">The selector for the intermediate future.</param>
+            <param name="result">The selector for the resulting future.</param>
+            <returns>A future for a value of type <typeparamref name="R"/>.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``1(System.Func{System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``0})">
+            <summary>
+            Begin an async operation given the begin and end calls.
+            </summary>
+            <typeparam name="T">The type of value to generate.</typeparam>
+            <param name="begin">The BeginAsync operation.</param>
+            <param name="end">The EndAsync operation.</param>
+            <returns>A promise.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``1(System.Func{``0})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="T">The function's return value.</typeparam>
+            <param name="call">The function to call.</param>
+            <returns>A promise for the function's return value.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``2(``0,System.Func{``0,``1})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg">The type of the function's first argument.</typeparam>
+            <typeparam name="T">The type of the function's return value.</typeparam>
+            <param name="call">The function to call.</param>
+            <param name="arg0">The function's first argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``3(``0,``1,System.Func{``0,``1,``2})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <typeparam name="T">The type of the function's return value.</typeparam>
+            <param name="call">The function to call.</param>
+            <param name="arg0">The function's first argument.</param>
+            <param name="arg1">The function's second argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``4(``0,``1,``2,System.Func{``0,``1,``2,``3})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <typeparam name="TArg2">The type of the function's third argument.</typeparam>
+            <typeparam name="T">The type of the function's return value.</typeparam>
+            <param name="call">The function to call.</param>
+            <param name="arg0">The function's first argument.</param>
+            <param name="arg1">The function's second argument.</param>
+            <param name="arg2">The function's third argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``5(``0,``1,``2,``3,System.Func{``0,``1,``2,``3,``4})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <typeparam name="TArg2">The type of the function's third argument.</typeparam>
+            <typeparam name="TArg3">The type of the function's fourth argument.</typeparam>
+            <typeparam name="T">The type of the function's return value.</typeparam>
+            <param name="call">The function to call.</param>
+            <param name="arg0">The function's first argument.</param>
+            <param name="arg1">The function's second argument.</param>
+            <param name="arg2">The function's third argument.</param>
+            <param name="arg3">The function's fourth argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn(System.Action)">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <param name="call">The function to execute.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``1(``0,System.Action{``0})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg">The type of the function's first argument.</typeparam>
+            <param name="call">The function to execute.</param>
+            <param name="arg0">The first argument to the function.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``2(``0,``1,System.Action{``0,``1})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <param name="call">The function to execute.</param>
+            <param name="arg0">The first argument to the function.</param>
+            <param name="arg1">The second argument to the function.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.SpawnRaise``1(System.Delegate,System.Object,``0)">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg">The type of the event's EventArgs parameter.</typeparam>
+            <param name="call">The function to execute.</param>
+            <param name="sender">The sender argument of the event.</param>
+            <param name="args">The EventArgs for the event.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``3(``0,``1,``2,System.Action{``0,``1,``2})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <typeparam name="TArg2">The type of the function's third argument.</typeparam>
+            <param name="call">The function to execute.</param>
+            <param name="arg0">The function's first argument.</param>
+            <param name="arg1">The function's second argument.</param>
+            <param name="arg2">The function's third argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Spawn``4(``0,``1,``2,``3,System.Action{``0,``1,``2,``3})">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <typeparam name="TArg0">The type of the function's first argument.</typeparam>
+            <typeparam name="TArg1">The type of the function's second argument.</typeparam>
+            <typeparam name="TArg2">The type of the function's third argument.</typeparam>
+            <typeparam name="TArg3">The type of the function's fourth argument.</typeparam>
+            <param name="call">The function to execute.</param>
+            <param name="arg0">The function's first argument.</param>
+            <param name="arg1">The function's second argument.</param>
+            <param name="arg2">The function's third argument.</param>
+            <param name="arg3">The function's fourth argument.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.SpawnAny``1(``0,System.Object[])">
+            <summary>
+            Execute the given function asynchronously.
+            </summary>
+            <param name="call">The function to execute.</param>
+            <param name="args">The function arguments.</param>
+            <returns>A future for the function call's result.</returns>
+        </member>
+        <member name="M:Sasa.Future.Pending``1">
+            <summary>
+            Construct a pending future.
+            </summary>
+            <typeparam name="T">The type of the future.</typeparam>
+            <returns>A pending future.</returns>
+        </member>
+        <member name="M:Sasa.Future.Fulfill``1(``0)">
+            <summary>
+            Construct a resolved future.
+            </summary>
+            <param name="value">The value of the future.</param>
+            <returns>A resolved future.</returns>
+        </member>
+        <member name="M:Sasa.Future.Promise``1(System.Action{Sasa.Promise{``0}})">
+            <summary>
+            Convenience function for starting a computation that explicitly sets a promise.
+            </summary>
+            <typeparam name="T">The value of the future being constructed.</typeparam>
+            <param name="body">The computation to start with the given promise.</param>
+            <returns>The future for the result of the computation.</returns>
+        </member>
+        <member name="M:Sasa.Future.Fail``1(System.Exception)">
+            <summary>
+            Construct a failed future.
+            </summary>
+            <param name="reason">The reason for failure.</param>
+            <returns>A failed future.</returns>
+        </member>
+        <member name="T:Sasa.IO.PortableWriter">
+            <summary>
+            A BinaryWriter that encodes values from host to big-endian encoding.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Construct a PortableWriter given the output stream.
+            </summary>
+            <param name="output">The output stream to write to.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Construct a PortableWriter given an output stream and an encoding.
+            </summary>
+            <param name="output">The output stream to write to.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int16)">
+            <summary>
+            Write a 16-bit signed value.
+            </summary>
+            <param name="value">A 16-bit signed value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt16)">
+            <summary>
+            Write a 16-bit unsigned value.
+            </summary>
+            <param name="value">A 16-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int32)">
+            <summary>
+            Write a 32-bit signed value.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt32)">
+            <summary>
+            Write a 32-bit unsigned value.
+            </summary>
+            <param name="value">Write a 32-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int64)">
+            <summary>
+            Write a 64-bit signed value.
+            </summary>
+            <param name="value">The 64-bit signed value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt64)">
+            <summary>
+            Write a 64-bit unsigned value.
+            </summary>
+            <param name="value">A 64-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Decimal)">
+            <summary>
+            Write a 128-bit decimal value.
+            </summary>
+            <param name="value">The decimal to write.</param>
+        </member>
+        <member name="T:Sasa.IO.PortableReader">
+            <summary>
+            A BinaryReader that decodes values from big-endian to host encoding.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.#ctor(System.IO.Stream)">
+            <summary>
+            Construct a PortableReader that reads from the given stream.
+            </summary>
+            <param name="input">The stream to read from.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Construct a PortableReader that reads from the given stream with the given encoding.
+            </summary>
+            <param name="input">The stream to read from.</param>
+            <param name="encoding">The encoding to use when reading.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt16">
+            <summary>
+            Read a signed 16-bit value.
+            </summary>
+            <returns>A signed 16-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt16">
+            <summary>
+            Read an unsigned 16-bit value.
+            </summary>
+            <returns>An unsigned 16-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt32">
+            <summary>
+            Read a signed 32-bit value.
+            </summary>
+            <returns>A signed 32-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt32">
+            <summary>
+            Read an unsigned 32-bit value.
+            </summary>
+            <returns>An unsigned 32-bit value</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt64">
+            <summary>
+            Read a signed 64-bit value.
+            </summary>
+            <returns>A signed 64-bit value</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt64">
+            <summary>
+            Read an unsigned 64-bit value.
+            </summary>
+            <returns>An unsigned 64-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadDecimal">
+            <summary>
+            Read a 128-bit decimal value.
+            </summary>
+            <returns>A 128-bit decimal value.</returns>
+        </member>
+    </members>
+</doc>

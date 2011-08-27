@@ -1,0 +1,354 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Dynamics</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Dynamics.IReflector">
+            <summary>
+            Statically-typed, safe reflection.
+            </summary>
+            <remarks>
+            This interface provides implementors the ability to efficiently view and modify
+            objects via reflection, with complete type safety. 
+            </remarks>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Bool(System.Boolean@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Bool field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Int16(System.Int16@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Int16 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.UInt16(System.UInt16@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.UInt16 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Int32(System.Int32@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Int32 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.UInt32(System.UInt32@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.UInt32 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Int64(System.Int64@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Int64 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.UInt64(System.UInt64@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.UInt64 field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Char(System.Char@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Char field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Byte(System.Byte@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Byte field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.SByte(System.SByte@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.SByte field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.String(System.String@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.String field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Float(System.Single@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Single field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Double(System.Double@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Double field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Decimal(System.Decimal@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Decimal field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.DateTime(System.DateTime@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.DateTime field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.DBNull(System.DBNull@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.DBNull field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Nullable``1(System.Nullable{``0}@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Nullable field of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Type(System.Type@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Type handle.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Delegate``1(``0@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Delegate field.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Array``1(``0[]@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a System.Array field.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflector.Object``1(``0@,System.Reflection.FieldInfo)">
+            <summary>
+            Designates a field of type <typeparam name="T" />.
+            </summary>
+            <param name="field">The field reference.</param>
+            <param name="info">The field information.</param>
+        </member>
+        <member name="T:Sasa.Dynamics.IReflected">
+            <summary>
+            Any objects implementing this interface are assumed to
+            provide their own reflection callback.
+            </summary>
+        </member>
+        <member name="M:Sasa.Dynamics.IReflected.Reflect(Sasa.Dynamics.IReflector,System.Reflection.FieldInfo)">
+            <summary>
+            Inspect the internals of this object.
+            </summary>
+            <param name="reflector">The reflector.</param>
+            <param name="field">The field information.</param>
+        </member>
+        <member name="T:Sasa.Dynamics.Reflector">
+            <summary>
+            Caches the IReflector MethodInfo references.
+            </summary>
+        </member>
+        <member name="T:Sasa.Dynamics.Type`1">
+            <summary>
+            A reflector generator.
+            </summary>
+            <typeparam name="T">The type of object to inspect.</typeparam>
+        </member>
+        <member name="M:Sasa.Dynamics.Type`1.Generate">
+            <summary>
+            Generate the reflector function.
+            </summary>
+            <returns>A reflector function.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Type`1.Constructor">
+            <summary>
+            Generate a parameterless constructor delegate.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Sasa.Dynamics.Type`1.Reflect">
+            <summary>
+            Return a function that can efficiently inspect and/or modify the internals
+            of any object of type <typeparamref name="T"/>.
+            </summary>
+            <returns>A function that can inspect a <typeparamref name="T"/>'s internals.</returns>
+        </member>
+        <member name="P:Sasa.Dynamics.Type`1.Create">
+            <summary>
+            Return a parameterless constructor for <typeparamref name="T"/>.
+            </summary>
+        </member>
+        <member name="T:Sasa.Dynamics.Methods`1">
+            <summary>
+            A thread-safe, user-controlled method cache.
+            </summary>
+            <typeparam name="K">The type of key used to track methods.</typeparam>
+            <remarks>
+            Only static methods are currently supported.
+            
+            All methods are cached as one of either Action&lt;*&gt; or Func&lt;*&gt; overloads.
+            </remarks>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Cache(`0,System.Reflection.MethodInfo)">
+            <summary>
+            Generate the appropriate delegate from the given MethodInfo and
+            cache it.
+            </summary>
+            <param name="key"></param>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.TypeCheck``1(System.Delegate)">
+            <summary>
+            Throws an InvalidCastException if the cached delegate is not of the proper type.
+            </summary>
+            <typeparam name="R"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.FuncType(System.Int32,System.Boolean)">
+            <summary>
+            Return the appropriate delegate type to create for the given number of
+            arguments and the return type.
+            </summary>
+            <param name="argn">Number of delegate arguments.</param>
+            <param name="isFunc">True if return type is not null.</param>
+            <returns>The type of delegate to create.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Method``1(`0,System.Func{`0,System.Reflection.MethodInfo})">
+            <summary>
+            Load a delegate by key.
+            </summary>
+            <typeparam name="R">The type of the return delegate.</typeparam>
+            <param name="key">The key under which this delegate is cached.</param>
+            <param name="find">A callback to find the MethodInfo for the corresponding key.</param>
+            <returns>A delegate for the static method.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Instance``1(`0,System.Func{`0,``0})">
+            <summary>
+            Load a delegate by key.
+            </summary>
+            <typeparam name="R">The type of the return delegate.</typeparam>
+            <param name="key">The key under which this delegate is cached.</param>
+            <param name="find">A callback to find the MethodInfo for the corresponding key.</param>
+            <returns>A delegate for the static method.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Cache``1(`0,``0)">
+            <summary>
+            Explicitly cache the corresponding delegate.
+            </summary>
+            <typeparam name="R">The delegate type to cache.</typeparam>
+            <param name="key">The key under which to cache the delegate.</param>
+            <param name="value">The delegate instance.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Contains(`0)">
+            <summary>
+            Returns true if the cache contains an entry with the specified key.
+            </summary>
+            <param name="key">The key to check.</param>
+            <returns>True if an entry with the key exists.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Methods`1.Create">
+            <summary>
+            Construct a new instance of the method cache.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Sasa.Dynamics.Types`1">
+            <summary>
+            A thread-safe, user-controlled cache of types.
+            </summary>
+            <typeparam name="K">The key to map to types.</typeparam>
+        </member>
+        <member name="M:Sasa.Dynamics.Types`1.Get(`0,System.Func{`0,System.Type})">
+            <summary>
+            Get the type saved under the given key.
+            </summary>
+            <param name="key">The key the type is saved under.</param>
+            <param name="find">A callback to load the type for the given key.</param>
+            <returns>The type saved under <paramref name="key"/>.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Types`1.Set(`0,System.Type)">
+            <summary>
+            Explicitly set the type stored under the given key.
+            </summary>
+            <param name="key">The key to save the type under.</param>
+            <param name="type">The Type to cache.</param>
+            <returns>The type that was cached.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.Types`1.Contains(`0)">
+            <summary>
+            Returns true if the cache contains an entry with the specified key.
+            </summary>
+            <param name="key">The key to check.</param>
+            <returns>True if an entry with the key exists.</returns>
+        </member>
+        <member name="T:Sasa.Dynamics.DynamicType">
+            <summary>
+            Operations on the dynamic type of an object.
+            </summary>
+        </member>
+        <member name="M:Sasa.Dynamics.DynamicType.Reflect(System.Object)">
+            <summary>
+            Reflect on the dynamic type of the reference.
+            </summary>
+            <param name="obj">The object with unknown type.</param>
+        </member>
+        <member name="M:Sasa.Dynamics.DynamicType.Reflect(System.Type)">
+            <summary>
+            Reflect on the dynamic type of the reference.
+            </summary>
+            <param name="objType">The unknown object type.</param>
+            <returns>A function that can be used to reflect on any instance of the given type.</returns>
+        </member>
+        <member name="M:Sasa.Dynamics.DynamicType.Create(System.Type)">
+            <summary>
+            Reflect on the dynamic type of the reference.
+            </summary>
+            <param name="objType">The unknown object type.</param>
+            <returns>A function that can be used to construct uninitialized instances of the given type.</returns>
+        </member>
+        <member name="F:Sasa.Dynamics.DynamicType.DynamicCreate">
+            <summary>
+            A delegate that creates constructors by dispatching into the static reflector.
+            </summary>
+        </member>
+        <member name="F:Sasa.Dynamics.DynamicType.DynamicDispatch">
+            <summary>
+            Construct a method for dynamically reflecting on the given type.
+            </summary>
+        </member>
+    </members>
+</doc>

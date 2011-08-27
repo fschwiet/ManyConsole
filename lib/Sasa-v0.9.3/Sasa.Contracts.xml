@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:System.Diagnostics.Contracts.Contract">
+            <summary>
+            Microsoft-compatible Contracts class.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Requires(System.Boolean)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise.
+            </summary>
+            <param name="cond">The required condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.RequiresException">Throws RequiresException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Requires(System.Boolean,System.String)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise with the given message.
+            </summary>
+            <param name="cond">The required condition.</param>
+            <param name="msg">The message thrown in the exception.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.RequiresException">Throws RequiresException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.RequiresAlways(System.Boolean)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise.
+            </summary>
+            <param name="cond">The required condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.RequiresException">Throws RequiresException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.RequiresAlways(System.Boolean,System.String)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise with the given message.
+            </summary>
+            <param name="cond">The required condition.</param>
+            <param name="msg">The message thrown in the exception.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.RequiresException">Throws RequiresException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Assume(System.Boolean)">
+            <summary>
+            At runtime the behaviour is the same as an assertion. At static verification time, these conditions are
+            added to the list of facts. Throws AssumeException if the assumption is ever violated.
+            </summary>
+            <param name="cond">The assumed condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.AssumeException">Throws AssumeException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Assume(System.Boolean,System.String)">
+            <summary>
+            At runtime the behaviour is the same as an assertion. At static verification time, these conditions are
+            added to the list of facts. Throws AssumeException with the given message if the assumption is ever
+            violated.
+            </summary>
+            <param name="cond">The assumed condition.</param>
+            <param name="msg">The message thrown in the exception.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.AssumeException">Throws AssumeException if the condition fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Assert(System.Boolean)">
+            <summary>
+            Checks a condition at the given program point, throws AssertException if 
+            </summary>
+            <param name="cond">The asserted condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.AssertException">Throws AssertException if the assertion fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Assert(System.Boolean,System.String)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise with the given message.
+            </summary>
+            <param name="msg">The message thrown in the exception.</param>
+            <param name="cond">The asserted condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.AssertException">Throws AssertException if the assertion fails.</exception>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Invariant(System.Boolean)">
+            <summary>
+            Specifies an invariant property of a class. Throws Invariant exception if violated.
+            </summary>
+            <param name="cond">The invariant condition.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.InvariantException">Throws InvariantException if the condition is ever violated.</exception>
+            <remarks>This contract function works but is not automatically inserted after each public method as described
+            in the MS documention. IL rewriting is required to function as described.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Invariant(System.Boolean,System.String)">
+            <summary>
+            Requires the condition to be true, throws RequiresException otherwise with the given message.
+            </summary>
+            <param name="msg">The message thrown in the exception.</param>
+            <param name="cond">The invariant condition.</param>
+            <remarks>This contract function works but is not automatically inserted after each public method as described
+            in the MS documention. IL rewriting is required to function as described.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Ensures(System.Boolean)">
+            <summary>
+            Ensures the given condition is true at method termination, throws EnsuresException otherwise.
+            </summary>
+            <param name="cond">The condition that must hold.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.EnsuresException">Throws EnsuresException if the condition is violated at the end of the method.</exception>
+            <remarks>This contract function is currently a no-op since it requires IL rewriting to function properly.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Ensures(System.Boolean,System.String)">
+            <summary>
+            Ensures the given condition is true at method termination, throws EnsuresException otherwise with the given message.
+            </summary>
+            <param name="msg">The message to throw.</param>
+            <param name="cond">The condition that must hold.</param>
+            <exception cref="T:System.Diagnostics.Contracts.Contract.EnsuresException">Throws EnsuresException if the condition is violated at the end of the method.</exception>
+            <remarks>This contract function is currently a no-op since it requires IL rewriting to function properly.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.EnsuresOnThrow``1(System.Boolean)">
+            <summary>
+            Ensures the given condition is true at method termination, throws EnsuresException otherwise.
+            </summary>
+            <param name="cond">Condition</param>
+            <remarks>This contract function is currently a no-op since it requires IL rewriting to function properly.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.EnsuresOnThrow``1(System.Boolean,System.String)">
+            <summary>
+            Ensures the given condition is true at method termination, throws EnsuresException otherwise with the given message.
+            </summary>
+            <param name="cond">The condition that must hold.</param>
+            <param name="msg">The error message to throw if cond does not hold.</param>
+            <remarks>This contract function is currently a no-op since it requires IL rewriting to function properly.</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.EndContractBlock">
+            <summary>
+            A marker function to indicate the end of a legacy contract block.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.ForAll``1(System.Collections.Generic.IEnumerable{``0},System.Predicate{``0})">
+            <summary>
+            Ensures the given predicate is satisfied for all elements of the collection.
+            </summary>
+            <typeparam name="T">The type of the element in the collection.</typeparam>
+            <param name="x">The collection.</param>
+            <param name="cond">The predicate that must be satisfied.</param>
+            <returns>Returns true if all elements satisfy the predicate, false otherwise.</returns>
+            <remarks>public int [] Foo&lt;T&gt;(T[] xs){
+              CodeContract.Requires(CodeContract.ForAll(xs , (T x) =&gt; x != null) );</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.ForAll(System.Int32,System.Int32,System.Predicate{System.Int32})">
+            <summary>
+            Ensure the predicate is true over the given range of integers. The integers provided range over: [inclusiveLowerBound, exclusiveUpperBound).
+            </summary>
+            <param name="inclusiveLowerBound">The lower bound of the range.</param>
+            <param name="exclusiveUpperBound">The upper bound of the range (excluding this value).</param>
+            <param name="cond">The predicate that must be true over the given range.</param>
+            <returns>Returns true if the predicate is true over the range, false otherwise.</returns>
+            <remarks>public int [] Foo(String [] xs){
+              CodeContract.Requires(CodeContract.ForAll(0, xs .Length, index =&gt; xs[index] ! = null ));</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Exists``1(System.Collections.Generic.IEnumerable{``0},System.Predicate{``0})">
+            <summary>
+            Ensures the given predicate is satisfied for at least one element of the collection.
+            </summary>
+            <typeparam name="T">The type of the element in the collection.</typeparam>
+            <param name="x">The collection.</param>
+            <param name="cond">The predicate that must be satisfied.</param>
+            <returns>Returns true if any element satisfies the predicate, false otherwise.</returns>
+            <remarks>public int [] Foo&lt;T&gt;(T[] xs){
+              CodeContract.Requires(!CodeContract.Exists(xs , (T x) =&gt; x == null) );</remarks>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.Exists(System.Int32,System.Int32,System.Predicate{System.Int32})">
+            <summary>
+            Ensure the predicate is true over the given range of integers. The integers provided range over: [inclusiveLowerBound, exclusiveUpperBound).
+            </summary>
+            <param name="inclusiveLowerBound">The lower bound of the range.</param>
+            <param name="exclusiveUpperBound">The upper bound of the range (excluding this value).</param>
+            <param name="cond">The predicate to test over the given range.</param>
+            <returns>Returns true if the predicate is true for any value in the range, false otherwise.</returns>
+            <remarks>public int [] Foo(String [] xs){
+              CodeContract.Requires(!CodeContract.Exists(0, xs .Length, index =&gt; xs[index] == null ));</remarks>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.Contract.RequiresException">
+            <summary>
+            Exception thrown by Requires* functions.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.RequiresException.#ctor(System.String)">
+            <summary>
+            Construct an instance with the given message.
+            </summary>
+            <param name="msg">The error message.</param>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.Contract.AssumeException">
+            <summary>
+            Exception thrown by Assume* functions.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.AssumeException.#ctor(System.String)">
+            <summary>
+            Construct an instance with the given message.
+            </summary>
+            <param name="msg">The error message.</param>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.Contract.AssertException">
+            <summary>
+            Exception thrown by Assert* functions.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.AssertException.#ctor(System.String)">
+            <summary>
+            Construct an instance with the given message.
+            </summary>
+            <param name="msg">The error message.</param>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.Contract.InvariantException">
+            <summary>
+            Exception thrown by Invariant* functions.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.InvariantException.#ctor(System.String)">
+            <summary>
+            Construct an instance with the given message.
+            </summary>
+            <param name="msg">The error message.</param>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.Contract.EnsuresException">
+            <summary>
+            Exception thrown by Ensures* functions.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.Contracts.Contract.EnsuresException.#ctor(System.String)">
+            <summary>
+            Construct an instance with the given message.
+            </summary>
+            <param name="msg">The error message.</param>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.PureAttribute">
+            <summary>
+            Marks a method as being "pure", with no side-effects.
+            </summary>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.ContractInvariantMethodAttribute">
+            <summary>
+            Marks a method as an object invariant. When IL rewriting is supported,
+            this method will be called at the end of every public method and getter.
+            </summary>
+        </member>
+        <member name="T:System.Diagnostics.Contracts.RuntimeContractsAttribute">
+            <summary>
+            This assembly-level attribute is added to an assembly after the
+            rewriter has processed it.
+            </summary>
+        </member>
+    </members>
+</doc>

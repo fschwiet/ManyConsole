@@ -1,0 +1,202 @@
+= v0.9.3 =
+
+ * added a new parameter to compact serializer to indicate whether to ignore the
+   NonSerializable attribute for fields.
+ * added a DeepCopy extension method based on round-trip serialization.
+ * fixed: Compact serializer was only saving the private fields of the top-level
+   type.
+ * Compact serializer no longer relies on maintained field order; fields are
+   identified by the hash of their names.
+ * only declared fields of each type are serialized at each level, which removes
+   some serialization redundancy.
+ * added strongly typed enum Values() and Names() extension methods,
+   corresponding to untyped Enum.GetValues and Enum.GetNames() framework methods.
+ * added full set of System.Enum type constraints to Sasa.Enum.Enums type parameter
+   to maximally reduce possibility of using a non-enum type.
+ * renamed EnumExt to Enums and EnumerableExt to Enumerables.
+ * added futures and promises.
+ * added interfaces specifying the contract between any implementations of futures
+   and promises.
+ * moved concurrent futures under Sasa.Concurrency.
+ * added functions for asynchronously calling delegates and reading/writing
+   streams.
+ * Events.Clear clears an event list in a thread-safe way, and returns the prior
+   contents.
+ * Events.Add, Events.AddAny, Events.Remove and Events.RemoveAny to manage
+   MulticastDelegates in a thread-safe way without resorting to local lock objects.
+ * moved media type handling into a separate Sasa.Mime assembly.
+ * added functions to map between media types and file extensions.
+ * added some convenient enum parsing functions.
+ * added a simple search-and-replace CIL rewriter used to replace method bodies
+   with custom IL.
+ * added Sasa.Operators which exposes the numeric and logical operators via a
+   generic class; this assembly is not verifiable, so it is packaged in a separate
+   dll.
+ * added a simple string tokenizer which searches an input string for a list of
+   tokens and returns a stream of matches.
+ * unsafe BinarySerializer and BinaryDeserializer are no longer sealed to permit
+   clients to extend the language of serializable types.
+ * renamed Sasa.StringExt to Sasa.Strings.
+ * added a DEBUG mode to the ilrewriter to generate debug assemblies.
+ * added a Pratt-style extensible parser which includes a lexer. Calculator
+   programs are provided, including one with lexically scoped variables.
+ * restructured all extension classes to a more sensible naming convention.
+ * added a structured IO path object with convenient operator overloads.
+ * added Enumerables.Single for converting a single value to an enumerable.
+ * renamed Sasa.CodeContracts and Sasa.CodeContracts.Contract to Sasa.Contracts
+   and Sasa.Contracts.Contract respectively, to mimic Microsoft's changes.
+ * moved URL64 encoding under the Sasa project.
+ * Either type now uses standard type param naming conventions.
+ * Either<,,,>.First was erroneously returning an Either<,,>.
+ * added a function to coerce one delegate type to another.
+ * changed termination condition for Sasa.IO.Streams.CopyTo to better conform to
+   abstract Stream guarantees.
+ * added an explicit Void type to represent empty return values.
+ * many FxCop suggested fixes.
+ * added various operator overloads to tuples, weak references and other structs.
+ * added serialization overloads to allow clients to provide a lookup cache; this
+   permits instance caching across serialization boundaries.
+ * more comprehensive serialization tests, and time/space comparisons with
+   BinaryFormatter.
+ * fixed bug where empty e-mail header values ran into subsequent header lines.
+ * Strings.Lines now splits along both \r and \n and eliminates empty lines.
+ * added a purely functional/persistent queue, PQueue<T>.
+ * added a general persistent collection interface ISeq<TCollection, TItem>.
+ * Seq<T> and Set<T> now implement ISeq<T>.
+ * Seq<T> is now a struct-based persistent collection.
+ * Renamed Dictionary extensions to better identify their usage.
+ * added tests for Weak<T> and Sasa.Func extensions.
+ * added Sasa.Func extension to lift Action<...> into Func<..., Empty>.
+ * expanded Option<T> features, made it a cheap struct, restricted it to class
+   types, matched interface to Nullable<T>, added equality testing, added LINQ
+   interface for chaining computations.
+ * simplified NonNull<T> hashcode.
+ * added NonNull<T> constructor, equality test overloads, and convenience
+   extension method.
+ * added a proper Append operation to Seq<T>.
+ * added a Next property to traverse a Seq<T>.
+ * now that Compact serializer accepts a dictionary cache, customTags are no
+   longer necessary; just initialize the dictionary with the appropriate types.
+ * added Endian conversions for base types.
+ * added BinaryReader/BinaryWriter implementations that encode primitive values
+   in Big-Endian encoding for portability.
+ * added a simple reactive programming framework, Sasa.Reactive, which wraps
+   the Reactive.NET framework in a concrete type with some implicit coercions.
+ * added a simple shared reference interface, IRef<T>.
+ * some convenience extensions for composing LINQ lambda expressions,
+   Sasa.Linq.Expressions.
+ * added a IVolatile interface indicating a reference may change unexpectedly.
+ * Weak<T> now implements IVolatile<T>.
+ * Events.AddAny/RemoveAny are no longer unsound (ref Delegate could never be
+   used with any concrete delegate type due to type unsoundness).
+ * added Linq expression combinators.
+ * added a simple purely functional map type used for lexical environments.
+ * added fixed point lambda functions.
+ * renamed IEnumerable.Cons to Push to reflect standard terminology.
+ * added Seq atomic swap function, and Seq.Remove operation.
+ * added Var.Equals overload to fix parsing unit test failure.
+ * added IEnumerable.CopyTo to copy elements to an existing array.
+ * disabled broken serialization for now.
+ * replaced unsafe reflection facilities with a completely safe and
+   efficient reflection abstraction based on lightweight code generation.
+ * extended ilrewrite to erase types; this is particularly useful for erasing
+   TypeConstraint<T> which is used to specify type constraints that C# normally
+   would not permit.
+ * use ilrewrite to simplify interface to event handler extensions.
+ * added Enumerables.Consume extension which is used to force eager evaluation.
+ * added proper enum type constraint on enum extensions.
+ * added an IEnumerable<T>.Transpose() extension method which swaps columns
+   and rows.
+ * added a safe, efficient dynamic reflection facility.
+ * added global, thread-safe type and method caches using a user-provided key
+   type.
+ * ilrewrite: added support for .NET 4.0 toolchain.
+ * Lazy<T> now implements IOptional<T> semantics, so clients can test the
+   current state of the lazy value, ie. whether it's been forced yet.
+ * removed dangerous implicit conversion from Lazy<T> to T.
+ * Enumerables.Single removed, use Enumerable.Repeat.
+ * Strings.Char removed, string already implements IEnumerable<char>.
+ * Sasa.Web.Asp.Page<T> now implements IValue<T>.
+ * renamed ToShortName extension to ShortName.
+ * added Sasa.Arrow, which adds an Arrow computation abstraction, including
+   LINQ query syntax support.
+ * added full assembly and namespace documentation
+ * Sasa.Operators assembly now also has Sasa.Operators namespace.
+
+= v0.9.2 =
+
+ * fixed bug where quoted printable encoding failed when = was the last character.
+ * added Pop3Session.Reset method.
+ * compact serializer no longer uses stream positions to track cached objects, so
+   non-indexable streams, like DeflateStream, are now usable.
+ * ISerializing interface generalized to support serializing non-primitive field
+   values.
+ * added e-mail subject decoding.
+ * fixed boundary condition on QuotedPrintableEncoding.
+ * added extension methods to support safely raising events.
+ * added an extension method to safely generate field and property names as strings.
+ * added parameter to Compact serializer to indicate whether SerializableAttribute
+   should be respected.
+ * added a boundary check for SliceEquals.
+ * added a event Raise overload for any event handlers whose arg inherits from
+   EventArgs, which enables safe event raising within an object.
+ * MailAddressCollection already handles parsing comma-delimited e-mail address
+   strings, so don't attempt to split them manually.
+ * added a test for an e-mail address that contains a comma.
+ * default to us-ascii charset if none provided.
+ * NonNull now throws a ArgumentNullException with a proper description.
+ * many FxCop-related fixes and CLS compliance improvements.
+ * added usage restrictions on Sasa.CodeContracts attributes.
+
+= v0.9.1 =
+
+ * Properly split header values for multiple addresses.
+ * Fixed assembly version number scheme.
+
+= v0.9 =
+
+ * Added a strongly typed Weak<T> wrapper for WeakReference.
+ * Tuple types now implement IComparable<T>.
+ * Fixed concurrent bug in Lazy<T>.
+ * int, double, decimal and float now have a Bound() extension method
+   which ensures the value is within a specified range.
+ * Added parameterless constructors to core types to support medium
+   trust serialization.
+ * Added strongly typed char enumeration over a string.
+ * Changed the return type on DictionaryExt.Insert to make it more
+   usable.
+ * Added some selection functions to Option<T>.
+ * Added MIME decoding to mail parser.
+ * POP3 client now more closely conforms to RFC.
+ * renamed List<T> to Seq<T> to avoid clashes with System.Collections.Generic.List<T>.
+ * added more convenient string splitting functions.
+ * reversed sense of & operator for Seq<T> to make it chainable.
+ * added & overload for concatenating two Seq<T>.
+ * removed Seq<T> | operator because unlike ?? operator, it's eagerly evaluated
+   which limits its usefulness.
+ * added string.SliceEquals extension method, to compare a substrings without
+   calling string.Substring.
+ * added a Set<T> type based on Seq<T>
+ * added Array extension methods
+ * added safe reflection abstraction
+ * added an empty _ struct type to use as a generic type param wherever
+   void would normally be used, aka the unit type.
+ * added Sasa.Dynamics assembly to group polytypic code.
+ * added safe reflection functions and interface, ITypeFunc<R>.
+ * added convenience functions for copying a stream into memory, and
+   copying one stream to another, under Sasa.IO.
+ * changed Arrays.Append to accept a variable argument list.
+ * renamed Sasa.Linq.Enumerable to avoid clashes with System.Linq.Enumerable.
+ * added MailMessage.ToRaw(), which generates a string representation
+   of an e-mail similar to what is sent over the wire.
+ * added a function to convert a media type to a file extension.
+ * no longer assumes RFC822 header values are separated by commas.
+ * added a base64 encoder suitable for embedding in URLs
+ * added an ASP.NET project with a Page class providing a strongly typed
+   URL-based "session state"; using this page should theoretically make
+   clients immune to CSRF and clickjacking
+ * added numerous Array extensions, including Slice, Dup, Fill, Repeat, Bound.
+
+= v0.8 =
+
+ * Initial release

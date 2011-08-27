@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Parsing</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Parsing.Pratt.Token`1">
+            <summary>
+            A semantic token encapsulating all the information needed to
+            parse a lexed input.
+            </summary>
+            <typeparam name="T">The type of value parsed by the token.</typeparam>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Token`1.#ctor(System.String,System.Int32)">
+            <summary>
+            Create a semantic token.
+            </summary>
+            <param name="id">The token identifier; sometimes this is the symbol itself.</param>
+            <param name="leftBindingPower">The left binding power, aka precedence.</param>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Token`1.Nud(Sasa.Parsing.Pratt.PrattParser{`0})">
+            <summary>
+            Execute the null denotation function of this token.
+            </summary>
+            <returns>The value for the null denotation of this token.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Token`1.Led(Sasa.Parsing.Pratt.PrattParser{`0},`0)">
+            <summary>
+            Execute the left denotation function of this token.
+            </summary>
+            <param name="parser">The parser state.</param>
+            <param name="left">The value to the left of this token.</param>
+            <returns>The left denotation of this token.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Token`1.ToString">
+            <summary>
+            Returns a string representation of this token.
+            </summary>
+            <returns>A string representation of this token.</returns>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Token`1.Id">
+            <summary>
+            The token identifier.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Token`1.LeftBindingPower">
+            <summary>
+            "Stickiness" to the left.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Token`1.NullDenotation">
+            <summary>
+            Node has nothing to its left, ie. prefix. The null denotation
+            is transparently memoized by <see cref="T:Sasa.Lazy`1"/>.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Token`1.LeftDenotation">
+            <summary>
+            Node has something to the left, ie. postfix or infix.
+            </summary>
+        </member>
+        <member name="T:Sasa.Parsing.Pratt.Scanner">
+            <summary>
+            A function that scans <paramref name="input"/> starting from <paramref name="start"/>
+            for a specific pattern. The return value is the new parser position.
+            </summary>
+            <param name="input">The parser input string.</param>
+            <param name="start">The index to start searching.</param>
+            <returns>The index the match completed.</returns>
+        </member>
+        <member name="T:Sasa.Parsing.Pratt.Grammar`1">
+            <summary>
+            Inherit from this class to implement a typed grammar.
+            </summary>
+            <typeparam name="T">The type of values parsed from the input.</typeparam>
+            <remarks>
+            Implements a simple single-state Pratt-style parser with a longest
+            match precedence-based lexer. Clients need only inherit from this class,
+            specify the type of elements being parsed, and in the constructor function
+            specifying the set of parsable operators with the associated semantic action.
+            
+            Pratt-parsers are effectively Turing complete, so they can parse any grammar imaginable,
+            although the predefined combinators encourage context-free grammars.
+            
+            References:
+            <ul>
+            <li><a href="http://effbot.org/zone/simple-top-down-parsing.htm">http://effbot.org/zone/simple-top-down-parsing.htm</a></li>
+            <li><a href="http://javascript.crockford.com/tdop/tdop.html">http://javascript.crockford.com/tdop/tdop.html</a></li>
+            </ul>
+            </remarks>
+            <example>
+            Here is a simple calculator as an example:
+            <code>
+            class Calculator : Grammar&lt;int&gt;
+            {
+                public Calculator()
+                {
+                    Infix("+", 10, Add);   Infix("-", 10, Sub);
+                    Infix("*", 20, Mul);   Infix("/", 20, Div);
+                    InfixR("^", 30, Pow);  Postfix("!", 30, Fact);
+                    Prefix("-", 100, Neg); Prefix("+", 100, Pos);
+                    Group("(", ")", int.MaxValue);
+                    Match("(digit)", char.IsDigit, 1, Int);
+                    SkipWhile(char.IsWhiteSpace);
+                }
+            
+                int Int(string lit) { return int.Parse(lit); }
+                int Add(int lhs, int rhs) { return lhs + rhs; }
+                int Sub(int lhs, int rhs) { return lhs - rhs; }
+                int Mul(int lhs, int rhs) { return lhs * rhs; }
+                int Div(int lhs, int rhs) { return lhs / rhs; }
+                int Pow(int lhs, int rhs) { return (int)Math.Pow(lhs, rhs); }
+                int Neg(int arg) { return -arg; }
+                int Pos(int arg) { return arg; }
+                int Fact(int arg)
+                {
+                    return arg == 0 || arg == 1 ? 1 : arg * Fact(arg - 1);
+                }
+            }
+            </code>
+            </example>
+            <exception cref="T:Sasa.Parsing.ParseException">Thrown if the parser encounters any errors, such as unknown symbols.</exception>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Symbol(System.String)">
+            <summary>
+            Generates a symbol.
+            </summary>
+            <param name="sym">The symbol identifier.</param>
+            <returns>A symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Symbol(System.String,System.Int32)">
+            <summary>
+            Generates a symbol with the given left binding power.
+            </summary>
+            <param name="sym">The symbol identifier.</param>
+            <param name="lbp">The left binding power.</param>
+            <returns>A symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Match(System.String,System.Predicate{System.Char},System.Int32,System.Func{System.String,`0})">
+            <summary>
+            A symbol that matches a character predicate.
+            </summary>
+            <param name="id">The identifier for this symbol.</param>
+            <param name="pred">A predicate over characters identifying legitimate members.</param>
+            <param name="bindingPower">Operator's binding power.</param>
+            <param name="selector">Parsing function taking a string to a <typeparamref name="T"/>.</param>
+            <returns>Literal symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Prefix(System.String,System.Int32,System.Func{`0,`0})">
+            <summary>
+            Generate a prefix symbol.
+            </summary>
+            <param name="op">Prefix operator symbol.</param>
+            <param name="bindingPower">Operator's binding power.</param>
+            <param name="selector">Mapping function.</param>
+            <returns>Prefix operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Postfix(System.String,System.Int32,System.Func{`0,`0})">
+            <summary>
+            Generate a postfix operator symbol.
+            </summary>
+            <param name="op">The operator symbol.</param>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="selector">The function transforming the postfix token.</param>
+            <returns>A postfix operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Infix(System.String,System.Int32,System.Func{`0,`0,`0})">
+            <summary>
+            Left-associative infix symbol.
+            </summary>
+            <param name="op">The operator symbol.</param>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="selector">The function transforming the infix token.</param>
+            <returns>A right-associative operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.InfixR(System.String,System.Int32,System.Func{`0,`0,`0})">
+            <summary>
+            Right-associative infix symbol.
+            </summary>
+            <param name="op">The operator symbol.</param>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="selector">The function transforming the infix token.</param>
+            <returns>A right-associative operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.TernaryInfix(System.String,System.String,System.Int32,System.Func{`0,`0,`0,`0})">
+            <summary>
+            Ternary operators, like "e ? e : e".
+            </summary>
+            <param name="infix0">The first infix symbol of the ternary operator.</param>
+            <param name="infix1">The second infix symbol of the ternary operator.</param>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="parse">The parsing function for each branch.</param>
+            <returns>A ternary operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.TernaryPrefix(System.String,System.String,System.String,System.Int32,System.Func{`0,`0,`0,`0})">
+            <summary>
+            Ternary operators, like "if e then e else e".
+            </summary>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="prefix">The symbol starting the ternary operator.</param>
+            <param name="infix0">The first infix symbol in the operator.</param>
+            <param name="infix1">The second infix symbol in the operator.</param>
+            <param name="parse">The parsing function.</param>
+            <returns>A ternary operator symbol.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Group(System.String,System.String,System.Int32)">
+            <summary>
+            A grouping operator, typically parenthesis of some sort.
+            </summary>
+            <param name="bindingPower">The binding power of the operator.</param>
+            <param name="leftGrouping">The left grouping symbol.</param>
+            <param name="rightGrouping">The right grouping symbol.</param>
+            <returns>A grouping operator.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.SkipWhile(System.Predicate{System.Char})">
+            <summary>
+            Creates a symbol for characters that are to be skipped, whitespace for example.
+            </summary>
+            <param name="pred">The predicate determing the characters to skip.</param>
+            <returns>A symbol for skipped characters.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Skip(Sasa.Parsing.Pratt.Scanner)">
+            <summary>
+            Creates a symbol for characters that are to be skipped, whitespace for example.
+            </summary>
+            <param name="scanner">The scanner identifying the characters to skip.</param>
+            <returns>A symbol for skipped characters.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Parse(System.String)">
+            <summary>
+            Parse the given text and return the corresponding value, or throw a parse error.
+            </summary>
+            <param name="text">The text to parse.</param>
+            <returns>The value parsed from the text.</returns>
+            <exception cref="T:Sasa.Parsing.ParseException">Thrown when the text has an invalid structure.</exception>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Any(System.String[])">
+            <summary>
+            A scanner that matches any in a sequence of tokens.
+            </summary>
+            <param name="tokens">The list of tokens to match.</param>
+            <returns>A Scanner that matches the given tokens.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.ScanLiteral(System.String)">
+            <summary>
+            A scanner that matches a literal value.
+            </summary>
+            <param name="lit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.While(System.Predicate{System.Char})">
+            <summary>
+            Returns a scanner forwards the stream while a predicate is satisfied.
+            </summary>
+            <param name="pred">Predicate on characters.</param>
+            <returns>Scanner that uses the predicate to determine the end of a match.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.WhiteSpace(System.String,System.Int32)">
+            <summary>
+            A scanner for whitespace.
+            </summary>
+            <param name="input">The input string to scan.</param>
+            <param name="start">The index to start scanning.</param>
+            <returns>The end of the scan.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Digits(System.String,System.Int32)">
+            <summary>
+            A scanner for digits.
+            </summary>
+            <param name="input">The input string to scan.</param>
+            <param name="start">The index to start scanning.</param>
+            <returns>The end of the scan.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Letters(System.String,System.Int32)">
+            <summary>
+            A scanner for letters.
+            </summary>
+            <param name="input">The input string to scan.</param>
+            <param name="start">The index to start scanning.</param>
+            <returns>The end of the scan.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.LettersOrDigits(System.String,System.Int32)">
+            <summary>
+            A scanner for letters or digits.
+            </summary>
+            <param name="input">The input string to scan.</param>
+            <param name="start">The index to start scanning.</param>
+            <returns>The end of the scan.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Grammar`1.Char(System.Char)">
+            <summary>
+            Scanner for a particular character.
+            </summary>
+            <param name="c">The character to scan for.</param>
+            <returns>The end of the scan.</returns>
+        </member>
+        <member name="T:Sasa.Parsing.Pratt.PrattParser`1">
+            <summary>
+            A parser for a given input text.
+            </summary>
+            <typeparam name="T">The type to be parsed from the text.</typeparam>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.PrattParser`1.Parse(System.Int32)">
+            <summary>
+            Parse the next token sequence given the right binding power.
+            </summary>
+            <param name="rbp">The right binding power to use when parsing.</param>
+            <returns>The next parsed value.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.PrattParser`1.Advance(System.String)">
+            <summary>
+            Checks that the current token matches the expected token specified by <paramref name="id"/>.
+            </summary>
+            <param name="id">The expected token identifier.</param>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.PrattParser`1.End">
+            <summary>
+            The token delimiting the end of the token stream.
+            </summary>
+            <returns>The end token.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.PrattParser`1.Fail(System.String)">
+            <summary>
+            Throws a formatted syntax failure exception.
+            </summary>
+            <param name="reason">The reason for the failure.</param>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.PrattParser`1.Token">
+            <summary>
+            The current token in the stream.
+            </summary>
+        </member>
+        <member name="T:Sasa.Parsing.Pratt.Symbol`1">
+            <summary>
+            A symbol definition.
+            </summary>
+            <typeparam name="T">The type of parser values.</typeparam>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Symbol`1.#ctor(System.String)">
+            <summary>
+            Construct a new Symbol.
+            </summary>
+            <param name="id">The symbol identifier.</param>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Symbol`1.Scan(System.String,System.Int32)">
+            <summary>
+            Check whether the current symbol matches the input string.
+            </summary>
+            <param name="input">The input string to scan.</param>
+            <param name="pos">The position to start scanning.</param>
+            <returns>The index at which the scan completed.</returns>
+        </member>
+        <member name="M:Sasa.Parsing.Pratt.Symbol`1.Matched(System.String)">
+            <summary>
+            Returns the token for this symbol that matched the given value.
+            </summary>
+            <param name="value">The value matched to this symbol.</param>
+            <returns>The token value derived from this symbol.</returns>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Id">
+            <summary>
+            The symbol identifier.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Scanner">
+            <summary>
+            The scanner for this type of symbol.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.LeftBindingPower">
+            <summary>
+            The left binding power of the tokens generated from this symbol.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Nud">
+            <summary>
+            The null denotation of the tokens generated from this symbol.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Led">
+            <summary>
+            The left denotation of the tokens generated from this symbol.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Parse">
+            <summary>
+            The function used to parse literals or identifiers, if applicable.
+            </summary>
+        </member>
+        <member name="P:Sasa.Parsing.Pratt.Symbol`1.Skip">
+            <summary>
+            A flag indicating whether symbols of this type should be ignored
+            when generating tokens.
+            </summary>
+        </member>
+        <member name="T:Sasa.Parsing.ParseException">
+            <summary>
+            Describes a parse error.
+            </summary>
+        </member>
+        <member name="M:Sasa.Parsing.ParseException.#ctor(System.String)">
+            <summary>
+            Constructs a new exception.
+            </summary>
+            <param name="error">The reason for the parse error.</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,428 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Serialization.Unsafe.IUnsafeSerializable">
+            <summary>
+            This is an interface used for ultra-compact serialization. Implementors declare a 
+            single method which specifying all of the fields with their given types.
+            </summary>
+            <remarks>
+            This declarative interface suffices to both serialize and deserialize objects. The
+            order of the specified fields is significant, so you cannot re-order the calls in
+            Serialize once you have objects that have been serialized.
+            
+            A simple implementation:
+            <code>
+            public Foo : ICompactSerializable {
+              int baz;
+              string bar;
+              
+              public Serialize(ICompactSerializer ic) {
+                ic.Int32(ref baz);
+                ic.String(ref bar);
+              }
+            }
+            </code>
+            For instance, if the field 'bar' is deleted, and a field 'sum' is added, the object
+            will look like this:
+            <code>
+            public Foo : ICompactSerializable {
+              int baz;
+              int sum;
+              
+              public Serialize(ICompactSerializer ic) {
+                ic.Int32(ref baz);
+                string bar = null;
+                ic.String(ref bar);
+                ic.Int32(ref sum);
+              }
+            }
+            </code>
+            After a user-specified period of time, or a full schema upgrade is performed, the
+            extra code can be removed.
+            </remarks>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializable.Serialize``1(``0)">
+            <summary>
+            Serialize this object using the given serializer.
+            </summary>
+            <param name="serializer">The serializer used to describe the internal structure
+            of the current object.</param>
+        </member>
+        <member name="T:Sasa.Serialization.Unsafe.Binary.BinarySerializer">
+            <summary>
+            An unsafe binary serializer.
+            </summary>
+        </member>
+        <member name="T:Sasa.Serialization.Unsafe.IUnsafeSerializer">
+            <summary>
+            An ultra-compact serializer interface.
+            </summary>
+            <remarks>
+            This interface describes both serializers and deserializers. These serializers
+            perform no safety checks, not even type-safety.
+            
+            Serializable objects simply describe the structure of the type using this interface.
+            </remarks>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Bool(System.Boolean@)">
+            <summary>
+            Serialize/deserialize a bool.
+            </summary>
+            <param name="b">A pointer to the bool field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Int16(System.Int16@)">
+            <summary>
+            Serialize/deserialize an Int16.
+            </summary>
+            <param name="s">A pointer to the Int16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.UInt16(System.UInt16@)">
+            <summary>
+            Serialize/deserialize a UInt16.
+            </summary>
+            <param name="u">A pointer to the UInt16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Int32(System.Int32@)">
+            <summary>
+            Serialize/deserialize an Int32.
+            </summary>
+            <param name="i">A pointer to the Int32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.UInt32(System.UInt32@)">
+            <summary>
+            Serialize/deserialize a UInt32.
+            </summary>
+            <param name="u">A pointer to the UInt32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Int64(System.Int64@)">
+            <summary>
+            Serialize/deserialize an Int64.
+            </summary>
+            <param name="l">A pointer to the Int64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.UInt64(System.UInt64@)">
+            <summary>
+            Serialize/deserialize a UInt64.
+            </summary>
+            <param name="u">A pointer to the UInt64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Char(System.Char@)">
+            <summary>
+            Serialize/deserialize a char.
+            </summary>
+            <param name="c">A pointer to the char field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Byte(System.Byte@)">
+            <summary>
+            Serialize/deserialize a Byte.
+            </summary>
+            <param name="b">A pointer to the Byte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.SByte(System.SByte@)">
+            <summary>
+            Serialize/deserialize an SByte.
+            </summary>
+            <param name="b">A pointer to the SByte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.String(System.String@)">
+            <summary>
+            Serialize/deserialize a String.
+            </summary>
+            <param name="s">A pointer to the String field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Float(System.Single@)">
+            <summary>
+            Serialize/deserialize an Float.
+            </summary>
+            <param name="f">A pointer to the Float field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Double(System.Double@)">
+            <summary>
+            Serialize/deserialize an Double.
+            </summary>
+            <param name="d">A pointer to the Double field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Decimal(System.Decimal@)">
+            <summary>
+            Serialize/deserialize an Decimal.
+            </summary>
+            <param name="d">A pointer to the Decimal field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Bytes(System.Byte[]@)">
+            <summary>
+            Serialize/deserialize an Byte[].
+            </summary>
+            <param name="b">A pointer to the Byte[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Chars(System.Char[]@)">
+            <summary>
+            Serialize/deserialize an Char[].
+            </summary>
+            <param name="b">A pointer to the Char[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.IUnsafeSerializer.Serialize``1(``0@)">
+            <summary>
+            Serialize/deserialize an IUnsafeSerializable object.
+            </summary>
+            <param name="obj">A pointer to the IUnsafeSerializable object field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.#ctor(System.IO.BinaryWriter)">
+            <summary>
+            Construct a BinarySerializer instance.
+            </summary>
+            <param name="output">The BinaryWriter to use for output.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Bool(System.Boolean@)">
+            <summary>
+            Serialize/deserialize a bool.
+            </summary>
+            <param name="b">A pointer to the bool field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Int16(System.Int16@)">
+            <summary>
+            Serialize/deserialize an Int16.
+            </summary>
+            <param name="s">A pointer to the Int16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.UInt16(System.UInt16@)">
+            <summary>
+            Serialize/deserialize a UInt16.
+            </summary>
+            <param name="u">A pointer to the UInt16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Int32(System.Int32@)">
+            <summary>
+            Serialize/deserialize an Int32.
+            </summary>
+            <param name="i">A pointer to the Int32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.UInt32(System.UInt32@)">
+            <summary>
+            Serialize/deserialize a UInt32.
+            </summary>
+            <param name="u">A pointer to the UInt32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Int64(System.Int64@)">
+            <summary>
+            Serialize/deserialize an Int64.
+            </summary>
+            <param name="l">A pointer to the Int64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.UInt64(System.UInt64@)">
+            <summary>
+            Serialize/deserialize a UInt64.
+            </summary>
+            <param name="u">A pointer to the UInt64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Char(System.Char@)">
+            <summary>
+            Serialize/deserialize a char.
+            </summary>
+            <param name="c">A pointer to the char field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Byte(System.Byte@)">
+            <summary>
+            Serialize/deserialize a Byte.
+            </summary>
+            <param name="b">A pointer to the Byte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.SByte(System.SByte@)">
+            <summary>
+            Serialize/deserialize an SByte.
+            </summary>
+            <param name="b">A pointer to the SByte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.String(System.String@)">
+            <summary>
+            Serialize/deserialize a String.
+            </summary>
+            <param name="s">A pointer to the String field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Float(System.Single@)">
+            <summary>
+            Serialize/deserialize an Float.
+            </summary>
+            <param name="f">A pointer to the Float field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Double(System.Double@)">
+            <summary>
+            Serialize/deserialize an Double.
+            </summary>
+            <param name="d">A pointer to the Double field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Decimal(System.Decimal@)">
+            <summary>
+            Serialize/deserialize an Decimal.
+            </summary>
+            <param name="d">A pointer to the Decimal field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Bytes(System.Byte[]@)">
+            <summary>
+            Serialize/deserialize an Byte[].
+            </summary>
+            <param name="b">A pointer to the Byte[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Chars(System.Char[]@)">
+            <summary>
+            Serialize/deserialize an Char[].
+            </summary>
+            <param name="b">A pointer to the Char[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Serialize``1(``0@)">
+            <summary>
+            Serialize/deserialize an IUnsafeSerializable object.
+            </summary>
+            <param name="obj">A pointer to the IUnsafeSerializable object field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinarySerializer.Dispose">
+            <summary>
+            Dispose of this instance's resources.
+            </summary>
+        </member>
+        <member name="T:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer">
+            <summary>
+            An unsafe binary deserializer.
+            </summary>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.#ctor(System.IO.BinaryReader)">
+            <summary>
+            Construct a BinaryDeserializer instance.
+            </summary>
+            <param name="input">A BinaryReader instance.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Bool(System.Boolean@)">
+            <summary>
+            Serialize/deserialize a bool.
+            </summary>
+            <param name="b">A pointer to the bool field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Int16(System.Int16@)">
+            <summary>
+            Serialize/deserialize an Int16.
+            </summary>
+            <param name="s">A pointer to the Int16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.UInt16(System.UInt16@)">
+            <summary>
+            Serialize/deserialize a UInt16.
+            </summary>
+            <param name="u">A pointer to the UInt16 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Int32(System.Int32@)">
+            <summary>
+            Serialize/deserialize an Int32.
+            </summary>
+            <param name="i">A pointer to the Int32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.UInt32(System.UInt32@)">
+            <summary>
+            Serialize/deserialize a UInt32.
+            </summary>
+            <param name="u">A pointer to the UInt32 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Int64(System.Int64@)">
+            <summary>
+            Serialize/deserialize an Int64.
+            </summary>
+            <param name="l">A pointer to the Int64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.UInt64(System.UInt64@)">
+            <summary>
+            Serialize/deserialize a UInt64.
+            </summary>
+            <param name="u">A pointer to the UInt64 field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Char(System.Char@)">
+            <summary>
+            Serialize/deserialize a char.
+            </summary>
+            <param name="c">A pointer to the char field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Byte(System.Byte@)">
+            <summary>
+            Serialize/deserialize a Byte.
+            </summary>
+            <param name="b">A pointer to the Byte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.SByte(System.SByte@)">
+            <summary>
+            Serialize/deserialize an SByte.
+            </summary>
+            <param name="b">A pointer to the SByte field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Float(System.Single@)">
+            <summary>
+            Serialize/deserialize an Float.
+            </summary>
+            <param name="f">A pointer to the Float field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Double(System.Double@)">
+            <summary>
+            Serialize/deserialize an Double.
+            </summary>
+            <param name="d">A pointer to the Double field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Decimal(System.Decimal@)">
+            <summary>
+            Serialize/deserialize an Decimal.
+            </summary>
+            <param name="d">A pointer to the Decimal field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.String(System.String@)">
+            <summary>
+            Serialize/deserialize a String.
+            </summary>
+            <param name="s">A pointer to the String field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Bytes(System.Byte[]@)">
+            <summary>
+            Serialize/deserialize an Byte[].
+            </summary>
+            <param name="b">A pointer to the Byte[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Chars(System.Char[]@)">
+            <summary>
+            Serialize/deserialize an Char[].
+            </summary>
+            <param name="b">A pointer to the Char[] field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Serialize``1(``0@)">
+            <summary>
+            Serialize/deserialize an IUnsafeSerializable object.
+            </summary>
+            <param name="obj">A pointer to the IUnsafeSerializable object field.</param>
+        </member>
+        <member name="M:Sasa.Serialization.Unsafe.Binary.BinaryDeserializer.Dispose">
+            <summary>
+            Dispose of this instance's resources.
+            </summary>
+        </member>
+        <member name="T:Sasa.Serialization.DeserializationContext">
+            <summary>
+            Contains the context for deserialization with a certain client.
+            </summary>
+        </member>
+        <member name="T:Sasa.Serialization.SerializationContext">
+            <summary>
+            Contains the context for serialization with a certain client.
+            </summary>
+        </member>
+        <member name="T:Sasa.Serialization.DeepCopying">
+            <summary>
+            Extension methods to perform deep copies on objects.
+            </summary>
+        </member>
+        <member name="M:Sasa.Serialization.DeepCopying.DeepCopy``1(``0)">
+            <summary>
+            Performs a deep copy.
+            </summary>
+            <typeparam name="T">The type of object being copied.</typeparam>
+            <param name="value">The value being copied.</param>
+            <returns>A deep copy of the given value.</returns>
+        </member>
+    </members>
+</doc>
