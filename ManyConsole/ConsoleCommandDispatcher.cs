@@ -72,5 +72,19 @@ namespace ManyConsole
                 return -1;
             }
         }
+
+        public static ConsoleCommand[] FindCommandsInSameAssemblyAs(Type typeInSameAssembly)
+        {
+            var assembly = typeInSameAssembly.Assembly;
+
+            var commandTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ConsoleCommand)));
+
+            return commandTypes
+                .OrderBy(t => t.FullName)
+                .Select(t => t.GetConstructor(new Type[] { })
+                                 .Invoke(new object[] { }))
+                .Cast<ConsoleCommand>()
+                .ToArray();
+        }
     }
 }
