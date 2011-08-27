@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "3.0.0"
+    $version = "0.1.0"
 }
 
 import-module .\tools\PSUpdateXML.psm1
