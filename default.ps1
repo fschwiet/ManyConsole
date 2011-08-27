@@ -2,9 +2,12 @@ properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
     $version = "0.1.0"
+
+    $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
 }
 
 import-module .\tools\PSUpdateXML.psm1
+. .\psake_ext.ps1
 
 task default -depends Build,RunTests,BuildNuget
 
@@ -14,7 +17,31 @@ task Cleanup {
     }
 }
 
-task Build -depends Cleanup {
+task GenerateAssemblyInfo {
+	
+	$projectFiles = ls -path $base_dir -include *.csproj -recurse
+
+    $projectFiles | write-host
+	foreach($projectFile in $projectFiles) {
+		
+		$projectDir = [System.IO.Path]::GetDirectoryName($projectFile)
+		$projectName = [System.IO.Path]::GetFileName($projectDir)
+		$asmInfo = [System.IO.Path]::Combine($projectDir, [System.IO.Path]::Combine("Properties", "AssemblyInfo.cs"))
+				
+		Generate-Assembly-Info `
+			-file $asmInfo `
+			-title "$projectName $version.0" `
+			-description $shortDescription `
+			-company "n/a" `
+			-product "ManyConsole $version.0" `
+			-version "$version.0" `
+			-fileversion "$version.0" `
+			-copyright "Copyright © Frank Schwieterman 2011" `
+			-clsCompliant "false"
+	}
+}
+
+task Build -depends Cleanup,GenerateAssemblyInfo {
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     $dearlySolution = "$baseDirectory\dearly.sln"
 
@@ -48,7 +75,7 @@ task BuildNuget -depends Build {
             set-xml -exactlyOnce "//ns:version" "$version.0"
             set-xml -exactlyOnce "//ns:owners" "fschwiet"
             set-xml -exactlyOnce "//ns:authors" "Frank Schwieterman"
-            set-xml -exactlyOnce "//ns:description" "A library for writing console applicatoins.  Extends NDesk.Options to support separate commands from one console application."
+            set-xml -exactlyOnce "//ns:description" $shortDescription
 
             set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
             set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/ManyConsole/"
