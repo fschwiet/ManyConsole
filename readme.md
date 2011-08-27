@@ -14,4 +14,6 @@ To use ManyConsole:
 - To add a command to your console application, inherit from ConsoleCommand.
 -- See the sample comands at https://github.com/fschwiet/ManyConsole/tree/master/SampleConsole
 
+Each command exposes an OptionSet, the docs on how to define an OptionSet are here: http://www.ndesk.org/Options
+
 This code was pulled as-is from a closed-source personal project of mine in order to make it shareable.
