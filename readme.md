@@ -12,3 +12,5 @@ To use ManyConsole:
   3.  For each command, create a class inheriting from ConsoleCommand
       - In the command class's constructor, set "Command" to the text for the command (and other properties
       - Overload Run()
+
+Sorry the code has no tests.  This code was pulled as-is from a closed-source personal project of mine in order to make it shareable.
