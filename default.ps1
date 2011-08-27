@@ -6,7 +6,7 @@ properties {
 
 import-module .\tools\PSUpdateXML.psm1
 
-task default -depends Build,BuildNuget
+task default -depends Build,RunTests,BuildNuget
 
 task Cleanup {
     if (test-path $buildDirectory) {
@@ -19,6 +19,10 @@ task Build -depends Cleanup {
     $dearlySolution = "$baseDirectory\dearly.sln"
 
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" ManyConsole.sln /T:"Clean,Build" /property:OutDir="$buildDirectory\" }    
+}
+
+task RunTests {
+    exec { & "$baseDirectory\packages\NUnit.2.5.10.11092\tools\nunit-console.exe" "$buildDirectory\ManyConsole.Tests.dll" -xml:"$buildDirectory\TestResults.xml" }
 }
 
 task BuildNuget -depends Build {
