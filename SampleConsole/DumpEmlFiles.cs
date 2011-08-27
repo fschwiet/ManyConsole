@@ -22,9 +22,9 @@ namespace SampleConsole
             };
         }
 
-        string Path;
-        bool Recursive;
-        private List<string> HeadersToPrint = new List<string>();
+        public string Path;
+        public bool Recursive;
+        public List<string> HeadersToPrint = new List<string>();
 
         public override void FinishLoadingArguments(string[] remainingArguments)
         {
@@ -74,18 +74,22 @@ namespace SampleConsole
 
             Console.WriteLine("SUBJECT:\t{0}", mail.Subject);
             Console.WriteLine("FROM:\t{0}", mail.From);
-            foreach(var header in HeadersToPrint)
-            {
-                if (mail.Headers.Keys.OfType<string>().Contains(header))
-                {
-                   Console.WriteLine("Header '{0}': {1}", header, mail.Headers[header]);
-                }
-            }
 
             foreach(var to in mail.To)
             {
                 Console.WriteLine("TO:\t{0}", to);
             }
+            
+            var headersPresent = mail.Headers.Keys.OfType<string>().Select(s => s.ToLower());
+
+            foreach (var header in HeadersToPrint)
+            {
+                if (headersPresent.Contains(header.ToLower()))
+                {
+                    Console.WriteLine("{0}:\t{1}", header.ToUpper(), mail.Headers[header]);
+                }
+            }
+
             Console.WriteLine("BODY:");
             Console.WriteLine(mail.Body);
         }

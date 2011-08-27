@@ -52,7 +52,8 @@ namespace ManyConsole.Internal
             string[] skippedProperties = new []{
                 "Command",
                 "RemainingArgumentsHelpText",
-                "Options"
+                "Options",
+                "TraceCommandAfterParse"
             };
 
             var deserializeRootElementName = consoleCommand.Command;
