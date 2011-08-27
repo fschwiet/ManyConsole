@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ManyConsole.Internal;
@@ -7,7 +8,7 @@ namespace ManyConsole
 {
     public class ConsoleCommandDispatcher
     {
-        public static int DispatchCommand(ConsoleCommand[] commands, string[] arguments, TextWriter consoleOut)
+        public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut)
         {
             ConsoleCommand selectedCommand = null;
 

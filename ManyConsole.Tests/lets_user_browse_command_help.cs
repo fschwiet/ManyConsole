@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NDesk.Options;
 using NJasmine;
 using NJasmine.Extras;
 
@@ -17,16 +18,16 @@ namespace ManyConsole.Tests
                 var firstcommand = new InlinedCommand("command-a", "oneline description a");
                 var secondCommand = new InlinedCommand("command-b", "oneline description b");
 
-                var commands = new[]
+                var commands = new ConsoleCommand[]
                 {
                     firstcommand,
                     secondCommand
-                };
+                }.ToList();
+
+                var writer = new StringWriter();
 
                 when("we dispatch the commands with no arguments", delegate
                 {
-                    var writer = new StringWriter();
-
                     arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[0], writer));
 
                     then("the output contains a list of available commands", delegate
@@ -38,6 +39,34 @@ namespace ManyConsole.Tests
                             firstcommand.OneLineDescription,
                             secondCommand.Command, 
                             secondCommand.OneLineDescription);
+                    });
+                });
+
+                when("we call a command, asking for help", delegate
+                {
+                    var commandC = new InlinedCommand(
+                        
+                        "command-c",
+                        "one line description for C",
+                        "<remaining> <args>",
+                        new OptionSet()
+                        {
+                            {"o|option=", "A string option", v => {}}
+                        });
+                    commands.Add(commandC);
+
+                    arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[] { commandC.Command, "/?" }, writer));
+
+                    then("the output contains a list of available commands", delegate
+                    {
+                        var output = writer.ToString();
+
+                        Expect.That(output).ContainsInOrder(
+                            commandC.Command,
+                            commandC.OneLineDescription,
+                            commandC.RemainingArgumentsHelpText,
+                            "--option",
+                            "A string option");
                     });
                 });
             });

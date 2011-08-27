@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -8,7 +9,7 @@ namespace ManyConsole.Internal
 {
     public class ConsoleHelp
     {
-        public static void ShowSummaryOfCommands(ConsoleCommand[] commands, TextWriter console)
+        public static void ShowSummaryOfCommands(IEnumerable<ConsoleCommand> commands, TextWriter console)
         {
             console.WriteLine("Available commands are:");
             console.WriteLine();
