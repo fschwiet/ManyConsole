@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "0.2.0"
+    $version = "0.3.0"
 
     $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
 }
@@ -80,7 +80,7 @@ task BuildNuget -depends Build {
             set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
             set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/ManyConsole/"
             remove-xml -exactlyOnce "//ns:iconUrl"
-            set-xml -exactlyOnce "//ns:tags" "Console"
+            set-xml -exactlyOnce "//ns:tags" "ndesk ndesk.options command-line console"
 
             set-xml -exactlyOnce "//ns:dependencies" ""
             append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"Newtonsoft.Json`" version=`"4.0`" />"
