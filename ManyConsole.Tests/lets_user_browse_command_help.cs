@@ -51,13 +51,13 @@ namespace ManyConsole.Tests
                         "<remaining> <args>",
                         new OptionSet()
                         {
-                            {"o|option=", "A string option", v => {}}
+                            {"o|option=", "option description", v => {}}
                         });
                     commands.Add(commandC);
 
                     arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[] { commandC.Command, "/?" }, writer));
 
-                    then("the output contains a list of available commands", delegate
+                    then("the output contains a all help available for that command", delegate
                     {
                         var output = writer.ToString();
 
@@ -65,8 +65,9 @@ namespace ManyConsole.Tests
                             commandC.Command,
                             commandC.OneLineDescription,
                             commandC.RemainingArgumentsHelpText,
+                            "-o",
                             "--option",
-                            "A string option");
+                            "option description");
                     });
                 });
             });
