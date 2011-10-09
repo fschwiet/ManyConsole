@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "0.3.1"
+    $version = "0.3.2"
 
     $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
 }
@@ -69,21 +69,20 @@ task BuildNuget -depends Build {
 
     update-xml "ManyConsole.nuspec" {
 
-        add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
+        for-xml "//package/metadata" {
+            set-xml -exactlyOnce "//version" "$version.0"
+            set-xml -exactlyOnce "//owners" "fschwiet"
+            set-xml -exactlyOnce "//authors" "Frank Schwieterman"
+            set-xml -exactlyOnce "//description" $shortDescription
 
-        for-xml "//ns:package/ns:metadata" {
-            set-xml -exactlyOnce "//ns:version" "$version.0"
-            set-xml -exactlyOnce "//ns:owners" "fschwiet"
-            set-xml -exactlyOnce "//ns:authors" "Frank Schwieterman"
-            set-xml -exactlyOnce "//ns:description" $shortDescription
+            set-xml -exactlyOnce "//licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
+            set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/ManyConsole/"
+            remove-xml -exactlyOnce "//iconUrl"
+            set-xml -exactlyOnce "//tags" "ndesk ndesk.options command-line console"
+            set-xml -exactlyOnce "//releaseNotes" "Removed dependency on Json.NET.";
 
-            set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
-            set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/ManyConsole/"
-            remove-xml -exactlyOnce "//ns:iconUrl"
-            set-xml -exactlyOnce "//ns:tags" "ndesk ndesk.options command-line console"
-
-            set-xml -exactlyOnce "//ns:dependencies" ""
-            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NDesk.Options`" version=`"0.2`" />"
+            set-xml -exactlyOnce "//dependencies" ""
+            append-xml -exactlyOnce "//dependencies" "<dependency id=`"NDesk.Options`" version=`"0.2`" />"
 
             append-xml "." "<summary>Easily mix commands for a console application.</summary>"
         }
