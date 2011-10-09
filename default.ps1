@@ -83,7 +83,6 @@ task BuildNuget -depends Build {
             set-xml -exactlyOnce "//ns:tags" "ndesk ndesk.options command-line console"
 
             set-xml -exactlyOnce "//ns:dependencies" ""
-            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"Newtonsoft.Json`" version=`"4.0`" />"
             append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NDesk.Options`" version=`"0.2`" />"
 
             append-xml "." "<summary>Easily mix commands for a console application.</summary>"

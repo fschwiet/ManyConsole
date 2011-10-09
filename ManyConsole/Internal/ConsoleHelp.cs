@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 namespace ManyConsole.Internal
 {
@@ -58,23 +58,25 @@ namespace ManyConsole.Internal
 
             var deserializeRootElementName = consoleCommand.Command;
 
-            var jsonObject = JsonConvert.DeserializeXNode(JsonConvert.SerializeObject(consoleCommand), deserializeRootElementName);
+            var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => !skippedProperties.Contains(p.Name));
 
-            var nodeNames = jsonObject.Element(deserializeRootElementName).Nodes()
-                .OfType<XElement>().Select(n => n.Name.LocalName).ToArray();
+            var fields = consoleCommand.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => !skippedProperties.Contains(p.Name));
 
-            var nodesToKeep = jsonObject.Element(deserializeRootElementName).Nodes()
-                .OfType<XElement>()
-                .Where(n => !skippedProperties.Contains(n.Name.LocalName)).ToArray();
+            Dictionary<string,string> allValuesToTrace = new Dictionary<string, string>();
 
-            var newObject = new XElement(deserializeRootElementName);
+            foreach (var property in properties)
+                allValuesToTrace[property.Name] = property.GetValue(consoleCommand, new object[0]).ToString();
 
-            foreach(var node in nodesToKeep)
-            {
-                newObject.Add(node);
-            }
+            foreach (var field in fields)
+                allValuesToTrace[field.Name] = field.GetValue(consoleCommand).ToString();
 
-            tw.WriteLine(JsonConvert.SerializeXNode(newObject, Formatting.Indented));
+            Console.WriteLine("Executing " + consoleCommand.Command + ":");
+            foreach(var value in allValuesToTrace.OrderBy(k => k.Key))
+                Console.WriteLine("    " + value.Key + " : " + value.Value);
+
+            Console.WriteLine();
         }
     }
 }

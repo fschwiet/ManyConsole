@@ -3,7 +3,6 @@ using System.IO;
 using System.Xml.Linq;
 using ManyConsole.Internal;
 using NDesk.Options;
-using Newtonsoft.Json;
 
 namespace ManyConsole
 {
