@@ -28,6 +28,8 @@ namespace ManyConsole
                             possibleCommand.GetType().Name));
                     }
 
+                    possibleCommand.ResetFields();
+
                     if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
                     {
                         selectedCommand = possibleCommand;

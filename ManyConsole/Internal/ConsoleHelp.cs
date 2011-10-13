@@ -49,21 +49,13 @@ namespace ManyConsole.Internal
                 return;
             }
 
-            string[] skippedProperties = new []{
-                "Command",
-                "RemainingArgumentsHelpText",
-                "OneLineDescription",
-                "Options",
-                "TraceCommandAfterParse"
-            };
-
             var deserializeRootElementName = consoleCommand.Command;
 
             var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !skippedProperties.Contains(p.Name));
+                .Where(p => !consoleCommand._skippedProperties.Contains(p.Name));
 
             var fields = consoleCommand.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !skippedProperties.Contains(p.Name));
+                .Where(p => !consoleCommand._skippedProperties.Contains(p.Name));
 
             Dictionary<string,string> allValuesToTrace = new Dictionary<string, string>();
 

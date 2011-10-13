@@ -39,6 +39,7 @@ namespace MC.AX.DataUtility
             Command = "Example";
             OneLineDescription = "Example implementation of a ManyConsole command-line argument parser Command";
             RemainingArgumentsHelpText = "<Argument1> <Argument2>";
+            AutoReset = true;
 
             // assign delegates to assign values from the optional command line args
             Options = new OptionSet()
@@ -78,7 +79,7 @@ namespace MC.AX.DataUtility
         {
             Console.WriteLine(@"Called Example command - Argument1 = ""{0}"" Argument2 = ""{1}"" BooleanOption: {2}", Argument1, Argument2, BooleanOption);
 
-            OptionalArgumentList.ForEach((item) => Console.WriteLine(@"List Item {0} = ""{1}""", OptionalArgumentList.IndexOf(item), item));
+            if (OptionalArgumentList != null) OptionalArgumentList.ForEach((item) => Console.WriteLine(@"List Item {0} = ""{1}""", OptionalArgumentList.IndexOf(item), item));
 
             return 0;
         }

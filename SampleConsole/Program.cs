@@ -1,5 +1,6 @@
 ﻿using System;
 using ManyConsole;
+using ManyConsole.Extensions;
 
 namespace SampleConsole
 {
