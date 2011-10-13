@@ -42,7 +42,7 @@ namespace ManyConsole.Internal
             console.WriteLine();
         }
 
-        public static void ShowParsedCommand(ConsoleCommand consoleCommand, TextWriter tw)
+        public static void ShowParsedCommand(ConsoleCommand consoleCommand, TextWriter consoleOut)
         {
             if (!consoleCommand.TraceCommandAfterParse)
             {
@@ -52,6 +52,7 @@ namespace ManyConsole.Internal
             string[] skippedProperties = new []{
                 "Command",
                 "RemainingArgumentsHelpText",
+                "OneLineDescription",
                 "Options",
                 "TraceCommandAfterParse"
             };
@@ -70,13 +71,21 @@ namespace ManyConsole.Internal
                 allValuesToTrace[property.Name] = property.GetValue(consoleCommand, new object[0]).ToString();
 
             foreach (var field in fields)
-                allValuesToTrace[field.Name] = field.GetValue(consoleCommand).ToString();
+            {
+                object value = field.GetValue(consoleCommand);
+                if (value != null)
+                    allValuesToTrace[field.Name] = value.ToString();
+                else
+                    allValuesToTrace[field.Name] = "null";
+            }
 
-            Console.WriteLine("Executing " + consoleCommand.Command + ":");
+            consoleOut.WriteLine();
+            consoleOut.WriteLine("Executing {0} ({1}):", consoleCommand.Command, consoleCommand.OneLineDescription ?? "");
+            
             foreach(var value in allValuesToTrace.OrderBy(k => k.Key))
-                Console.WriteLine("    " + value.Key + " : " + value.Value);
+                consoleOut.WriteLine("    " + value.Key + " : " + value.Value);
 
-            Console.WriteLine();
+            consoleOut.WriteLine();
         }
     }
 }
