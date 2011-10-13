@@ -45,15 +45,17 @@ namespace MC.AX.DataUtility
             {
                 {"b|booleanOption", "Boolean flag option", b => BooleanOption = b != null},
                 {"l|list=", "Values to add to list", v => OptionalArgumentList.Add(v)},
-                {"o|optionalArgument=", "Optional string argument", s => OptionalArgument1 = s}
+                {"o|optionalArgument=", "Optional string argument", s => OptionalArgument1 = s},
+                {"i|integer=", "Optional integer argument", i => ParseNullableInt(i)}
             };
         }
 
         public string Argument1;
         public string Argument2;
-        public string OptionalArgument1;
         public bool BooleanOption;
         public List<string> OptionalArgumentList = new List<string>();
+        public string OptionalArgument1;
+        public int? OptionalInt;
 
         public override void FinishLoadingArguments(string[] remainingArguments)
         {
@@ -62,6 +64,14 @@ namespace MC.AX.DataUtility
             // assign values from the command line args
             Argument1 = remainingArguments[0];
             Argument2 = remainingArguments[1];
+        }
+
+        private void ParseNullableInt(string sInt)
+        {
+            // reset the field to prevent the class instance from remembering the last valid value from a previous call
+            OptionalInt = null;
+            int intOut;
+            if (int.TryParse(sInt, out intOut)) OptionalInt = intOut;
         }
 
         public override int Run()
