@@ -45,7 +45,7 @@ namespace ManyConsole
             catch (Exception e)
             {
                 console.WriteLine();
-                ConsoleHelpAsException.WriterErrorMessage(e, Console.Out);
+                ConsoleHelpAsException.WriterErrorMessage(e, console);
                 console.WriteLine();
 
                 if (selectedCommand != null)
