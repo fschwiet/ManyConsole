@@ -80,6 +80,7 @@ namespace ManyConsole
 
             var commandTypes = assembly.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(ConsoleCommand)))
+                .Where(t => !t.IsAbstract)
                 .OrderBy(t => t.FullName);
 
             List<ConsoleCommand> result = new List<ConsoleCommand>();

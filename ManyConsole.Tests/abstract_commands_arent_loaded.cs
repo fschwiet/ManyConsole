@@ -12,7 +12,12 @@ namespace ManyConsole.Tests
         {
         }
 
-        public class NonabstractCommand : AbstractCommand
+        public abstract class AnotherAbstractCommand : AbstractCommand
+        {
+            public AnotherAbstractCommand() {}
+        }
+
+        public class NonabstractCommand : AnotherAbstractCommand
         {
             public NonabstractCommand()
             {
@@ -33,6 +38,7 @@ namespace ManyConsole.Tests
 
                 expect(() => commands.Any(c => c.GetType() == typeof(NonabstractCommand)));
                 expect(() => !commands.Any(c => c.GetType() == typeof(AbstractCommand)));
+                expect(() => !commands.Any(c => c.GetType() == typeof(AnotherAbstractCommand)));
             });
         }
     }
