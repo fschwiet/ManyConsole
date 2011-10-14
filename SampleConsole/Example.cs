@@ -39,6 +39,7 @@ namespace MC.AX.DataUtility
             Command = "Example";
             OneLineDescription = "Example implementation of a ManyConsole command-line argument parser Command";
             RemainingArgumentsHelpText = "<Argument1> <Argument2>";
+            ExpectedArgumentsCount = 2;
             AutoReset = true;
 
             // assign delegates to assign values from the optional command line args
@@ -60,8 +61,6 @@ namespace MC.AX.DataUtility
 
         public override void FinishLoadingArguments(string[] remainingArguments)
         {
-            // validate the number of expected arguments
-            VerifyNumberOfArguments(remainingArguments, 2);
             // assign values from the command line args
             Argument1 = remainingArguments[0];
             Argument2 = remainingArguments[1];
@@ -69,10 +68,15 @@ namespace MC.AX.DataUtility
 
         private void ParseNullableInt(string sInt)
         {
-            // reset the field to prevent the class instance from remembering the last valid value from a previous call
-            OptionalInt = null;
             int intOut;
-            if (int.TryParse(sInt, out intOut)) OptionalInt = intOut;
+            if (int.TryParse(sInt, out intOut))
+            {
+                OptionalInt = intOut;
+            }
+            else
+            {
+                throw new ConsoleHelpAsException(string.Format(@"Invalid value entered for OptionalInt, must be a valid integer. Value entered was ""{0}"".", sInt));
+            }
         }
 
         public override int Run()

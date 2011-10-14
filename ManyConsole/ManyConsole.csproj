@@ -47,7 +47,6 @@
     <Compile Include="ConsoleHelpAsException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Internal\ConsoleHelp.cs" />
-    <Compile Include="Internal\ConsoleUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
   </ItemGroup>

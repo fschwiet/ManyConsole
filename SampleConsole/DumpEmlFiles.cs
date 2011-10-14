@@ -15,6 +15,7 @@ namespace SampleConsole
             Command = "dump-eml";
             OneLineDescription = "Prints the contents of eml file(s).";
             RemainingArgumentsHelpText = "<fileOrDirectory>";
+            ExpectedArgumentsCount = 1;
             Options = new OptionSet()
             {
                 {"r|recursive", "Print files recursively", v => Recursive = v != null},
@@ -28,8 +29,6 @@ namespace SampleConsole
 
         public override void FinishLoadingArguments(string[] remainingArguments)
         {
-            VerifyNumberOfArguments(remainingArguments, 1);
-
             Path = remainingArguments[0];
         }
 

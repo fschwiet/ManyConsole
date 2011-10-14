@@ -19,7 +19,7 @@ namespace ManyConsole
                 if (arguments.Count() < 1)
                     throw new ConsoleHelpAsException("No arguments specified.");
 
-                foreach(var possibleCommand in commands)
+                foreach (var possibleCommand in commands)
                 {
                     if (string.IsNullOrEmpty(possibleCommand.Command))
                     {
@@ -35,8 +35,12 @@ namespace ManyConsole
                         selectedCommand = possibleCommand;
 
                         var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                        string[] remainingArgumentsArray = remainingArguments.ToArray();
 
-                        selectedCommand.FinishLoadingArguments(remainingArguments.ToArray());
+                        // validate arguments
+                        selectedCommand.VerifyNumberOfArguments(remainingArgumentsArray);
+                        // allow the deriving class to assign the args to fields / properties
+                        selectedCommand.FinishLoadingArguments(remainingArgumentsArray);
                         break;
                     }
                 }
