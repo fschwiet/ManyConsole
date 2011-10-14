@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DumpEmlFiles.cs" />
+    <Compile Include="Example.cs" />
     <Compile Include="GetTime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
