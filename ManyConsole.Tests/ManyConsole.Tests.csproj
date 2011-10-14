@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="InlinedCommand.cs" />
     <Compile Include="lets_user_browse_command_help.cs" />
+    <Compile Include="abstract_commands_arent_loaded.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

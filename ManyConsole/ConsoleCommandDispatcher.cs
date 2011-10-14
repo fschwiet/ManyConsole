@@ -74,18 +74,27 @@ namespace ManyConsole
             }
         }
 
-        public static ConsoleCommand[] FindCommandsInSameAssemblyAs(Type typeInSameAssembly)
+        public static IEnumerable<ConsoleCommand> FindCommandsInSameAssemblyAs(Type typeInSameAssembly)
         {
             var assembly = typeInSameAssembly.Assembly;
 
-            var commandTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ConsoleCommand)));
+            var commandTypes = assembly.GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(ConsoleCommand)))
+                .OrderBy(t => t.FullName);
 
-            return commandTypes
-                .OrderBy(t => t.FullName)
-                .Select(t => t.GetConstructor(new Type[] { })
-                                 .Invoke(new object[] { }))
-                .Cast<ConsoleCommand>()
-                .ToArray();
+            List<ConsoleCommand> result = new List<ConsoleCommand>();
+
+            foreach(var commandType in commandTypes)
+            {
+                var constructor = commandType.GetConstructor(new Type[] { });
+
+                if (constructor == null)
+                    continue;
+
+                result.Add((ConsoleCommand)constructor.Invoke(new object[] { }));
+            }
+
+            return result;
         }
     }
 }
