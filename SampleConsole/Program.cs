@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ManyConsole;
 
 namespace SampleConsole
@@ -7,14 +8,17 @@ namespace SampleConsole
     {
         static void Main(string[] args)
         {
-            // locate any commands in the assembly
+            // locate any commands in the assembly (or use an IoC container, or whatever source)
             var commands = ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program));
 
-            // immediately deal with the initial execution (i.e. command args)
+            // run the command for the console input
             ConsoleCommandDispatcher.DispatchCommand(commands, args, Console.Out);
 
-            // the remainder of this code shows how to continue to deal with input from the command prompt 
-            // in the same way as we do for command-line args
+            //
+            // optionally, run commands for each line of console input as well
+            // Note that the commands are reloaded to prevent different runs from interfering
+            // with each other.
+            //
             string continuePrompt = "Enter a command or 'x' to exit or '?' for help";
             
             Console.WriteLine(continuePrompt);
@@ -26,16 +30,21 @@ namespace SampleConsole
                 if (input.Trim().Equals("?"))
                 {
                     Console.Clear();
-                    ConsoleCommandDispatcher.DispatchCommand(commands, new string[] { }, Console.Out);
+                    ConsoleCommandDispatcher.DispatchCommand(GetCommands(), new string[] { }, Console.Out);
                 }
                 else
                 {
                     args = input.ToCommandLineArgs();
-                    ConsoleCommandDispatcher.DispatchCommand(commands, args, Console.Out);
+                    ConsoleCommandDispatcher.DispatchCommand(GetCommands(), args, Console.Out);
                 }
                 Console.WriteLine(continuePrompt);
                 input = Console.ReadLine();
             }
+        }
+
+        static IEnumerable<ConsoleCommand> GetCommands()
+        {
+            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program));
         }
     }
 }

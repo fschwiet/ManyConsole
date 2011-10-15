@@ -19,15 +19,10 @@ namespace ManyConsole.Tests
 
                 arrange(delegate
                 {
-                    var commands = new[]
-                    {
-                        new CoordinateCommand(trace)    
-                    };
-
-                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-x", "3" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-y", "4" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "3" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-y", "4" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move" }, new StringWriter());
                 });
 
                 then("all parameters are evaluated independently", delegate
@@ -40,6 +35,17 @@ namespace ManyConsole.Tests
                         );
                 });
             });
+        }
+
+        public class SomeProgram
+        {
+            public static CoordinateCommand[] GetCommands(StringWriter trace)
+            {
+                return new[]
+            {
+                new CoordinateCommand(trace)    
+            };
+            }
         }
 
         public class CoordinateCommand : ConsoleCommand
