@@ -19,15 +19,15 @@ namespace ManyConsole.Tests
 
                 arrange(delegate
                 {
-                    Func<IEnumerable<ConsoleCommand>> commandSource = () => new[]
+                    var commands = new[]
                     {
                         new CoordinateCommand(trace)    
                     };
 
-                    ConsoleCommandDispatcher.DispatchCommand(commandSource, new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commandSource, new[] { "move", "-x", "3" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commandSource, new[] { "move", "-y", "4" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(commandSource, new[] { "move" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-x", "3" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move", "-y", "4" }, new StringWriter());
+                    ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "move" }, new StringWriter());
                 });
 
                 then("all parameters are evaluated independently", delegate
