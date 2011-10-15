@@ -61,6 +61,7 @@
     <Compile Include="InlinedCommand.cs" />
     <Compile Include="lets_user_browse_command_help.cs" />
     <Compile Include="abstract_commands_arent_loaded.cs" />
+    <Compile Include="Multiple_dispatch_calls_dont_interfere_with_each_other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="show_useful_command_summary.cs" />
   </ItemGroup>
