@@ -10,9 +10,16 @@ namespace ManyConsole
     {
         public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut)
         {
+            return DispatchCommand(() => commands, arguments, consoleOut);
+        }
+
+        public static int DispatchCommand(Func<IEnumerable<ConsoleCommand>> commandsSource, string[] arguments, TextWriter consoleOut)
+        {
             ConsoleCommand selectedCommand = null;
 
             TextWriter console = consoleOut;
+
+            var commands = commandsSource();
 
             try
             {
