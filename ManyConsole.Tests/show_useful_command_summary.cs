@@ -15,11 +15,12 @@ namespace ManyConsole.Tests
             {
                 Command = "thecommand";
                 OneLineDescription = "One-line description";
+                PropertyB = "def";
             }
 
             public string FieldA = "abc";
-            public string PropertyB = "def";
-            public int? PropertyC = null;
+            public string PropertyB { get; set; }
+            public int? PropertyC { get; set; }
 
             public override int Run()
             {

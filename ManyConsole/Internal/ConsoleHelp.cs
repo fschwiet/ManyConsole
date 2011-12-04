@@ -68,7 +68,10 @@ namespace ManyConsole.Internal
             Dictionary<string,string> allValuesToTrace = new Dictionary<string, string>();
 
             foreach (var property in properties)
-                allValuesToTrace[property.Name] = property.GetValue(consoleCommand, new object[0]).ToString();
+            {
+                object value = property.GetValue(consoleCommand, new object[0]);
+                allValuesToTrace[property.Name] = value != null ? value.ToString() : "null";
+            }
 
             foreach (var field in fields)
             {
