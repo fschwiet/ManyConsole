@@ -83,7 +83,15 @@ namespace ManyConsole.Internal
             }
 
             consoleOut.WriteLine();
-            consoleOut.WriteLine("Executing {0} ({1}):", consoleCommand.Command, consoleCommand.OneLineDescription ?? "");
+
+            string introLine = String.Format("Executing {0}", consoleCommand.Command);
+
+            if (string.IsNullOrEmpty(consoleCommand.OneLineDescription))
+                introLine = introLine + ":";
+            else
+                introLine = introLine + " (" + consoleCommand.OneLineDescription + "):";
+
+            consoleOut.WriteLine(introLine);
             
             foreach(var value in allValuesToTrace.OrderBy(k => k.Key))
                 consoleOut.WriteLine("    " + value.Key + " : " + value.Value);

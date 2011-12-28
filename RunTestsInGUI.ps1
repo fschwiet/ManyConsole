@@ -1,0 +1,1 @@
+.\packages\NUnit.2.5.10.11092\tools\nunit.exe .\ManyConsole.Tests\bin\Debug\ManyConsole.Tests.dll
