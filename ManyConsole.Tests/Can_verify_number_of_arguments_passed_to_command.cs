@@ -51,7 +51,7 @@ namespace ManyConsole.Tests
             public CommandWith5Parameters()
             {
                 Command = "command";
-                this.ArgumentsRequiredAfterOptions = 5;
+                HasAdditionalArguments(5);
             }
 
             public override int Run(string[] remainingArguments)

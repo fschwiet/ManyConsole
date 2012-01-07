@@ -32,7 +32,7 @@ namespace ManyConsole.Internal
             if (haveOptions)
                 console.Write("<options> ");
 
-            console.WriteLine(selectedCommand.SampleTextForArgumentsRequiredAfterOptions);
+            console.WriteLine(selectedCommand.RemainingArgumentsHelpText);
 
             if (haveOptions)
             {
@@ -54,8 +54,8 @@ namespace ManyConsole.Internal
                 "OneLineDescription",
                 "Options",
                 "TraceCommandAfterParse",
-                "ArgumentsRequiredAfterOptions",
-                "SampleTextForArgumentsRequiredAfterOptions"
+                "RemainingArgumentsCount",
+                "RemainingArgumentsHelpText"
             };
 
             var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
