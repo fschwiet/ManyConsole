@@ -13,7 +13,7 @@ To use ManyConsole:
   - You can use ConsoleCommandDispatcher to find commands in an assembly, or not.
 - To add a command to your console application, inherit from ConsoleCommand.
   - See the sample comands at https://github.com/fschwiet/ManyConsole/tree/master/SampleConsole
-
-Each command exposes an OptionSet, the docs on how to define an OptionSet are here: http://www.ndesk.org/Options
+  - Commands can be forced to show the user the help text by throwing an exception of type: ConsoleHelpAsException
+  - There are a handful of methods you can call from the derived class's constructor to add metadata to the command.  Use autocompete to find them.
 
 This code was pulled as-is from a closed-source personal project of mine in order to make it shareable.
