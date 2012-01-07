@@ -41,7 +41,7 @@ namespace ManyConsole
 
                 var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
 
-                CheckArguments(remainingArguments, selectedCommand.ParametersRequiredAfterOptions);
+                CheckArguments(remainingArguments, selectedCommand.ArgumentsRequiredAfterOptions);
 
                 ConsoleHelp.ShowParsedCommand(selectedCommand, console);
 

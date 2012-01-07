@@ -32,7 +32,7 @@ namespace ManyConsole.Internal
             if (haveOptions)
                 console.Write("<options> ");
 
-            console.WriteLine(selectedCommand.RemainingArgumentsHelpText);
+            console.WriteLine(selectedCommand.SampleTextForArgumentsRequiredAfterOptions);
 
             if (haveOptions)
             {
@@ -52,13 +52,11 @@ namespace ManyConsole.Internal
             string[] skippedProperties = new []{
                 "Command",
                 "OneLineDescription",
-                "RemainingArgumentsHelpText",
                 "Options",
                 "TraceCommandAfterParse",
-                "ParametersRequiredAfterOptions"
+                "ArgumentsRequiredAfterOptions",
+                "SampleTextForArgumentsRequiredAfterOptions"
             };
-
-            var deserializeRootElementName = consoleCommand.Command;
 
             var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => !skippedProperties.Contains(p.Name));

@@ -38,7 +38,7 @@ namespace MC.AX.DataUtility
         {
             Command = "Example";
             OneLineDescription = "Example implementation of a ManyConsole command-line argument parser Command";
-            RemainingArgumentsHelpText = "<Argument1> <Argument2>";
+            SampleTextForArgumentsRequiredAfterOptions = "<Argument1> <Argument2>";
 
             // assign delegates to assign values from the optional command line args
             Options = new OptionSet()
@@ -48,7 +48,7 @@ namespace MC.AX.DataUtility
                 {"o|optionalArgument=", "Optional string argument", s => OptionalArgument1 = s}
             };
 
-            ParametersRequiredAfterOptions = 2;
+            ArgumentsRequiredAfterOptions = 2;
         }
 
         public string Argument1;

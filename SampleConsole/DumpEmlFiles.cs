@@ -14,13 +14,13 @@ namespace SampleConsole
         {
             Command = "dump-eml";
             OneLineDescription = "Prints the contents of eml file(s).";
-            RemainingArgumentsHelpText = "<fileOrDirectory>";
+            SampleTextForArgumentsRequiredAfterOptions = "<fileOrDirectory>";
             Options = new OptionSet()
             {
                 {"r|recursive", "Print files recursively", v => Recursive = v != null},
                 {"h|header=", "Mail header to include", v => HeadersToPrint.Add(v)}
             };
-            ParametersRequiredAfterOptions = 1;
+            ArgumentsRequiredAfterOptions = 1;
         }
 
         public string Path;

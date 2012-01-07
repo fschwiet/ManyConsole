@@ -63,7 +63,7 @@ namespace ManyConsole.Tests
                         Expect.That(output).ContainsInOrder(
                             commandC.Command,
                             commandC.OneLineDescription,
-                            commandC.RemainingArgumentsHelpText,
+                            commandC.SampleTextForArgumentsRequiredAfterOptions,
                             "-o",
                             "--option",
                             "option description");

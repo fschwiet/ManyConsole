@@ -12,7 +12,7 @@ namespace ManyConsole.Tests
         {
             Command = commandText;
             OneLineDescription = oneLineDescription;
-            RemainingArgumentsHelpText = remaingArgumentsHelpText;
+            SampleTextForArgumentsRequiredAfterOptions = remaingArgumentsHelpText;
             Options = options ?? new OptionSet();
             TraceCommandAfterParse = true;
             RunAction = runAction ?? delegate { return 0; };
