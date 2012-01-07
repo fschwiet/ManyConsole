@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "0.4.0"
+    $version = "0.4.0.1"
 
     $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
 }
@@ -30,12 +30,12 @@ task GenerateAssemblyInfo {
 				
 		Generate-Assembly-Info `
 			-file $asmInfo `
-			-title "$projectName $version.0" `
+			-title "$projectName $version" `
 			-description $shortDescription `
 			-company "n/a" `
-			-product "ManyConsole $version.0" `
-			-version "$version.0" `
-			-fileversion "$version.0" `
+			-product "ManyConsole $version" `
+			-version "$version" `
+			-fileversion "$version" `
 			-copyright "Copyright © Frank Schwieterman 2011" `
 			-clsCompliant "false"
 	}
@@ -70,7 +70,7 @@ task BuildNuget -depends Build {
     update-xml "ManyConsole.nuspec" {
 
         for-xml "//package/metadata" {
-            set-xml -exactlyOnce "//version" "$version.0"
+            set-xml -exactlyOnce "//version" "$version"
             set-xml -exactlyOnce "//owners" "fschwiet"
             set-xml -exactlyOnce "//authors" "Frank Schwieterman"
             set-xml -exactlyOnce "//description" $shortDescription
@@ -79,7 +79,7 @@ task BuildNuget -depends Build {
             set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/ManyConsole/"
             remove-xml -exactlyOnce "//iconUrl"
             set-xml -exactlyOnce "//tags" "ndesk ndesk.options command-line console"
-            set-xml -exactlyOnce "//releaseNotes" "Removed dependency on Json.NET.";
+            set-xml -exactlyOnce "//releaseNotes" "Breaking changes for 4.0!  Now using a fluent interface to define command metadata.";
 
             set-xml -exactlyOnce "//dependencies" ""
             append-xml -exactlyOnce "//dependencies" "<dependency id=`"NDesk.Options`" version=`"0.2`" />"
