@@ -51,14 +51,10 @@ namespace ManyConsole.Tests
             public CommandWith5Parameters()
             {
                 Command = "command";
+                this.ParametersRequiredAfterOptions = 5;
             }
 
-            public override void FinishLoadingArguments(string[] remainingArguments)
-            {
-                VerifyNumberOfArguments(remainingArguments, 5);
-            }
-
-            public override int Run()
+            public override int Run(string[] remainingArguments)
             {
                 return 0;
             }

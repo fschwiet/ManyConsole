@@ -24,7 +24,7 @@ namespace ManyConsole.Tests
                 Command = "NonabstractCommand";
             }
 
-            public override int Run()
+            public override int Run(string[] remainingArguments)
             {
                 return 0;
             }

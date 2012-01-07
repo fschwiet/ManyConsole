@@ -22,7 +22,7 @@ namespace ManyConsole.Tests
             public string PropertyB { get; set; }
             public int? PropertyC { get; set; }
 
-            public override int Run()
+            public override int Run(string[] remainingArguments)
             {
                 return 0;
             }

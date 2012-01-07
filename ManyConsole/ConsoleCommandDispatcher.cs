@@ -32,15 +32,20 @@ namespace ManyConsole
                     {
                         selectedCommand = possibleCommand;
 
-                        var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
-
-                        selectedCommand.FinishLoadingArguments(remainingArguments.ToArray());
                         break;
                     }
                 }
 
                 if (selectedCommand == null)
                     throw new ConsoleHelpAsException("Command name not recognized.");
+
+                var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+
+                CheckArguments(remainingArguments, selectedCommand.ParametersRequiredAfterOptions);
+
+                ConsoleHelp.ShowParsedCommand(selectedCommand, console);
+
+                return selectedCommand.Run(remainingArguments.ToArray());
             }
             catch (Exception e)
             {
@@ -50,7 +55,8 @@ namespace ManyConsole
 
                 if (selectedCommand != null)
                 {
-                    ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+                    if (e is ConsoleHelpAsException)
+                        ConsoleHelp.ShowCommandHelp(selectedCommand, console);
                 }
                 else
                 {
@@ -59,19 +65,13 @@ namespace ManyConsole
 
                 return -1;
             }
+        }
 
-            try
-            {
-                ConsoleHelp.ShowParsedCommand(selectedCommand, console);
-
-                return selectedCommand.Run();
-            }
-            catch (Exception e)
-            {
-                console.WriteLine();
-                console.WriteLine("Caught unhandled exception: " + e.ToString());
-                return -1;
-            }
+        private static void CheckArguments(List<string> remainingArguments, int? parametersRequiredAfterOptions)
+        {
+            if (parametersRequiredAfterOptions.HasValue)
+                ConsoleUtil.VerifyNumberOfArguments(remainingArguments.ToArray(),
+                    parametersRequiredAfterOptions.Value);
         }
 
         public static IEnumerable<ConsoleCommand> FindCommandsInSameAssemblyAs(Type typeInSameAssembly)

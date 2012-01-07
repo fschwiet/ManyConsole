@@ -20,21 +20,17 @@ namespace SampleConsole
                 {"r|recursive", "Print files recursively", v => Recursive = v != null},
                 {"h|header=", "Mail header to include", v => HeadersToPrint.Add(v)}
             };
+            ParametersRequiredAfterOptions = 1;
         }
 
         public string Path;
         public bool Recursive;
         public List<string> HeadersToPrint = new List<string>();
 
-        public override void FinishLoadingArguments(string[] remainingArguments)
+        public override int Run(string[] remainingArguments)
         {
-            VerifyNumberOfArguments(remainingArguments, 1);
-
             Path = remainingArguments[0];
-        }
 
-        public override int Run()
-        {
             if (File.Exists(Path))
             {
                 PrintEmlFile(Path);

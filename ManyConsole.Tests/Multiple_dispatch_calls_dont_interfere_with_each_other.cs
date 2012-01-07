@@ -67,7 +67,7 @@ namespace ManyConsole.Tests
             public int X;
             public int Y;
 
-            public override int Run()
+            public override int Run(string[] remainingArguments)
             {
                 _recorder.WriteLine("You walk to {0}, {1} and find a maze of twisty little passages, all alike.", X, Y);
                 return 0;

@@ -21,7 +21,7 @@ namespace ManyConsole
             };
         }
 
-        public override int Run()
+        public override int Run(string[] remainingArguments)
         {
             string[] args;
             string continuePrompt = "\nEnter a command or 'x' to exit or '?' for help";

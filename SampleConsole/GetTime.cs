@@ -17,7 +17,7 @@ namespace SampleConsole
             OneLineDescription = "Returns the current system time.";
         }
 
-        public override int Run()
+        public override int Run(string[] remainingArguments)
         {
             Console.WriteLine(DateTime.UtcNow);
 

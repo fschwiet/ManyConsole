@@ -60,7 +60,6 @@ namespace ManyConsole.Tests
                     then("the output contains a all help available for that command", delegate
                     {
                         var output = writer.ToString();
-
                         Expect.That(output).ContainsInOrder(
                             commandC.Command,
                             commandC.OneLineDescription,

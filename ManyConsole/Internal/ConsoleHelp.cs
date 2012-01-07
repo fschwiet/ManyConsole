@@ -51,10 +51,11 @@ namespace ManyConsole.Internal
 
             string[] skippedProperties = new []{
                 "Command",
-                "RemainingArgumentsHelpText",
                 "OneLineDescription",
+                "RemainingArgumentsHelpText",
                 "Options",
-                "TraceCommandAfterParse"
+                "TraceCommandAfterParse",
+                "ParametersRequiredAfterOptions"
             };
 
             var deserializeRootElementName = consoleCommand.Command;

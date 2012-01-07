@@ -47,6 +47,8 @@ namespace MC.AX.DataUtility
                 {"l|list=", "Values to add to list", v => OptionalArgumentList.Add(v)},
                 {"o|optionalArgument=", "Optional string argument", s => OptionalArgument1 = s}
             };
+
+            ParametersRequiredAfterOptions = 2;
         }
 
         public string Argument1;
@@ -55,17 +57,11 @@ namespace MC.AX.DataUtility
         public bool BooleanOption;
         public List<string> OptionalArgumentList = new List<string>();
 
-        public override void FinishLoadingArguments(string[] remainingArguments)
+        public override int Run(string[] remainingArguments)
         {
-            // validate the number of expected arguments
-            VerifyNumberOfArguments(remainingArguments, 2);
-            // assign values from the command line args
             Argument1 = remainingArguments[0];
             Argument2 = remainingArguments[1];
-        }
 
-        public override int Run()
-        {
             Console.WriteLine(@"Called Example command - Argument1 = ""{0}"" Argument2 = ""{1}"" BooleanOption: {2}", Argument1, Argument2, BooleanOption);
 
             OptionalArgumentList.ForEach((item) => Console.WriteLine(@"List Item {0} = ""{1}""", OptionalArgumentList.IndexOf(item), item));

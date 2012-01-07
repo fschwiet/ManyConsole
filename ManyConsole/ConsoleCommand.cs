@@ -13,6 +13,7 @@ namespace ManyConsole
             OneLineDescription = "";
             RemainingArgumentsHelpText = "";
             Options = new OptionSet();
+            ParametersRequiredAfterOptions = 0;
             TraceCommandAfterParse = true;
         }
 
@@ -21,18 +22,10 @@ namespace ManyConsole
         public string RemainingArgumentsHelpText { get; protected set; }
         
         public OptionSet Options { get; protected set; }
-        
+
+        public int? ParametersRequiredAfterOptions { get; protected set; }
         public bool TraceCommandAfterParse { get; protected set; }
 
-        /// <summary>
-        /// Load the remaining arguments then validate all.
-        /// </summary>
-        /// <param name="remainingArguments">Arguments passed to the console after the parameters handled by the Options.</param>
-        public virtual void FinishLoadingArguments(string[] remainingArguments)
-        {
-            VerifyNumberOfArguments(remainingArguments, 0);
-        }
-
-        public abstract int Run();
+        public abstract int Run(string[] remainingArguments);
     }
 }

@@ -20,7 +20,7 @@ namespace ManyConsole.Tests
 
         private Func<int> RunAction;
 
-        public override int Run()
+        public override int Run(string[] remainingArguments)
         {
             return RunAction();
         }
