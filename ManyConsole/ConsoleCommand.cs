@@ -17,12 +17,18 @@ namespace ManyConsole
             RemainingArgumentsHelpText = "";
         }
 
-        public string Command { get; protected set; }
-        public string OneLineDescription { get; protected set; }
+        public string Command { get; private set; }
+        public string OneLineDescription { get; private set; }
         public OptionSet Options { get; protected set; }
-        public bool TraceCommandAfterParse { get; protected set; }
+        public bool TraceCommandAfterParse { get; private set; }
         public int? RemainingArgumentsCount { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
+
+        protected void IsCommand(string command, string oneLineDescription = "")
+        {
+            Command = command;
+            OneLineDescription = oneLineDescription;
+        }
 
         protected void HasAdditionalArguments(int? count = 0, string helpText = "")
         {
@@ -33,6 +39,11 @@ namespace ManyConsole
         protected void AllowsAnyAdditionalArguments(string helpText = "")
         {
             HasAdditionalArguments(null, helpText);
+        }
+
+        protected void SkipsCommandSummaryBeforeRunning()
+        {
+            TraceCommandAfterParse = false;
         }
 
         public abstract int Run(string[] remainingArguments);

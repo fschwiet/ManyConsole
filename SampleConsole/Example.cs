@@ -36,8 +36,7 @@ namespace MC.AX.DataUtility
         /// </example>
         public Example()
         {
-            Command = "Example";
-            OneLineDescription = "Example implementation of a ManyConsole command-line argument parser Command";
+            this.IsCommand("Example", "Example implementation of a ManyConsole command-line argument parser Command");
 
             // assign delegates to assign values from the optional command line args
             Options = new OptionSet()

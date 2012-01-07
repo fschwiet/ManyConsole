@@ -56,7 +56,7 @@ namespace ManyConsole.Tests
             {
                 _recorder = recorder;
 
-                Command = "move";
+                this.IsCommand("move");
                 Options = new OptionSet()
                 {
                     {"x=", "Coordinate along the x axis.", v => X = int.Parse(v)},

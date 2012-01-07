@@ -10,10 +10,8 @@ namespace ManyConsole.Tests
     {
         public InlinedCommand(string commandText = "", string oneLineDescription = "", string remaingArgumentsHelpText = "", OptionSet options = null, Func<int> runAction = null)
         {
-            Command = commandText;
-            OneLineDescription = oneLineDescription;
+            this.IsCommand(commandText, oneLineDescription);
             Options = options ?? new OptionSet();
-            TraceCommandAfterParse = true;
             RunAction = runAction ?? delegate { return 0; };
 
             HasAdditionalArguments(0, remaingArgumentsHelpText);

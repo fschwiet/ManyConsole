@@ -21,7 +21,7 @@ namespace ManyConsole.Tests
         {
             public NonabstractCommand()
             {
-                Command = "NonabstractCommand";
+                this.IsCommand("NonabstractCommand");
             }
 
             public override int Run(string[] remainingArguments)

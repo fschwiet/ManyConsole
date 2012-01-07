@@ -12,8 +12,7 @@ namespace SampleConsole
     {
         public DumpEmlFiles()
         {
-            Command = "dump-eml";
-            OneLineDescription = "Prints the contents of eml file(s).";
+            this.IsCommand("dump-eml", "Prints the contents of eml file(s).");
             Options = new OptionSet()
             {
                 {"r|recursive", "Print files recursively", v => Recursive = v != null},

@@ -13,8 +13,7 @@ namespace ManyConsole.Tests
         {
             public SomeCommand()
             {
-                Command = "thecommand";
-                OneLineDescription = "One-line description";
+                this.IsCommand("thecommand", "One-line description");
                 PropertyB = "def";
             }
 

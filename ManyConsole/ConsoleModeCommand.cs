@@ -11,8 +11,7 @@ namespace ManyConsole
 
         public ConsoleModeCommand(Func<IEnumerable<ConsoleCommand>> commandSource)
         {
-            Command = "run-console";
-            OneLineDescription = "Run lines within a console";
+            this.IsCommand("run-console", "Run lines within a console");
 
             _commandSource = () =>
             {

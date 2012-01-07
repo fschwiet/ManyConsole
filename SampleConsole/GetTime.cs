@@ -13,8 +13,7 @@ namespace SampleConsole
     {
         public GetTime()
         {
-            Command = "get-text";
-            OneLineDescription = "Returns the current system time.";
+            this.IsCommand("get-text", "Returns the current system time.");
         }
 
         public override int Run(string[] remainingArguments)

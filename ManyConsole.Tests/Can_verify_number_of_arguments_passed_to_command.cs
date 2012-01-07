@@ -50,7 +50,7 @@ namespace ManyConsole.Tests
         {
             public CommandWith5Parameters()
             {
-                Command = "command";
+                this.IsCommand("command");
                 HasAdditionalArguments(5);
             }
 
