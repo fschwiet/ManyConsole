@@ -8,7 +8,7 @@ namespace ManyConsole.Tests
 {
     public class InlinedCommand : ConsoleCommand
     {
-        public InlinedCommand(string commandText = "", string oneLineDescription = "", string remaingArgumentsHelpText = "", OptionSet options = null, Func<int> runAction = null)
+        private InlinedCommand(string commandText = "", string oneLineDescription = "", string remaingArgumentsHelpText = "", OptionSet options = null, Func<int> runAction = null)
         {
             this.IsCommand(commandText, oneLineDescription);
             Options = options ?? new OptionSet();

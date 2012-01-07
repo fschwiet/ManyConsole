@@ -24,26 +24,54 @@ namespace ManyConsole
         public int? RemainingArgumentsCount { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
 
-        protected void IsCommand(string command, string oneLineDescription = "")
+        public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
             Command = command;
             OneLineDescription = oneLineDescription;
+            return this;
         }
 
-        protected void HasAdditionalArguments(int? count = 0, string helpText = "")
+        public ConsoleCommand HasAdditionalArguments(int? count = 0, string helpText = "")
         {
             RemainingArgumentsCount = count;
             RemainingArgumentsHelpText = helpText;
+            return this;
         }
 
-        protected void AllowsAnyAdditionalArguments(string helpText = "")
+        public ConsoleCommand AllowsAnyAdditionalArguments(string helpText = "")
         {
             HasAdditionalArguments(null, helpText);
+            return this;
         }
 
-        protected void SkipsCommandSummaryBeforeRunning()
+        public ConsoleCommand SkipsCommandSummaryBeforeRunning()
         {
             TraceCommandAfterParse = false;
+            return this;
+        }
+
+        public ConsoleCommand HasOption(string prototype, string description, Action<string> action)
+        {
+            Options.Add(prototype, description, action);
+            return this;
+        }
+
+        public ConsoleCommand HasOption<T>(string prototype, string description, Action<T> action)
+        {
+            Options.Add(prototype, description, action);
+            return this;
+        }
+
+        public ConsoleCommand HasOption(string prototype, string description, OptionAction<string,string> action)
+        {
+            Options.Add(prototype, description, action);
+            return this;
+        }
+
+        public ConsoleCommand HasOption<TKey, TValue>(string prototype, string description, OptionAction<TKey,TValue> action)
+        {
+            Options.Add(prototype, description, action);
+            return this;
         }
 
         public abstract int Run(string[] remainingArguments);
