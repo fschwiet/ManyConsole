@@ -38,7 +38,6 @@ namespace MC.AX.DataUtility
         {
             this.IsCommand("Example", "Example implementation of a ManyConsole command-line argument parser Command");
 
-            // assign delegates to assign values from the optional command line args
             Options = new OptionSet()
             {
                 {"b|booleanOption", "Boolean flag option", b => BooleanOption = b != null},
