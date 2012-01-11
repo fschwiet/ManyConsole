@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using ManyConsole.Internal;
 using NDesk.Options;
@@ -15,6 +17,7 @@ namespace ManyConsole
             TraceCommandAfterParse = true;
             RemainingArgumentsCount = 0;
             RemainingArgumentsHelpText = "";
+            RequiredOptions = new List<RequiredOptionRecord>();
         }
 
         public string Command { get; private set; }
@@ -23,6 +26,7 @@ namespace ManyConsole
         public bool TraceCommandAfterParse { get; private set; }
         public int? RemainingArgumentsCount { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
+        public List<RequiredOptionRecord> RequiredOptions { get; private set; }
 
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
@@ -53,6 +57,28 @@ namespace ManyConsole
         public ConsoleCommand HasOption(string prototype, string description, Action<string> action)
         {
             Options.Add(prototype, description, action);
+
+            return this;
+        }
+
+        public ConsoleCommand HasRequiredOption(string prototype, string description, Action<string> action)
+        {
+            var requiredRecord = new RequiredOptionRecord();
+
+            var previousOptions = Options.ToArray();
+
+            Options.Add(prototype, description, s =>
+            {
+                requiredRecord.WasIncluded = true;
+                action(s);
+            });
+
+            var newOption = Options.Single(o => !previousOptions.Contains(o));
+
+            requiredRecord.Name = newOption.GetNames().OrderByDescending(n => n.Length).First();
+
+            RequiredOptions.Add(requiredRecord);
+
             return this;
         }
 
@@ -62,13 +88,13 @@ namespace ManyConsole
             return this;
         }
 
-        public ConsoleCommand HasOption(string prototype, string description, OptionAction<string,string> action)
+        public ConsoleCommand HasOption(string prototype, string description, OptionAction<string, string> action)
         {
             Options.Add(prototype, description, action);
             return this;
         }
 
-        public ConsoleCommand HasOption<TKey, TValue>(string prototype, string description, OptionAction<TKey,TValue> action)
+        public ConsoleCommand HasOption<TKey, TValue>(string prototype, string description, OptionAction<TKey, TValue> action)
         {
             Options.Add(prototype, description, action);
             return this;

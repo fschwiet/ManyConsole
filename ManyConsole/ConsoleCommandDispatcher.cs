@@ -41,7 +41,9 @@ namespace ManyConsole
 
                 var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
 
-                CheckArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
+                CheckRequiredArguments(selectedCommand);
+
+                CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
 
                 ConsoleHelp.ShowParsedCommand(selectedCommand, console);
 
@@ -67,7 +69,18 @@ namespace ManyConsole
             }
         }
 
-        private static void CheckArguments(List<string> remainingArguments, int? parametersRequiredAfterOptions)
+        private static void CheckRequiredArguments(ConsoleCommand command)
+        {
+            var missingOptions = command.RequiredOptions
+                .Where(o => !o.WasIncluded).Select(o => o.Name).OrderBy(n => n).ToArray();
+            
+            if (missingOptions.Any())
+            {
+                throw new ConsoleHelpAsException("Missing option: " + string.Join(", ", missingOptions));
+            }
+        }
+
+        private static void CheckRemainingArguments(List<string> remainingArguments, int? parametersRequiredAfterOptions)
         {
             if (parametersRequiredAfterOptions.HasValue)
                 ConsoleUtil.VerifyNumberOfArguments(remainingArguments.ToArray(),

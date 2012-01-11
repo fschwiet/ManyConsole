@@ -55,7 +55,8 @@ namespace ManyConsole.Internal
                 "Options",
                 "TraceCommandAfterParse",
                 "RemainingArgumentsCount",
-                "RemainingArgumentsHelpText"
+                "RemainingArgumentsHelpText",
+                "RequiredOptions"
             };
 
             var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
