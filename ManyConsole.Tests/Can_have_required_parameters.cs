@@ -11,7 +11,7 @@ namespace ManyConsole.Tests
     {
         public override void Specify()
         {
-            given("a command that requires a parameter", delegate()
+            given("a no-op command that requires a parameter", delegate()
             {
                 var commands = arrange(() => new ConsoleCommand[] { new CommandWithRequiredParameter() });
 
@@ -40,12 +40,12 @@ namespace ManyConsole.Tests
                     var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, 
                         new[] { "required", "-foo", "bar" }, output));
 
-                    then("the output indicates success", delegate()
+                    then("the output is empty", delegate()
                     {
                         expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
                     });
 
-                    then("the exit code indicates the call failed", delegate()
+                    then("the exit code indicates the call succeeded", delegate()
                     {
                         expect(() => exitCode == 0);
                     });
