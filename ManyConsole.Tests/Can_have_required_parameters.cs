@@ -13,7 +13,8 @@ namespace ManyConsole.Tests
         {
             given("a no-op command that requires a parameter", delegate()
             {
-                var commands = arrange(() => new ConsoleCommand[] { new CommandWithRequiredParameter() });
+                var noopCommand = new CommandWithRequiredParameter();
+                var commands = new ConsoleCommand[] { noopCommand };
 
                 when("that command is ran without the parameter", delegate()
                 {
@@ -48,6 +49,11 @@ namespace ManyConsole.Tests
                     then("the exit code indicates the call succeeded", delegate()
                     {
                         expect(() => exitCode == 0);
+                    });
+
+                    then("the option is actually received", delegate()
+                    {
+                        expect(() => noopCommand.Foo == "bar");
                     });
                 });
             });
