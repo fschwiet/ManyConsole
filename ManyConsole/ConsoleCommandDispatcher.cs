@@ -16,30 +16,45 @@ namespace ManyConsole
 
             try
             {
-                if (arguments.Count() < 1)
-                    throw new ConsoleHelpAsException("No arguments specified.");
+                List<string> remainingArguments;
 
-                foreach(var possibleCommand in commands)
+                if (commands.Count() == 1)
                 {
-                    if (string.IsNullOrEmpty(possibleCommand.Command))
+                    selectedCommand = commands.First();
+
+                    CheckCommandProperty(selectedCommand);
+
+                    if (arguments.Count() > 0 && arguments.First().ToLower() == selectedCommand.Command.ToLower())
                     {
-                        throw new InvalidOperationException(String.Format(
-                            "Command {0} did not define property Command, which must specify its command text.",
-                            possibleCommand.GetType().Name));
+                        remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
                     }
-
-                    if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
+                    else
                     {
-                        selectedCommand = possibleCommand;
-
-                        break;
+                        remainingArguments = selectedCommand.Options.Parse(arguments);
                     }
                 }
+                else
+                {
+                    if (arguments.Count() < 1)
+                        throw new ConsoleHelpAsException("No arguments specified.");
 
-                if (selectedCommand == null)
-                    throw new ConsoleHelpAsException("Command name not recognized.");
+                    foreach (var possibleCommand in commands)
+                    {
+                        CheckCommandProperty(possibleCommand);
 
-                var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                        if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
+                        {
+                            selectedCommand = possibleCommand;
+
+                            break;
+                        }
+                    }
+
+                    if (selectedCommand == null)
+                        throw new ConsoleHelpAsException("Command name not recognized.");
+
+                    remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                }
 
                 CheckRequiredArguments(selectedCommand);
 
@@ -66,6 +81,16 @@ namespace ManyConsole
                 }
 
                 return -1;
+            }
+        }
+  
+        private static void CheckCommandProperty(ConsoleCommand command)
+        {
+            if (string.IsNullOrEmpty(command.Command))
+            {
+                throw new InvalidOperationException(String.Format(
+                    "Command {0} did not define property Command, which must specify its command text.",
+                    command.GetType().Name));
             }
         }
 
