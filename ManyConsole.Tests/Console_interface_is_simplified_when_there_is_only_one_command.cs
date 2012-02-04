@@ -5,7 +5,7 @@ using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class can_have_default_command : GivenWhenThenFixture
+    public class Console_interface_is_simplified_when_there_is_only_one_command : GivenWhenThenFixture
     {
         private const int Success = 999;
 
@@ -38,15 +38,7 @@ namespace ManyConsole.Tests
                     var output = new StringWriter();
                     var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[0], output));
 
-                    then("the output is empty", () =>
-                    {
-                        expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
-                    });
-
-                    then("the exit code indicates the call succeeded", () =>
-                    {
-                        expect(() => exitCode == Success);
-                    });
+                    then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
                     then("the command's property is not set", () =>
                     {
@@ -59,15 +51,7 @@ namespace ManyConsole.Tests
                     var output = new StringWriter();
                     var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "Example" }, output));
 
-                    then("the output is empty", () =>
-                    {
-                        expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
-                    });
-
-                    then("the exit code indicates the call succeeded", () =>
-                    {
-                        expect(() => exitCode == Success);
-                    });
+                    then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
                     then("the command's property is not set", () =>
                     {
@@ -80,15 +64,7 @@ namespace ManyConsole.Tests
                     var output = new StringWriter();
                     var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "/f=bar" }, output));
 
-                    then("the output is empty", () =>
-                    {
-                        expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
-                    });
-
-                    then("the exit code indicates the call succeeded", () =>
-                    {
-                        expect(() => exitCode == Success);
-                    });
+                    then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
                     then("the command's property is set", () =>
                     {
@@ -101,21 +77,26 @@ namespace ManyConsole.Tests
                     var output = new StringWriter();
                     var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "Example", "/f=bar" }, output));
 
-                    then("the output is empty", () =>
-                    {
-                        expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
-                    });
-
-                    then("the exit code indicates the call succeeded", () =>
-                    {
-                        expect(() => exitCode == Success);
-                    });
+                    then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
                     then("the command's property is set", () =>
                     {
                         expect(() => exampleCommand.Foo == "bar");
                     });
                 });
+            });
+        }
+
+        private void then_the_command_runs_without_tracing_parameter_information(StringWriter output, int exitCode)
+        {
+            then("the output is empty", () =>
+            {
+                expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
+            });
+
+            then("the exit code indicates the call succeeded", () =>
+            {
+                expect(() => exitCode == Success);
             });
         }
     }
