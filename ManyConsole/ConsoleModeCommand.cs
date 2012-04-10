@@ -11,6 +11,7 @@ namespace ManyConsole
         private readonly TextReader _inputStream;
         private readonly TextWriter _outputStream;
         readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
+        public bool StrictMode;
 
         public ConsoleModeCommand(
             Func<IEnumerable<ConsoleCommand>> commandSource,
@@ -21,6 +22,7 @@ namespace ManyConsole
             _outputStream = outputStream ?? Console.Out;
 
             this.IsCommand("run-console", "Run lines within a console");
+            this.HasOption("strict", "Exit console mode if any command fails.", v => StrictMode = true);
 
             _commandSource = () =>
             {
@@ -49,7 +51,13 @@ namespace ManyConsole
                 {
                     args = input.ToCommandLineArgs();
                     var result = ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
-                    haveError = haveError || result != 0;
+                    if (result != 0)
+                    {
+                        haveError = true;
+
+                        if (StrictMode)
+                            return result;
+                    }
                 }
                 _outputStream.WriteLine(continuePrompt);
                 input = _inputStream.ReadLine();
