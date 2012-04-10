@@ -36,6 +36,7 @@ namespace ManyConsole
             
             _outputStream.WriteLine(continuePrompt);
 
+            bool haveError = false;
             string input = _inputStream.ReadLine();
 
             while (!input.Trim().Equals("x"))
@@ -47,13 +48,14 @@ namespace ManyConsole
                 else
                 {
                     args = input.ToCommandLineArgs();
-                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
+                    var result = ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
+                    haveError = haveError || result != 0;
                 }
                 _outputStream.WriteLine(continuePrompt);
                 input = _inputStream.ReadLine();
             }
 
-            return 0;
+            return haveError ? -1 : 0;
         }
     }
 }

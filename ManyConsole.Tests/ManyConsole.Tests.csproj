@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleModeCommandSpecs\Return_code_is_representative_of_all_commands_called.cs" />
     <Compile Include="Console_interface_is_simplified_when_there_is_only_one_command.cs" />
     <Compile Include="Can_have_required_parameters.cs" />
     <Compile Include="Can_verify_number_of_arguments_passed_to_command.cs" />
