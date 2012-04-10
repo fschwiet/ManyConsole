@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ManyConsole.Internal;
 
@@ -7,10 +8,18 @@ namespace ManyConsole
 {
     public class ConsoleModeCommand : ConsoleCommand
     {
+        private readonly TextReader _inputStream;
+        private readonly TextWriter _outputStream;
         readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
 
-        public ConsoleModeCommand(Func<IEnumerable<ConsoleCommand>> commandSource)
+        public ConsoleModeCommand(
+            Func<IEnumerable<ConsoleCommand>> commandSource,
+            TextWriter outputStream = null,
+            TextReader inputStream = null)
         {
+            _inputStream = inputStream ?? Console.In;
+            _outputStream = outputStream ?? Console.Out;
+
             this.IsCommand("run-console", "Run lines within a console");
 
             _commandSource = () =>
@@ -25,24 +34,23 @@ namespace ManyConsole
             string[] args;
             string continuePrompt = "\nEnter a command or 'x' to exit or '?' for help";
             
-            Console.WriteLine(continuePrompt);
+            _outputStream.WriteLine(continuePrompt);
 
-            string input = Console.ReadLine();
+            string input = _inputStream.ReadLine();
 
             while (!input.Trim().Equals("x"))
             {
                 if (input.Trim().Equals("?"))
                 {
-                    Console.Clear();
-                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), new string[] { }, Console.Out);
+                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), new string[] { }, _outputStream);
                 }
                 else
                 {
                     args = input.ToCommandLineArgs();
-                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, Console.Out);
+                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
                 }
-                Console.WriteLine(continuePrompt);
-                input = Console.ReadLine();
+                _outputStream.WriteLine(continuePrompt);
+                input = _inputStream.ReadLine();
             }
 
             return 0;
