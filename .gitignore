@@ -4,6 +4,7 @@ build/
 _ReSharper.*
 *.ReSharper.user
 *.resharper.user
+*.DotSettings.user
 *.csproj.user
 *.ncb
 *.aps
