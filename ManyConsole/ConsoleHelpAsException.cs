@@ -14,11 +14,11 @@ namespace ManyConsole
 
         public static void WriterErrorMessage(Exception e, TextWriter tw)
         {
-            var friendly = e as ConsoleHelpAsException;
+            var userFriendly = e as ConsoleHelpAsException;
 
-            if (friendly != null)
+            if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
             {
-                tw.WriteLine(friendly.Message);
+                tw.WriteLine(e.Message);
             }
             else
             {

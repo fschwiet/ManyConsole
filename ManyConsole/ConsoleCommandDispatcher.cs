@@ -72,7 +72,7 @@ namespace ManyConsole
 
                 if (selectedCommand != null)
                 {
-                    if (e is ConsoleHelpAsException)
+                    if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
                         ConsoleHelp.ShowCommandHelp(selectedCommand, console);
                 }
                 else
