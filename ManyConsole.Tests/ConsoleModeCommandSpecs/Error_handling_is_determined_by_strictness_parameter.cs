@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FakeItEasy;
+using ManyConsole.Internal;
 using NJasmine;
 
 namespace ManyConsole.Tests.ConsoleModeCommandSpecs
@@ -43,67 +45,76 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                 fakeConsoleWriter, 
                 fakeConsoleReader);
 
-            when("multiple commands run successfully", delegate
+            given("console input is coming from the user", delegate
             {
-                arrange(delegate
+                arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
+                arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(false));
+
+                when("multiple commands run successfully", delegate
                 {
-                    var injectedInput = new StreamWriter(injectedInputStream);
+                    arrange(delegate
+                    {
+                        var injectedInput = new StreamWriter(injectedInputStream);
 
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("x");
-                    injectedInput.Flush();
+                        injectedInput.WriteLine("echo-status -s 0");
+                        injectedInput.WriteLine("echo-status -s 0");
+                        injectedInput.WriteLine("echo-status -s 0");
+                        injectedInput.WriteLine("x");
+                        injectedInput.Flush();
 
-                    injectedInputStream.Seek(0, SeekOrigin.Begin);
+                        injectedInputStream.Seek(0, SeekOrigin.Begin);
+                    });
+
+                    var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
+                        new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
+
+                    then("the return code is 0", delegate
+                    {
+                        expect(() => result == 0);
+                    });
+
+                    then("all the commands run", delegate
+                    {
+                        expect(() => StatusEchoCommand.RunCount == 3);
+                    });
                 });
 
-                var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] {consoleModeCommand}, new string[0], fakeConsoleWriter));
-
-                then("the return code is 0", delegate
+                when("one of multiple commands fails", delegate
                 {
-                    expect(() => result == 0);
-                });
+                    arrange(delegate
+                    {
+                        var injectedInput = new StreamWriter(injectedInputStream);
 
-                then("all the commands run", delegate
-                {
-                    expect(() => StatusEchoCommand.RunCount == 3);
+                        injectedInput.WriteLine("echo-status -s 0");
+                        injectedInput.WriteLine("echo-status -s 2");
+                        injectedInput.WriteLine("echo-status -s 0");
+                        injectedInput.WriteLine("x");
+                        injectedInput.Flush();
+
+                        injectedInputStream.Seek(0, SeekOrigin.Begin);
+                    });
+
+                    var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
+                        new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
+
+
+                    then("the return code is -1", delegate
+                    {
+                        expect(() => result == -1);
+                    });
+
+                    then("all the commands run", delegate
+                    {
+                        expect(() => StatusEchoCommand.RunCount == 3);
+                    });
                 });
             });
 
-            when("some of multiple commands fails", delegate
+            given("console input is not coming from the the user", delegate
             {
-                arrange(delegate
-                {
-                    var injectedInput = new StreamWriter(injectedInputStream);
+                arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
+                arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(true));
 
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("echo-status -s 2");
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("x");
-                    injectedInput.Flush();
-
-                    injectedInputStream.Seek(0, SeekOrigin.Begin);
-                });
-
-                var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
-
-
-                then("the return code is -1", delegate
-                {
-                    expect(() => result == -1);
-                });
-
-                then("all the commands run", delegate
-                {
-                    expect(() => StatusEchoCommand.RunCount == 3);
-                });
-            });
-
-            when("a command fails while running in strict mode", delegate
-            {
                 arrange(delegate
                 {
                     var injectedInput = new StreamWriter(injectedInputStream);
@@ -118,9 +129,8 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                 });
 
                 var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] { consoleModeCommand }, new string[] {"-strict"}, fakeConsoleWriter));
+                    new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
 
-                
                 then("execution stops after that command", delegate()
                 {
                     expect(() => StatusEchoCommand.RunCount == 2);
@@ -129,7 +139,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                 then("the return value for the command is passed on", delegate()
                 {
                     expect(() => result == 456);
-                });            
+                });
             });
         }
     }

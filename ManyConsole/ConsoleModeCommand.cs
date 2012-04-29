@@ -11,7 +11,7 @@ namespace ManyConsole
         private readonly TextReader _inputStream;
         private readonly TextWriter _outputStream;
         readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
-        public bool StrictMode;
+        public IConsoleRedirectionDetection RedirectionDetector = new ConsoleRedirectionDetection();
 
         public ConsoleModeCommand(
             Func<IEnumerable<ConsoleCommand>> commandSource,
@@ -22,7 +22,6 @@ namespace ManyConsole
             _outputStream = outputStream ?? Console.Out;
 
             this.IsCommand("run-console", "Run lines within a console");
-            this.HasOption("strict", "Exit console mode if any command fails.", v => StrictMode = true);
 
             _commandSource = () =>
             {
@@ -55,7 +54,7 @@ namespace ManyConsole
                     {
                         haveError = true;
 
-                        if (StrictMode)
+                        if (RedirectionDetector.IsInputRedirected())
                             return result;
                     }
                 }
