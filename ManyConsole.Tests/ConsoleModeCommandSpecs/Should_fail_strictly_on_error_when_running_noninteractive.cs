@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Text;
-using FakeItEasy;
-using ManyConsole.Internal;
-using NJasmine;
 
 namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 {
-    public class Should_fail_strictly_on_error_when_running_noninteractive : GivenWhenThenFixture
+    public class Should_fail_strictly_on_error_when_running_noninteractive : ConsoleModeCommandSpecification
     {
         public override void Specify()
         {
@@ -51,6 +46,8 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 
                     var result = arrange(arrangeAction);
 
+
+
                     then("the return code is -1", delegate
                     {
                         expect(() => result == -1);
@@ -83,39 +80,6 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                     expect(() => result == 456);
                 });
             });
-        }
-
-        Func<int> RunConsoleModeCommand(string[] lines, bool inputIsFromUser)
-        {
-            var injectedInputStream = new MemoryStream();
-
-            var fakeConsoleWriter = new StringWriter();
-            var fakeConsoleReader = new StreamReader(injectedInputStream);
-
-            var consoleModeCommand = new ConsoleModeCommand(
-                () => new ConsoleCommand[] {new StatusEchoCommand()},
-                fakeConsoleWriter,
-                fakeConsoleReader);
-
-            arrange(delegate
-            {
-                var injectedInput = new StreamWriter(injectedInputStream);
-
-                foreach (var line in lines)
-                    injectedInput.WriteLine(line);
-                injectedInput.Flush();
-
-                injectedInputStream.Seek(0, SeekOrigin.Begin);
-            });
-
-            Func<int> arrangeAction =
-                () =>
-                ConsoleCommandDispatcher.DispatchCommand(new ConsoleCommand[] {consoleModeCommand}, new string[0],
-                                                         fakeConsoleWriter);
-
-            arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
-            arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(!inputIsFromUser));
-            return arrangeAction;
         }
 
         public class StatusEchoCommand : ConsoleCommand

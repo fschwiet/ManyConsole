@@ -12,11 +12,14 @@ namespace ManyConsole
         private readonly TextWriter _outputStream;
         readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
         public IConsoleRedirectionDetection RedirectionDetector = new ConsoleRedirectionDetection();
+        public static string FriendlyContinuePrompt = "\nEnter a command or 'x' to exit or '?' for help";
+        private string continuePrompt;
 
         public ConsoleModeCommand(
             Func<IEnumerable<ConsoleCommand>> commandSource,
             TextWriter outputStream = null,
-            TextReader inputStream = null)
+            TextReader inputStream = null,
+            string friendlyContinueText = null)
         {
             _inputStream = inputStream ?? Console.In;
             _outputStream = outputStream ?? Console.Out;
@@ -28,14 +31,18 @@ namespace ManyConsole
                 var commands = commandSource();
                 return commands.Where(c => !(c is ConsoleModeCommand));  // don't cross the beams
             };
+
+            continuePrompt = friendlyContinueText ?? FriendlyContinuePrompt;
         }
 
         public override int Run(string[] remainingArguments)
         {
             string[] args;
-            string continuePrompt = "\nEnter a command or 'x' to exit or '?' for help";
-            
-            _outputStream.WriteLine(continuePrompt);
+
+            bool isInputRedirected = RedirectionDetector.IsInputRedirected();
+
+            if (!isInputRedirected)
+                _outputStream.WriteLine(continuePrompt);
 
             bool haveError = false;
             string input = _inputStream.ReadLine();
@@ -54,11 +61,14 @@ namespace ManyConsole
                     {
                         haveError = true;
 
-                        if (RedirectionDetector.IsInputRedirected())
+                        if (isInputRedirected)
                             return result;
                     }
                 }
-                _outputStream.WriteLine(continuePrompt);
+                
+                if (!isInputRedirected)
+                    _outputStream.WriteLine(continuePrompt);
+
                 input = _inputStream.ReadLine();
             }
 

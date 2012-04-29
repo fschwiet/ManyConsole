@@ -64,7 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleModeCommandSpecs\ConsoleModeCommandSpecification.cs" />
     <Compile Include="ConsoleModeCommandSpecs\Should_fail_strictly_on_error_when_running_noninteractive.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\Should_give_user_prompt_in_interactive_mode.cs" />
     <Compile Include="Console_interface_is_simplified_when_there_is_only_one_command.cs" />
     <Compile Include="Can_have_required_parameters.cs" />
     <Compile Include="Can_verify_number_of_arguments_passed_to_command.cs" />
