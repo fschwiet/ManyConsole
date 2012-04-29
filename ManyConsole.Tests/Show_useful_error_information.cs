@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NUnit.Framework;
 
 namespace ManyConsole.Tests
 {
@@ -37,19 +38,12 @@ namespace ManyConsole.Tests
 
             when("a command causes other unexpected errors", delegate
             {
-                var lastError = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] { new SomeCommandThrowingAnException(),  },
-                    new string[0],
-                    trace));
-
-                then("they do not see the typical output", delegate
+                then("the exception passes through", delegate
                 {
-                    expect(() => !trace.ToString().Contains(TextWithinExpectedUsageHelp));
-                });
-
-                then("they do see the callstack", delegate
-                {
-                    expect(() => trace.ToString().Contains("at ManyConsole.Tests.Show_useful_error_information.SomeCommandThrowingAnException.Run"));
+                    Assert.Throws<InvalidAsynchronousStateException>(() => ConsoleCommandDispatcher.DispatchCommand(
+                        new ConsoleCommand[] { new SomeCommandThrowingAnException(), },
+                        new string[0],
+                        trace));
                 });
             });
         }
