@@ -14,8 +14,6 @@ namespace ManyConsole
 
         public static bool WriterErrorMessage(Exception e, TextWriter tw)
         {
-            var userFriendly = e as ConsoleHelpAsException;
-
             if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
             {
                 tw.WriteLine(e.Message);
