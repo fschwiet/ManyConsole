@@ -16,38 +16,17 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
         {
             StatusEchoCommand.RunCount = 0;
 
-            var injectedInputStream = new MemoryStream();
-
-            var fakeConsoleWriter = new StringWriter();
-            var fakeConsoleReader = new StreamReader(injectedInputStream);
-
-            var consoleModeCommand = new ConsoleModeCommand(
-                () => new ConsoleCommand[] { new StatusEchoCommand()}, 
-                fakeConsoleWriter, 
-                fakeConsoleReader);
-
             given("console input is coming from the user", delegate
             {
-                arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
-                arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(false));
-
                 when("multiple commands run successfully", delegate
                 {
-                    arrange(delegate
+                    var result = arrange(RunConsoleModeCommand(new string[]
                     {
-                        var injectedInput = new StreamWriter(injectedInputStream);
-
-                        injectedInput.WriteLine("echo-status -s 0");
-                        injectedInput.WriteLine("echo-status -s 0");
-                        injectedInput.WriteLine("echo-status -s 0");
-                        injectedInput.WriteLine("x");
-                        injectedInput.Flush();
-
-                        injectedInputStream.Seek(0, SeekOrigin.Begin);
-                    });
-
-                    var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                        new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
+                        "echo-status -s 0",
+                        "echo-status -s 0",
+                        "echo-status -s 0",
+                        "x",
+                    }, true));
 
                     then("the return code is 0", delegate
                     {
@@ -62,22 +41,15 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 
                 when("one of multiple commands fails", delegate
                 {
-                    arrange(delegate
+                    var arrangeAction = RunConsoleModeCommand(new string[]
                     {
-                        var injectedInput = new StreamWriter(injectedInputStream);
+                        "echo-status -s 0",
+                        "echo-status -s 2",
+                        "echo-status -s 0",
+                        "x",
+                    }, true);
 
-                        injectedInput.WriteLine("echo-status -s 0");
-                        injectedInput.WriteLine("echo-status -s 2");
-                        injectedInput.WriteLine("echo-status -s 0");
-                        injectedInput.WriteLine("x");
-                        injectedInput.Flush();
-
-                        injectedInputStream.Seek(0, SeekOrigin.Begin);
-                    });
-
-                    var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                        new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
-
+                    var result = arrange(arrangeAction);
 
                     then("the return code is -1", delegate
                     {
@@ -93,24 +65,13 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 
             given("console input is not coming from the the user", delegate
             {
-                arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
-                arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(true));
-
-                arrange(delegate
-                {
-                    var injectedInput = new StreamWriter(injectedInputStream);
-
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("echo-status -s 456");
-                    injectedInput.WriteLine("echo-status -s 0");
-                    injectedInput.WriteLine("x");
-                    injectedInput.Flush();
-
-                    injectedInputStream.Seek(0, SeekOrigin.Begin);
-                });
-
-                var result = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] { consoleModeCommand }, new string[0], fakeConsoleWriter));
+                var result = arrange(RunConsoleModeCommand(new string[]
+                    {
+                        "echo-status -s 0",
+                        "echo-status -s 456",
+                        "echo-status -s 0",
+                        "x",
+                    }, false));
 
                 then("execution stops after that command", delegate()
                 {
@@ -122,6 +83,39 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                     expect(() => result == 456);
                 });
             });
+        }
+
+        Func<int> RunConsoleModeCommand(string[] lines, bool inputIsFromUser)
+        {
+            var injectedInputStream = new MemoryStream();
+
+            var fakeConsoleWriter = new StringWriter();
+            var fakeConsoleReader = new StreamReader(injectedInputStream);
+
+            var consoleModeCommand = new ConsoleModeCommand(
+                () => new ConsoleCommand[] {new StatusEchoCommand()},
+                fakeConsoleWriter,
+                fakeConsoleReader);
+
+            arrange(delegate
+            {
+                var injectedInput = new StreamWriter(injectedInputStream);
+
+                foreach (var line in lines)
+                    injectedInput.WriteLine(line);
+                injectedInput.Flush();
+
+                injectedInputStream.Seek(0, SeekOrigin.Begin);
+            });
+
+            Func<int> arrangeAction =
+                () =>
+                ConsoleCommandDispatcher.DispatchCommand(new ConsoleCommand[] {consoleModeCommand}, new string[0],
+                                                         fakeConsoleWriter);
+
+            arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
+            arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(!inputIsFromUser));
+            return arrangeAction;
         }
 
         public class StatusEchoCommand : ConsoleCommand
