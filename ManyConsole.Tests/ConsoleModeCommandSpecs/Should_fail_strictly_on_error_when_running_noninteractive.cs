@@ -12,25 +12,6 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 {
     public class Should_fail_strictly_on_error_when_running_noninteractive : GivenWhenThenFixture
     {
-        public class StatusEchoCommand : ConsoleCommand
-        {
-            public static int RunCount = 0;
-
-            public StatusEchoCommand()
-            {
-                this.IsCommand("echo-status", "Returns a particular status code");
-                this.HasRequiredOption("s=", "Status code to return", v => StatusCode = int.Parse(v));
-            }
-
-            public int StatusCode;
-
-            public override int Run(string[] remainingArguments)
-            {
-                RunCount++;
-                return StatusCode;
-            }
-        }
-
         public override void Specify()
         {
             StatusEchoCommand.RunCount = 0;
@@ -141,6 +122,25 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                     expect(() => result == 456);
                 });
             });
+        }
+
+        public class StatusEchoCommand : ConsoleCommand
+        {
+            public static int RunCount = 0;
+
+            public StatusEchoCommand()
+            {
+                this.IsCommand("echo-status", "Returns a particular status code");
+                this.HasRequiredOption("s=", "Status code to return", v => StatusCode = int.Parse(v));
+            }
+
+            public int StatusCode;
+
+            public override int Run(string[] remainingArguments)
+            {
+                RunCount++;
+                return StatusCode;
+            }
         }
     }
 }
