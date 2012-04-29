@@ -10,7 +10,7 @@ using NJasmine;
 
 namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 {
-    public class Error_handling_is_determined_by_strictness_parameter : GivenWhenThenFixture
+    public class Should_fail_strictly_on_error_when_running_noninteractive : GivenWhenThenFixture
     {
         public class StatusEchoCommand : ConsoleCommand
         {
