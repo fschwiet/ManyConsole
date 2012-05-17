@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,11 +76,7 @@ namespace ManyConsole.Internal
 
             foreach (var field in fields)
             {
-                object value = field.GetValue(consoleCommand);
-                if (value != null)
-                    allValuesToTrace[field.Name] = value.ToString();
-                else
-                    allValuesToTrace[field.Name] = "null";
+                allValuesToTrace[field.Name] = MakeObjectReadable(field.GetValue(consoleCommand));
             }
 
             consoleOut.WriteLine();
@@ -97,6 +94,30 @@ namespace ManyConsole.Internal
                 consoleOut.WriteLine("    " + value.Key + " : " + value.Value);
 
             consoleOut.WriteLine();
+        }
+
+        static string MakeObjectReadable(object value)
+        {
+            string readable;
+
+            if (value is System.Collections.IEnumerable && !(value is string))
+            {
+                readable = "";
+                var separator = "";
+
+                foreach (var member in (IEnumerable) value)
+                {
+                    readable += separator + MakeObjectReadable(member);
+                    separator = ", ";
+                }
+
+                readable = readable;
+            }
+            else if (value != null)
+                readable = value.ToString();
+            else
+                readable = "null";
+            return readable;
         }
     }
 }

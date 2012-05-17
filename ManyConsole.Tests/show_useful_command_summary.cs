@@ -20,6 +20,7 @@ namespace ManyConsole.Tests
             public string FieldA = "abc";
             public string PropertyB { get; set; }
             public int? PropertyC { get; set; }
+            public IEnumerable<int>  PropertyD = new int[] { 1,2,3 };
 
             public override int Run(string[] remainingArguments)
             {
@@ -52,6 +53,7 @@ Executing thecommand (One-line description):
     FieldA : abc
     PropertyB : def
     PropertyC : null
+    PropertyD : 1, 2, 3
 
 ");
                 });
