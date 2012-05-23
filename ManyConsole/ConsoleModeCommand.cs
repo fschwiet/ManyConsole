@@ -11,8 +11,8 @@ namespace ManyConsole
         private readonly TextReader _inputStream;
         private readonly TextWriter _outputStream;
         readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
-        public IConsoleRedirectionDetection RedirectionDetector = new ConsoleRedirectionDetection();
-        public static string FriendlyContinuePrompt = "\nEnter a command or 'x' to exit or '?' for help";
+        IConsoleRedirectionDetection _redirectionDetector = new ConsoleRedirectionDetection();
+        public static string FriendlyContinuePrompt = "Enter a command or 'x' to exit or '?' for help";
         private string continuePrompt;
 
         public ConsoleModeCommand(
@@ -39,7 +39,7 @@ namespace ManyConsole
         {
             string[] args;
 
-            bool isInputRedirected = RedirectionDetector.IsInputRedirected();
+            bool isInputRedirected = _redirectionDetector.IsInputRedirected();
 
             if (!isInputRedirected)
                 _outputStream.WriteLine(continuePrompt);
@@ -67,12 +67,20 @@ namespace ManyConsole
                 }
                 
                 if (!isInputRedirected)
-                    _outputStream.WriteLine(continuePrompt);
+                {
+                    _outputStream.WriteLine();
+                    _outputStream.WriteLine(continuePrompt);                    
+                }
 
                 input = _inputStream.ReadLine();
             }
 
             return haveError ? -1 : 0;
+        }
+
+        public void SetConsoleRedirectionDetection(IConsoleRedirectionDetection consoleRedirectionDetection)
+        {
+            _redirectionDetector = consoleRedirectionDetection;
         }
     }
 }

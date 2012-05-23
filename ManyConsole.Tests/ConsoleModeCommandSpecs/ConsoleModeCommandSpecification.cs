@@ -31,8 +31,9 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                 injectedInputStream.Seek(0, SeekOrigin.Begin);
             });
 
-            arrange(() => consoleModeCommand.RedirectionDetector = A.Fake<IConsoleRedirectionDetection>());
-            arrange(() => A.CallTo(() => consoleModeCommand.RedirectionDetector.IsInputRedirected()).Returns(!inputIsFromUser));
+            IConsoleRedirectionDetection redirectionDetection = A.Fake<IConsoleRedirectionDetection>();
+            arrange(() => consoleModeCommand.SetConsoleRedirectionDetection(redirectionDetection));
+            arrange(() => A.CallTo(() => redirectionDetection.IsInputRedirected()).Returns(!inputIsFromUser));
             
             return () =>
                    ConsoleCommandDispatcher.DispatchCommand(new ConsoleCommand[] {consoleModeCommand}, new string[0],
