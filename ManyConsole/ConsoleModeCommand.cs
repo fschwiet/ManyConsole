@@ -21,7 +21,7 @@ namespace ManyConsole
             _inputStream = inputStream ?? Console.In;
             _outputStream = outputStream ?? Console.Out;
 
-            this.IsCommand("run-console", "Run lines within a console");
+            this.IsCommand("run-console", "Run in console mode, treating each line of console input as a command.");
             this.HasOption("strict", "Exit console mode if any command fails.", v => StrictMode = true);
 
             _commandSource = () =>
