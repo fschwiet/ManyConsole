@@ -47,6 +47,7 @@
     <Compile Include="ConsoleHelpAsException.cs" />
     <Compile Include="ConsoleModeCommand.cs" />
     <Compile Include="Internal\ConsoleHelp.cs" />
+    <Compile Include="Internal\ConsoleRedirectionDetection.cs" />
     <Compile Include="Internal\ConsoleUtil.cs" />
     <Compile Include="Internal\RequiredOptionRecord.cs" />
     <Compile Include="Internal\StringExtensions.cs" />

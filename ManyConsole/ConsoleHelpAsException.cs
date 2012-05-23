@@ -12,17 +12,16 @@ namespace ManyConsole
         {
         }
 
-        public static void WriterErrorMessage(Exception e, TextWriter tw)
+        public static bool WriterErrorMessage(Exception e, TextWriter tw)
         {
-            var friendly = e as ConsoleHelpAsException;
-
-            if (friendly != null)
+            if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
             {
-                tw.WriteLine(friendly.Message);
+                tw.WriteLine(e.Message);
+                return true;
             }
             else
             {
-                tw.Write("Exception encountered: " + e.ToString());
+                return false;
             }
             
         }

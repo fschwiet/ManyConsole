@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.7.4257.42\lib\NET40\FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="NDesk.Options">
       <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
     </Reference>
@@ -58,7 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleModeCommandSpecs\Error_handling_is_determined_by_strictness_parameter.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\ConsoleModeCommandSpecification.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\Should_fail_strictly_on_error_when_running_noninteractive.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\Should_give_user_prompt_in_interactive_mode.cs" />
     <Compile Include="Console_interface_is_simplified_when_there_is_only_one_command.cs" />
     <Compile Include="Can_have_required_parameters.cs" />
     <Compile Include="Can_verify_number_of_arguments_passed_to_command.cs" />
@@ -67,6 +75,7 @@
     <Compile Include="abstract_commands_arent_loaded.cs" />
     <Compile Include="Multiple_dispatch_calls_dont_interfere_with_each_other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Show_useful_error_information.cs" />
     <Compile Include="show_useful_command_summary.cs" />
     <Compile Include="TestCommand.cs" />
   </ItemGroup>
