@@ -8,19 +8,18 @@ namespace ManyConsole.Tests
 {
     public class InlinedCommand : ConsoleCommand
     {
-        public InlinedCommand(string commandText = "", string oneLineDescription = "", string remaingArgumentsHelpText = "", OptionSet options = null, Func<int> runAction = null)
+        private InlinedCommand(string commandText = "", string oneLineDescription = "", string remaingArgumentsHelpText = "", OptionSet options = null, Func<int> runAction = null)
         {
-            Command = commandText;
-            OneLineDescription = oneLineDescription;
-            RemainingArgumentsHelpText = remaingArgumentsHelpText;
+            this.IsCommand(commandText, oneLineDescription);
             Options = options ?? new OptionSet();
-            TraceCommandAfterParse = true;
             RunAction = runAction ?? delegate { return 0; };
+
+            HasAdditionalArguments(0, remaingArgumentsHelpText);
         }
 
         private Func<int> RunAction;
 
-        public override int Run()
+        public override int Run(string[] remainingArguments)
         {
             return RunAction();
         }

@@ -16,41 +16,65 @@ namespace ManyConsole
 
             try
             {
-                if (arguments.Count() < 1)
-                    throw new ConsoleHelpAsException("No arguments specified.");
+                List<string> remainingArguments;
 
-                foreach(var possibleCommand in commands)
+                if (commands.Count() == 1)
                 {
-                    if (string.IsNullOrEmpty(possibleCommand.Command))
+                    selectedCommand = commands.First();
+
+                    CheckCommandProperty(selectedCommand);
+
+                    if (arguments.Count() > 0 && arguments.First().ToLower() == selectedCommand.Command.ToLower())
                     {
-                        throw new InvalidOperationException(String.Format(
-                            "Command {0} did not define property Command, which must specify its command text.",
-                            possibleCommand.GetType().Name));
+                        remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
                     }
-
-                    if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
+                    else
                     {
-                        selectedCommand = possibleCommand;
-
-                        var remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
-
-                        selectedCommand.FinishLoadingArguments(remainingArguments.ToArray());
-                        break;
+                        remainingArguments = selectedCommand.Options.Parse(arguments);
                     }
                 }
+                else
+                {
+                    if (arguments.Count() < 1)
+                        throw new ConsoleHelpAsException("No arguments specified.");
 
-                if (selectedCommand == null)
-                    throw new ConsoleHelpAsException("Command name not recognized.");
+                    foreach (var possibleCommand in commands)
+                    {
+                        CheckCommandProperty(possibleCommand);
+
+                        if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
+                        {
+                            selectedCommand = possibleCommand;
+
+                            break;
+                        }
+                    }
+
+                    if (selectedCommand == null)
+                        throw new ConsoleHelpAsException("Command name not recognized.");
+
+                    remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                }
+
+                CheckRequiredArguments(selectedCommand);
+
+                CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
+
+                ConsoleHelp.ShowParsedCommand(selectedCommand, console);
+
+                return selectedCommand.Run(remainingArguments.ToArray());
             }
             catch (Exception e)
             {
-                console.WriteLine();
-                ConsoleHelpAsException.WriterErrorMessage(e, console);
+                if (!ConsoleHelpAsException.WriterErrorMessage(e, console))
+                    throw;
+
                 console.WriteLine();
 
                 if (selectedCommand != null)
                 {
-                    ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+                    if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
+                        ConsoleHelp.ShowCommandHelp(selectedCommand, console);
                 }
                 else
                 {
@@ -59,19 +83,34 @@ namespace ManyConsole
 
                 return -1;
             }
-
-            try
+        }
+  
+        private static void CheckCommandProperty(ConsoleCommand command)
+        {
+            if (string.IsNullOrEmpty(command.Command))
             {
-                ConsoleHelp.ShowParsedCommand(selectedCommand, console);
+                throw new InvalidOperationException(String.Format(
+                    "Command {0} did not define property Command, which must specify its command text.",
+                    command.GetType().Name));
+            }
+        }
 
-                return selectedCommand.Run();
-            }
-            catch (Exception e)
+        private static void CheckRequiredArguments(ConsoleCommand command)
+        {
+            var missingOptions = command.RequiredOptions
+                .Where(o => !o.WasIncluded).Select(o => o.Name).OrderBy(n => n).ToArray();
+            
+            if (missingOptions.Any())
             {
-                console.WriteLine();
-                console.WriteLine("Caught unhandled exception: " + e.ToString());
-                return -1;
+                throw new ConsoleHelpAsException("Missing option: " + string.Join(", ", missingOptions));
             }
+        }
+
+        private static void CheckRemainingArguments(List<string> remainingArguments, int? parametersRequiredAfterOptions)
+        {
+            if (parametersRequiredAfterOptions.HasValue)
+                ConsoleUtil.VerifyNumberOfArguments(remainingArguments.ToArray(),
+                    parametersRequiredAfterOptions.Value);
         }
 
         public static IEnumerable<ConsoleCommand> FindCommandsInSameAssemblyAs(Type typeInSameAssembly)

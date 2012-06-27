@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace ManyConsole.Internal
         {
             console.WriteLine("Available commands are:");
             console.WriteLine();
-                    
-            foreach (var command in commands)
+
+            var commandList = commands.ToList();
+            var n = commandList.Max(c => c.Command.Length) + 1;
+            var commandFormatString = "    {0,-" + n + "}- {1}";
+
+            foreach (var command in commandList)
             {
-                console.WriteLine("    {0}\t- {1}", command.Command, command.OneLineDescription);
+                console.WriteLine(commandFormatString, command.Command, command.OneLineDescription);
             }
             console.WriteLine();
         }
@@ -51,13 +56,13 @@ namespace ManyConsole.Internal
 
             string[] skippedProperties = new []{
                 "Command",
-                "RemainingArgumentsHelpText",
                 "OneLineDescription",
                 "Options",
-                "TraceCommandAfterParse"
+                "TraceCommandAfterParse",
+                "RemainingArgumentsCount",
+                "RemainingArgumentsHelpText",
+                "RequiredOptions"
             };
-
-            var deserializeRootElementName = consoleCommand.Command;
 
             var properties = consoleCommand.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => !skippedProperties.Contains(p.Name));
@@ -68,24 +73,55 @@ namespace ManyConsole.Internal
             Dictionary<string,string> allValuesToTrace = new Dictionary<string, string>();
 
             foreach (var property in properties)
-                allValuesToTrace[property.Name] = property.GetValue(consoleCommand, new object[0]).ToString();
+            {
+                object value = property.GetValue(consoleCommand, new object[0]);
+                allValuesToTrace[property.Name] = value != null ? value.ToString() : "null";
+            }
 
             foreach (var field in fields)
             {
-                object value = field.GetValue(consoleCommand);
-                if (value != null)
-                    allValuesToTrace[field.Name] = value.ToString();
-                else
-                    allValuesToTrace[field.Name] = "null";
+                allValuesToTrace[field.Name] = MakeObjectReadable(field.GetValue(consoleCommand));
             }
 
             consoleOut.WriteLine();
-            consoleOut.WriteLine("Executing {0} ({1}):", consoleCommand.Command, consoleCommand.OneLineDescription ?? "");
+
+            string introLine = String.Format("Executing {0}", consoleCommand.Command);
+
+            if (string.IsNullOrEmpty(consoleCommand.OneLineDescription))
+                introLine = introLine + ":";
+            else
+                introLine = introLine + " (" + consoleCommand.OneLineDescription + "):";
+
+            consoleOut.WriteLine(introLine);
             
             foreach(var value in allValuesToTrace.OrderBy(k => k.Key))
                 consoleOut.WriteLine("    " + value.Key + " : " + value.Value);
 
             consoleOut.WriteLine();
+        }
+
+        static string MakeObjectReadable(object value)
+        {
+            string readable;
+
+            if (value is System.Collections.IEnumerable && !(value is string))
+            {
+                readable = "";
+                var separator = "";
+
+                foreach (var member in (IEnumerable) value)
+                {
+                    readable += separator + MakeObjectReadable(member);
+                    separator = ", ";
+                }
+
+                readable = readable;
+            }
+            else if (value != null)
+                readable = value.ToString();
+            else
+                readable = "null";
+            return readable;
         }
     }
 }

@@ -15,8 +15,8 @@ namespace ManyConsole.Tests
         {
             given("we have some commands", delegate
             {
-                var firstcommand = new InlinedCommand("command-a", "oneline description a");
-                var secondCommand = new InlinedCommand("command-b", "oneline description b");
+                var firstcommand = new TestCommand().IsCommand("command-a", "oneline description a");
+                var secondCommand = new TestCommand().IsCommand("command-b", "oneline description b");
 
                 var commands = new ConsoleCommand[]
                 {
@@ -44,15 +44,11 @@ namespace ManyConsole.Tests
 
                 when("we call a command, asking for help", delegate
                 {
-                    var commandC = new InlinedCommand(
-                        
-                        "command-c",
-                        "one line description for C",
-                        "<remaining> <args>",
-                        new OptionSet()
-                        {
-                            {"o|option=", "option description", v => {}}
-                        });
+                    var commandC = new TestCommand()
+                        .IsCommand("command-c", "one line description for C")
+                        .HasAdditionalArguments(0, "<remaining> <args>")
+                        .HasOption("o|option=", "option description", v => { });
+
                     commands.Add(commandC);
 
                     arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[] { commandC.Command, "/?" }, writer));
@@ -60,7 +56,6 @@ namespace ManyConsole.Tests
                     then("the output contains a all help available for that command", delegate
                     {
                         var output = writer.ToString();
-
                         Expect.That(output).ContainsInOrder(
                             commandC.Command,
                             commandC.OneLineDescription,

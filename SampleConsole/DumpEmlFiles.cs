@@ -12,29 +12,24 @@ namespace SampleConsole
     {
         public DumpEmlFiles()
         {
-            Command = "dump-eml";
-            OneLineDescription = "Prints the contents of eml file(s).";
-            RemainingArgumentsHelpText = "<fileOrDirectory>";
+            this.IsCommand("dump-eml", "Prints the contents of eml file(s).");
             Options = new OptionSet()
             {
                 {"r|recursive", "Print files recursively", v => Recursive = v != null},
                 {"h|header=", "Mail header to include", v => HeadersToPrint.Add(v)}
             };
+
+            HasAdditionalArguments(1, "<fileOrDirectory>");
         }
 
         public string Path;
         public bool Recursive;
         public List<string> HeadersToPrint = new List<string>();
 
-        public override void FinishLoadingArguments(string[] remainingArguments)
+        public override int Run(string[] remainingArguments)
         {
-            VerifyNumberOfArguments(remainingArguments, 1);
-
             Path = remainingArguments[0];
-        }
 
-        public override int Run()
-        {
             if (File.Exists(Path))
             {
                 PrintEmlFile(Path);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SampleConsole
+namespace ManyConsole.Internal
 {
     public static class StringExtensions
     {
