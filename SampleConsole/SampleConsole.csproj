@@ -52,6 +52,7 @@
     <Compile Include="GetTime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThrowException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManyConsole\ManyConsole.csproj">
