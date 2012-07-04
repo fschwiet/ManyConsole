@@ -49,7 +49,7 @@ task Build -depends Cleanup,GenerateAssemblyInfo {
 }
 
 task RunTests {
-    exec { & "$baseDirectory\packages\NUnit.2.5.10.11092\tools\nunit-console.exe" "$buildDirectory\ManyConsole.Tests.dll" -xml:"$buildDirectory\TestResults.xml" }
+    exec { & "$baseDirectory\packages\NUnit.Runners.2.6.0.12051\tools\nunit-console.exe" "$buildDirectory\ManyConsole.Tests.dll" -xml:"$buildDirectory\TestResults.xml" }
 }
 
 task BuildNuget -depends Build {
