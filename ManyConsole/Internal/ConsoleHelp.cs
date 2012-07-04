@@ -14,10 +14,14 @@ namespace ManyConsole.Internal
         {
             console.WriteLine("Available commands are:");
             console.WriteLine();
-                    
-            foreach (var command in commands)
+
+            var commandList = commands.ToList();
+            var n = commandList.Max(c => c.Command.Length) + 1;
+            var commandFormatString = "    {0,-" + n + "}- {1}";
+
+            foreach (var command in commandList)
             {
-                console.WriteLine("    {0}\t- {1}", command.Command, command.OneLineDescription);
+                console.WriteLine(commandFormatString, command.Command, command.OneLineDescription);
             }
             console.WriteLine();
         }
