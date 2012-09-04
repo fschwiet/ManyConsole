@@ -20,7 +20,7 @@ param(
 )
 
 remove-module psake -ea 'SilentlyContinue'
-$scriptPath = (join-path (split-Path -parent $MyInvocation.MyCommand.path) "packages\psake.4.0.1.0\tools")
+$scriptPath = (join-path (split-Path -parent $MyInvocation.MyCommand.path) "packages\psake.4.2.0.1\tools")
 import-module (join-path $scriptPath psake.psm1)
 if (-not(test-path $buildFile))
 {
