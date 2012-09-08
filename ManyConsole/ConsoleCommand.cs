@@ -63,21 +63,7 @@ namespace ManyConsole
 
         public ConsoleCommand HasRequiredOption(string prototype, string description, Action<string> action)
         {
-            var requiredRecord = new RequiredOptionRecord();
-
-            var previousOptions = Options.ToArray();
-
-            Options.Add(prototype, description, s =>
-            {
-                requiredRecord.WasIncluded = true;
-                action(s);
-            });
-
-            var newOption = Options.Single(o => !previousOptions.Contains(o));
-
-            requiredRecord.Name = newOption.GetNames().OrderByDescending(n => n.Length).First();
-
-            RequiredOptions.Add(requiredRecord);
+            HasRequiredOption<string>(prototype, description, action);
 
             return this;
         }
@@ -90,7 +76,22 @@ namespace ManyConsole
 
         public ConsoleCommand HasRequiredOption<T>(string prototype, string description, Action<T> action)
         {
-            Options.Add(prototype, description, action);
+            var requiredRecord = new RequiredOptionRecord();
+
+            var previousOptions = Options.ToArray();
+
+            Options.Add<T>(prototype, description, s =>
+            {
+                requiredRecord.WasIncluded = true;
+                action(s);
+            });
+
+            var newOption = Options.Single(o => !previousOptions.Contains(o));
+
+            requiredRecord.Name = newOption.GetNames().OrderByDescending(n => n.Length).First();
+
+            RequiredOptions.Add(requiredRecord);
+
             return this;
         }
 
