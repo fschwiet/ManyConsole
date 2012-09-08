@@ -13,11 +13,9 @@ namespace SampleConsole
         public DumpEmlFiles()
         {
             this.IsCommand("dump-eml", "Prints the contents of eml file(s).");
-            Options = new OptionSet()
-            {
-                {"r|recursive", "Print files recursively", v => Recursive = v != null},
-                {"h|header=", "Mail header to include", v => HeadersToPrint.Add(v)}
-            };
+
+            this.HasOption("r|recursive", "Print files recursively", v => Recursive = v != null);
+            this.HasOption("h|header=", "Mail header to include", v => HeadersToPrint.Add(v));
 
             HasAdditionalArguments(1, "<fileOrDirectory>");
         }
