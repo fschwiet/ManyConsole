@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using ManyConsole.Internal;
@@ -8,6 +9,11 @@ namespace ManyConsole
 {
     public class ConsoleCommandDispatcher
     {
+        public static int DispatchCommand(ConsoleCommand command, string[] arguments, TextWriter consoleOut)
+        {
+            return DispatchCommand(new [] {command}, arguments, consoleOut);
+        }
+
         public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut)
         {
             ConsoleCommand selectedCommand = null;
@@ -90,7 +96,7 @@ namespace ManyConsole
             if (string.IsNullOrEmpty(command.Command))
             {
                 throw new InvalidOperationException(String.Format(
-                    "Command {0} did not define property Command, which must specify its command text.",
+                    "Command {0} did not define property Command, which must specify its commands text.",
                     command.GetType().Name));
             }
         }

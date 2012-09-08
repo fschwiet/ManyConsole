@@ -7,7 +7,7 @@ namespace ManyConsole.Tests
 {
     public class TestCommand : ConsoleCommand
     {
-        public Func<int> Action;
+        public Func<int> Action = delegate { return 0; };
 
         public override int Run(string[] remainingArguments)
         {

@@ -88,6 +88,12 @@ namespace ManyConsole
             return this;
         }
 
+        public ConsoleCommand HasRequiredOption<T>(string prototype, string description, Action<T> action)
+        {
+            Options.Add(prototype, description, action);
+            return this;
+        }
+
         public ConsoleCommand HasOption(string prototype, string description, OptionAction<string, string> action)
         {
             Options.Add(prototype, description, action);

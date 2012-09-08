@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Castle.Components.DictionaryAdapter;
 using NJasmine;
 
 namespace ManyConsole.Tests
@@ -55,6 +56,29 @@ namespace ManyConsole.Tests
                     {
                         expect(() => noopCommand.Foo == "bar");
                     });
+                });
+            });
+
+            given("a command that requires an integer parameter", () =>
+            {
+                int result = 0;
+                var requiresInteger = arrange(() => new TestCommand()
+                    .IsCommand("parse-int")
+                    .HasRequiredOption<int>("value=", "The integer value", v => result = v));
+
+                when("the command is passed an integer value", () =>
+                {
+                    StringWriter output = new StringWriter();
+
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(requiresInteger,
+                        new[] { "parse-int", "-value", "42" }, output));
+
+                    then("the command is told the parameter", ()=>
+                    {
+                        expect(() => result == 42);
+                    });
+
+                    then("the return value is success", () => expect(() => exitCode == 0));
                 });
             });
         }
