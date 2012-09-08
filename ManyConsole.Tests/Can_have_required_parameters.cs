@@ -14,38 +14,21 @@ namespace ManyConsole.Tests
         {
             given("a no-op command that requires a parameter", delegate()
             {
-                var noopCommand = new CommandWithRequiredParameter();
-                var commands = new ConsoleCommand[] { noopCommand };
-
-                when("that command is ran without the parameter", delegate()
-                {
-                    StringWriter output = new StringWriter();
-
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, 
-                        new[] { "required" }, output));
-
-                    then("the output indicates the parameter wasn't specified", delegate()
-                    {
-                        expect(() => output.ToString().Contains("Missing option: foo"));
-                    });
-
-                    then("the exit code indicates the call failed", delegate()
-                    {
-                        expect(() => exitCode == -1);
-                    });
-                });
+                string result = null;
+                var noopCommand = new TestCommand()
+                    .IsCommand("required", "This command has a required parameter")
+                    .HasOption("ignored=", "An extra option.", v => { })
+                    .HasRequiredOption("f|foo=", "This foo to use.", v => result = v)
+                    .SkipsCommandSummaryBeforeRunning();
+                
+                when_the_command_is_ran_without_the_parameter_then_the_console_gives_error_output(noopCommand, "foo");
 
                 when("that command is ran with the parameter", delegate()
                 {
                     StringWriter output = new StringWriter();
 
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, 
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(noopCommand, 
                         new[] { "required", "-foo", "bar" }, output));
-
-                    then("the output is empty", delegate()
-                    {
-                        expect(() => string.IsNullOrEmpty(output.ToString().Trim()));
-                    });
 
                     then("the exit code indicates the call succeeded", delegate()
                     {
@@ -54,7 +37,7 @@ namespace ManyConsole.Tests
 
                     then("the option is actually received", delegate()
                     {
-                        expect(() => noopCommand.Foo == "bar");
+                        expect(() => result == "bar");
                     });
                 });
             });
@@ -80,25 +63,24 @@ namespace ManyConsole.Tests
 
                     then("the return value is success", () => expect(() => exitCode == 0));
                 });
+
+                when_the_command_is_ran_without_the_parameter_then_the_console_gives_error_output(requiresInteger, "value");
             });
         }
 
-        public class CommandWithRequiredParameter : ConsoleCommand
+        void when_the_command_is_ran_without_the_parameter_then_the_console_gives_error_output(ConsoleCommand command, string parameterName)
         {
-            public CommandWithRequiredParameter()
+            when("that command is ran without the parameter", delegate()
             {
-                this.IsCommand("required", "This command has a required parameter");
-                this.HasOption("ignored=", "An extra option.", v => { });
-                this.HasRequiredOption("f|foo=", "This foo to use.", v => Foo = v);
-                this.SkipsCommandSummaryBeforeRunning();
-            }
+                StringWriter output = new StringWriter();
 
-            public string Foo;
+                var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(command,new[] {command.Command}, output));
 
-            public override int Run(string[] remainingArguments)
-            {
-                return 0;
-            }
+                then("the output indicates the parameter wasn't specified",
+                     delegate() { expect(() => output.ToString().Contains("Missing option: " + parameterName)); });
+
+                then("the exit code indicates the call failed", delegate() { expect(() => exitCode == -1); });
+            });
         }
     }
 }
