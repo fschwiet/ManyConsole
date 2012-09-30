@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ManyConsole.Internal;
+using NDesk.Options;
 
 namespace ManyConsole
 {
@@ -19,12 +20,15 @@ namespace ManyConsole
             Func<IEnumerable<ConsoleCommand>> commandSource,
             TextWriter outputStream = null,
             TextReader inputStream = null,
-            string friendlyContinueText = null)
+            string friendlyContinueText = null,
+            OptionSet options = null)
         {
             _inputStream = inputStream ?? Console.In;
             _outputStream = outputStream ?? Console.Out;
 
             this.IsCommand("run-console", "Run in console mode, treating each line of console input as a command.");
+
+            this.Options = options ?? this.Options;  //  added per request from https://github.com/fschwiet/ManyConsole/issues/7
 
             _commandSource = () =>
             {
