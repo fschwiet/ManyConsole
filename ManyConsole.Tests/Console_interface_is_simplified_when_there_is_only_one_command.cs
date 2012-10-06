@@ -31,12 +31,11 @@ namespace ManyConsole.Tests
             given("exactly one command is loaded", () =>
             {
                 var exampleCommand = new ExampleCommand();
-                var commands = new ConsoleCommand[] { exampleCommand };
 
                 when("no parameters are specified", () =>
                 {
                     var output = new StringWriter();
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[0], output));
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(exampleCommand, new string[0], output));
 
                     then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
@@ -49,7 +48,7 @@ namespace ManyConsole.Tests
                 when("the only parameter specified is the command", () =>
                 {
                     var output = new StringWriter();
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "Example" }, output));
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(exampleCommand, new[] { "Example" }, output));
 
                     then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
@@ -62,7 +61,7 @@ namespace ManyConsole.Tests
                 when("the only parameter specified is not the command", () =>
                 {
                     var output = new StringWriter();
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "/f=bar" }, output));
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(exampleCommand, new[] { "/f=bar" }, output));
 
                     then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
@@ -75,7 +74,7 @@ namespace ManyConsole.Tests
                 when("both the command and an extra parameter are specified", () =>
                 {
                     var output = new StringWriter();
-                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new[] { "Example", "/f=bar" }, output));
+                    var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(exampleCommand, new[] { "Example", "/f=bar" }, output));
 
                     then_the_command_runs_without_tracing_parameter_information(output, exitCode);
 
