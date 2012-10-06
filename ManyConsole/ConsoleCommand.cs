@@ -108,5 +108,9 @@ namespace ManyConsole
         }
 
         public abstract int Run(string[] remainingArguments);
+        public virtual int? OverrideAfterHandlingArgumentsBeforeRun(string[] remainingArguments)
+        {
+            return null;
+        }
     }
 }

@@ -66,6 +66,11 @@ namespace ManyConsole
 
                 CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
 
+                var preResult = selectedCommand.OverrideAfterHandlingArgumentsBeforeRun(remainingArguments.ToArray());
+
+                if (preResult.HasValue)
+                    return preResult.Value;
+
                 ConsoleHelp.ShowParsedCommand(selectedCommand, console);
 
                 return selectedCommand.Run(remainingArguments.ToArray());
