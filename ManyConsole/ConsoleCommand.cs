@@ -17,6 +17,7 @@ namespace ManyConsole
             TraceCommandAfterParse = true;
             RemainingArgumentsCount = 0;
             RemainingArgumentsHelpText = "";
+            OptionsHasd = new OptionSet();
             RequiredOptions = new List<RequiredOptionRecord>();
         }
 
@@ -26,7 +27,8 @@ namespace ManyConsole
         public bool TraceCommandAfterParse { get; private set; }
         public int? RemainingArgumentsCount { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
-        public List<RequiredOptionRecord> RequiredOptions { get; private set; }
+        private OptionSet OptionsHasd { get; set; }
+        private List<RequiredOptionRecord> RequiredOptions { get; set; }
 
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
@@ -56,7 +58,7 @@ namespace ManyConsole
 
         public ConsoleCommand HasOption(string prototype, string description, Action<string> action)
         {
-            Options.Add(prototype, description, action);
+            OptionsHasd.Add(prototype, description, action);
 
             return this;
         }
@@ -70,7 +72,7 @@ namespace ManyConsole
 
         public ConsoleCommand HasOption<T>(string prototype, string description, Action<T> action)
         {
-            Options.Add(prototype, description, action);
+            OptionsHasd.Add(prototype, description, action);
             return this;
         }
 
@@ -78,15 +80,15 @@ namespace ManyConsole
         {
             var requiredRecord = new RequiredOptionRecord();
 
-            var previousOptions = Options.ToArray();
+            var previousOptions = OptionsHasd.ToArray();
 
-            Options.Add<T>(prototype, description, s =>
+            OptionsHasd.Add<T>(prototype, description, s =>
             {
                 requiredRecord.WasIncluded = true;
                 action(s);
             });
 
-            var newOption = Options.Single(o => !previousOptions.Contains(o));
+            var newOption = OptionsHasd.Single(o => !previousOptions.Contains(o));
 
             requiredRecord.Name = newOption.GetNames().OrderByDescending(n => n.Length).First();
 
@@ -97,20 +99,45 @@ namespace ManyConsole
 
         public ConsoleCommand HasOption(string prototype, string description, OptionAction<string, string> action)
         {
-            Options.Add(prototype, description, action);
+            OptionsHasd.Add(prototype, description, action);
             return this;
         }
 
         public ConsoleCommand HasOption<TKey, TValue>(string prototype, string description, OptionAction<TKey, TValue> action)
         {
-            Options.Add(prototype, description, action);
+            OptionsHasd.Add(prototype, description, action);
             return this;
         }
 
-        public abstract int Run(string[] remainingArguments);
+        public virtual void CheckRequiredArguments()
+        {
+            var missingOptions = this.RequiredOptions
+                .Where(o => !o.WasIncluded).Select(o => o.Name).OrderBy(n => n).ToArray();
+
+            if (missingOptions.Any())
+            {
+                throw new ConsoleHelpAsException("Missing option: " + String.Join(", ", missingOptions));
+            }
+        }
+
         public virtual int? OverrideAfterHandlingArgumentsBeforeRun(string[] remainingArguments)
         {
             return null;
+        }
+
+        public abstract int Run(string[] remainingArguments);
+
+        public OptionSet GetActualOptions()
+        {
+            var result = new OptionSet();
+
+            foreach (var option in Options)
+                result.Add(option);
+
+            foreach (var option in OptionsHasd)
+                result.Add(option);
+
+            return result;
         }
     }
 }

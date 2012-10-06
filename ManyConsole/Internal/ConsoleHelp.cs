@@ -28,7 +28,7 @@ namespace ManyConsole.Internal
 
         public static void ShowCommandHelp(ConsoleCommand selectedCommand, TextWriter console)
         {
-            var haveOptions = selectedCommand.Options.Count > 0;
+            var haveOptions = selectedCommand.GetActualOptions().Count > 0;
 
             console.WriteLine("'" + selectedCommand.Command + "' - " + selectedCommand.OneLineDescription);
             console.WriteLine();
@@ -42,7 +42,7 @@ namespace ManyConsole.Internal
             if (haveOptions)
             {
                 console.WriteLine("<options> available:");
-                selectedCommand.Options.WriteOptionDescriptions(console);
+                selectedCommand.GetActualOptions().WriteOptionDescriptions(console);
             }
             console.WriteLine();
         }

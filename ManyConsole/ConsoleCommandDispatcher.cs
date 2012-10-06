@@ -32,11 +32,11 @@ namespace ManyConsole
 
                     if (arguments.Count() > 0 && arguments.First().ToLower() == selectedCommand.Command.ToLower())
                     {
-                        remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                        remainingArguments = selectedCommand.GetActualOptions().Parse(arguments.Skip(1));
                     }
                     else
                     {
-                        remainingArguments = selectedCommand.Options.Parse(arguments);
+                        remainingArguments = selectedCommand.GetActualOptions().Parse(arguments);
                     }
                 }
                 else
@@ -59,10 +59,10 @@ namespace ManyConsole
                     if (selectedCommand == null)
                         throw new ConsoleHelpAsException("Command name not recognized.");
 
-                    remainingArguments = selectedCommand.Options.Parse(arguments.Skip(1));
+                    remainingArguments = selectedCommand.GetActualOptions().Parse(arguments.Skip(1));
                 }
 
-                CheckRequiredArguments(selectedCommand);
+                selectedCommand.CheckRequiredArguments();
 
                 CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
 
@@ -101,19 +101,8 @@ namespace ManyConsole
             if (string.IsNullOrEmpty(command.Command))
             {
                 throw new InvalidOperationException(String.Format(
-                    "Command {0} did not define property Command, which must specify its commands text.",
+                    "Command {0} did not call IsCommand in its constructor to indicate its name and description.",
                     command.GetType().Name));
-            }
-        }
-
-        private static void CheckRequiredArguments(ConsoleCommand command)
-        {
-            var missingOptions = command.RequiredOptions
-                .Where(o => !o.WasIncluded).Select(o => o.Name).OrderBy(n => n).ToArray();
-            
-            if (missingOptions.Any())
-            {
-                throw new ConsoleHelpAsException("Missing option: " + string.Join(", ", missingOptions));
             }
         }
 

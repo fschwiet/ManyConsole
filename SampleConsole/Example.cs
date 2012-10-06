@@ -38,9 +38,10 @@ namespace MC.AX.DataUtility
         {
             this.IsCommand("Example", "Example implementation of a ManyConsole command-line argument parser Command");
 
+            this.HasOption("b|booleanOption", "Boolean flag option", b => BooleanOption = true);
+
             Options = new OptionSet()
             {
-                {"b|booleanOption", "Boolean flag option", b => BooleanOption = true},
                 {"l|list=", "Values to add to list", v => OptionalArgumentList.Add(v)},
                 {"r|requiredArguments=", "Optional string argument requiring a value be specified afterwards", s => OptionalArgument1 = s},
                 {"o|optionalArgument:", "Optional String argument which is null if no value follow is specified", s => OptionalArgument2 = s ?? "<no argument specified>"}
