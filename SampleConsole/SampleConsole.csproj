@@ -50,6 +50,7 @@
     <Compile Include="DumpEmlFiles.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="GetTime.cs" />
+    <Compile Include="MattsCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThrowException.cs" />
