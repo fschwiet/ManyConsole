@@ -20,7 +20,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                         "echo-status -s 0",
                         "x",
                     },
-                    inputIsFromUser: true,
+                    inputIsFromUser: true, command: new StatusEchoCommand(),
                     outputWriter: output));
 
                 then("the output contains a helpful prompt", delegate
@@ -36,7 +36,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                         "echo-status -s 0",
                         "x",
                     },
-                    inputIsFromUser: false,
+                    inputIsFromUser: false, command: new StatusEchoCommand(),
                     outputWriter: output));
 
                 then("the output does not contain the helpful prompt", delegate

@@ -69,10 +69,11 @@
     <Compile Include="ConsoleModeCommandSpecs\ConsoleModeCommandSpecification.cs" />
     <Compile Include="ConsoleModeCommandSpecs\Should_fail_strictly_on_error_when_running_noninteractive.cs" />
     <Compile Include="ConsoleModeCommandSpecs\Should_give_user_prompt_in_interactive_mode.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\Should_interpret_quotes_properly.cs" />
+    <Compile Include="ConsoleModeCommandSpecs\StatusEchoCommand.cs" />
     <Compile Include="Console_interface_is_simplified_when_there_is_only_one_command.cs" />
     <Compile Include="Can_have_required_parameters.cs" />
     <Compile Include="Can_verify_number_of_arguments_passed_to_command.cs" />
-    <Compile Include="InlinedCommand.cs" />
     <Compile Include="lets_user_browse_command_help.cs" />
     <Compile Include="abstract_commands_arent_loaded.cs" />
     <Compile Include="Multiple_dispatch_calls_dont_interfere_with_each_other.cs" />

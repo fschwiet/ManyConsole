@@ -8,7 +8,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
 {
     public abstract class ConsoleModeCommandSpecification : GivenWhenThenFixture
     {
-        public Func<int> RunConsoleModeCommand(string[] lines, bool inputIsFromUser, TextWriter outputWriter = null)
+        public Func<int> RunConsoleModeCommand(string[] lines, bool inputIsFromUser, ConsoleCommand command, TextWriter outputWriter = null)
         {
             var injectedInputStream = new MemoryStream();
 
@@ -16,7 +16,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
             var fakeConsoleReader = new StreamReader(injectedInputStream);
 
             var consoleModeCommand = new ConsoleModeCommand(
-                () => new ConsoleCommand[] {new Should_fail_strictly_on_error_when_running_noninteractive.StatusEchoCommand()},
+                () => new ConsoleCommand[] {command},
                 fakeConsoleWriter,
                 fakeConsoleReader);
 

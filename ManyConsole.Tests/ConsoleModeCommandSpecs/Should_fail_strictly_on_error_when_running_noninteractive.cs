@@ -21,7 +21,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                         "echo-status -s 0",
                         "echo-status -s 0",
                         "x",
-                    }, true));
+                    }, true, new StatusEchoCommand()));
 
                     then("the return code is 0", delegate
                     {
@@ -42,11 +42,9 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                         "echo-status -s 2",
                         "echo-status -s 0",
                         "x",
-                    }, true);
+                    }, true, new StatusEchoCommand());
 
                     var result = arrange(arrangeAction);
-
-
 
                     then("the return code is -1", delegate
                     {
@@ -68,7 +66,7 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                         "echo-status -s 456",
                         "echo-status -s 0",
                         "x",
-                    }, false));
+                    }, false, new StatusEchoCommand()));
 
                 then("execution stops after that command", delegate()
                 {
@@ -80,25 +78,6 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
                     expect(() => result == 456);
                 });
             });
-        }
-
-        public class StatusEchoCommand : ConsoleCommand
-        {
-            public static int RunCount = 0;
-
-            public StatusEchoCommand()
-            {
-                this.IsCommand("echo-status", "Returns a particular status code");
-                this.HasRequiredOption("s=", "Status code to return", v => StatusCode = int.Parse(v));
-            }
-
-            public int StatusCode;
-
-            public override int Run(string[] remainingArguments)
-            {
-                RunCount++;
-                return StatusCode;
-            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ManyConsole.Internal
 {
-    public static class StringExtensions
+    public static class CommandLineParser
     {
         /// <summary>
         /// Splits a string in the same way that Windows splits up a command line into args 
@@ -12,7 +12,7 @@ namespace ManyConsole.Internal
         /// <param name="commandLine">a string containing command line arguments</param>
         /// <returns></returns>
         /// <remarks>taken from http://stackoverflow.com/q/298830/5351</remarks>
-        public static string[] ToCommandLineArgs(this string commandLine)
+        public static string[] Parse(string commandLine)
         {
             int argc;
             var argv = CommandLineToArgvW(commandLine, out argc);

@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Sasa.Net">
       <HintPath>..\lib\Sasa-v0.9.3\Sasa.Net.dll</HintPath>
     </Reference>
@@ -48,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DumpEmlFiles.cs" />
+    <Compile Include="EchoStringsCommand.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="GetTime.cs" />
     <Compile Include="MattsCommand.cs" />
@@ -60,6 +64,9 @@
       <Project>{90DB8534-C471-47CF-999D-BE7A86070979}</Project>
       <Name>ManyConsole</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

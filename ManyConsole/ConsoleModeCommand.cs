@@ -59,7 +59,8 @@ namespace ManyConsole
                 }
                 else
                 {
-                    args = input.ToCommandLineArgs();
+                    args = CommandLineParser.Parse(input);
+
                     var result = ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
                     if (result != 0)
                     {
