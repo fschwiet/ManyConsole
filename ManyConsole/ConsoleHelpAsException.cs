@@ -16,6 +16,7 @@ namespace ManyConsole
         {
             if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
             {
+                tw.WriteLine();
                 tw.WriteLine(e.Message);
                 return true;
             }

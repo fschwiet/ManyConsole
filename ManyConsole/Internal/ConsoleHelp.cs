@@ -12,7 +12,6 @@ namespace ManyConsole.Internal
     {
         public static void ShowSummaryOfCommands(IEnumerable<ConsoleCommand> commands, TextWriter console)
         {
-            console.WriteLine();
             console.WriteLine("Available commands are:");
             console.WriteLine();
 
