@@ -20,6 +20,11 @@ namespace ManyConsole
 
             TextWriter console = consoleOut;
 
+            foreach (var command in commands)
+            {
+                ValidateConsoleCommand(command);
+            }
+
             try
             {
                 List<string> remainingArguments;
@@ -27,8 +32,6 @@ namespace ManyConsole
                 if (commands.Count() == 1)
                 {
                     selectedCommand = commands.First();
-
-                    CheckCommandProperty(selectedCommand);
 
                     if (arguments.Count() > 0 && arguments.First().ToLower() == selectedCommand.Command.ToLower())
                     {
@@ -44,17 +47,14 @@ namespace ManyConsole
                     if (arguments.Count() < 1)
                         throw new ConsoleHelpAsException("No arguments specified.");
 
-                    foreach (var possibleCommand in commands)
+                    if (arguments[0].Equals("help", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        CheckCommandProperty(possibleCommand);
-
-                        if (arguments.First().ToLower() == possibleCommand.Command.ToLower())
-                        {
-                            selectedCommand = possibleCommand;
-
-                            break;
-                        }
+                        selectedCommand = GetMatchingCommand(commands, arguments.Skip(1).FirstOrDefault());
+                        ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+                        return -2;
                     }
+
+                    selectedCommand = GetMatchingCommand(commands, arguments.First());
 
                     if (selectedCommand == null)
                         throw new ConsoleHelpAsException("Command name not recognized.");
@@ -96,7 +96,12 @@ namespace ManyConsole
             }
         }
   
-        private static void CheckCommandProperty(ConsoleCommand command)
+        private static ConsoleCommand GetMatchingCommand(IEnumerable<ConsoleCommand> command, string name)
+        {
+            return command.FirstOrDefault(c => c.Command.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static void ValidateConsoleCommand(ConsoleCommand command)
         {
             if (string.IsNullOrEmpty(command.Command))
             {

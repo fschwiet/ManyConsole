@@ -42,29 +42,39 @@ namespace ManyConsole.Tests
                     });
                 });
 
-                when("we call a command, asking for help", delegate
+                ShouldShowHelpWhenRequested(commands, new string[] { "command-c", "/?" });
+                ShouldShowHelpWhenRequested(commands, new string[] { "help", "command-c" });
+            });
+        }
+
+        private void ShouldShowHelpWhenRequested(List<ConsoleCommand> commands, string[] consoleArguments)
+        {
+            var writer = new StringWriter();
+
+            when("we call a command, asking for help", delegate
+            {
+                var commandC = new TestCommand()
+                    .IsCommand("command-c", "one line description for C")
+                    .HasAdditionalArguments(0, "<remaining> <args>")
+                    .HasOption("o|option=", "option description", v => { });
+
+                commands.Add(commandC);
+
+                var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, consoleArguments, writer));
+
+                then("the output contains a all help available for that command", delegate
                 {
-                    var commandC = new TestCommand()
-                        .IsCommand("command-c", "one line description for C")
-                        .HasAdditionalArguments(0, "<remaining> <args>")
-                        .HasOption("o|option=", "option description", v => { });
-
-                    commands.Add(commandC);
-
-                    arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[] { commandC.Command, "/?" }, writer));
-
-                    then("the output contains a all help available for that command", delegate
-                    {
-                        var output = writer.ToString();
-                        Expect.That(output).ContainsInOrder(
-                            commandC.Command,
-                            commandC.OneLineDescription,
-                            commandC.RemainingArgumentsHelpText,
-                            "-o",
-                            "--option",
-                            "option description");
-                    });
+                    var output = writer.ToString();
+                    Expect.That(output).ContainsInOrder(
+                        commandC.Command,
+                        commandC.OneLineDescription,
+                        commandC.RemainingArgumentsHelpText,
+                        "-o",
+                        "--option",
+                        "option description");
                 });
+
+                //then("the process exit code is non-zero", function() {});
             });
         }
     }
