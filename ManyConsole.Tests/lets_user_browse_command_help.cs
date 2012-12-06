@@ -74,7 +74,7 @@ namespace ManyConsole.Tests
                         "option description");
                 });
 
-                //then("the process exit code is non-zero", function() {});
+                then("the process exit code is non-zero", () => expect(() => exitCode == -1));
             });
         }
     }

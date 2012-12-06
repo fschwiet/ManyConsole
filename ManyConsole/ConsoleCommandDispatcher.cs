@@ -51,7 +51,7 @@ namespace ManyConsole
                     {
                         selectedCommand = GetMatchingCommand(commands, arguments.Skip(1).FirstOrDefault());
                         ConsoleHelp.ShowCommandHelp(selectedCommand, console);
-                        return -2;
+                        return -1;
                     }
 
                     selectedCommand = GetMatchingCommand(commands, arguments.First());
