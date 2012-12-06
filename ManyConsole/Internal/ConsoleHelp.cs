@@ -12,17 +12,22 @@ namespace ManyConsole.Internal
     {
         public static void ShowSummaryOfCommands(IEnumerable<ConsoleCommand> commands, TextWriter console)
         {
+            console.WriteLine();
             console.WriteLine("Available commands are:");
             console.WriteLine();
 
+            string helpCommand = "help <name>";
+
             var commandList = commands.ToList();
-            var n = commandList.Max(c => c.Command.Length) + 1;
+            var n = commandList.Select(c => c.Command).Concat(new [] { helpCommand}).Max(c => c.Length) + 1;
             var commandFormatString = "    {0,-" + n + "}- {1}";
 
             foreach (var command in commandList)
             {
                 console.WriteLine(commandFormatString, command.Command, command.OneLineDescription);
             }
+            console.WriteLine();
+            console.WriteLine(commandFormatString, helpCommand, "For help with one of the above commands");
             console.WriteLine();
         }
 
