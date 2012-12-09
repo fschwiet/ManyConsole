@@ -50,7 +50,12 @@ namespace ManyConsole
                     if (arguments[0].Equals("help", StringComparison.InvariantCultureIgnoreCase))
                     {
                         selectedCommand = GetMatchingCommand(commands, arguments.Skip(1).FirstOrDefault());
-                        ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+
+                        if (selectedCommand == null)
+                            ConsoleHelp.ShowSummaryOfCommands(commands, console);
+                        else
+                            ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+
                         return -1;
                     }
 

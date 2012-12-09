@@ -26,25 +26,33 @@ namespace ManyConsole.Tests
 
                 var writer = new StringWriter();
 
-                when("we dispatch the commands with no arguments", delegate
-                {
-                    arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, new string[0], writer));
-
-                    then("the output contains a list of available commands", delegate
-                    {
-                        var output = writer.ToString();
-
-                        Expect.That(output).ContainsInOrder(
-                            firstcommand.Command, 
-                            firstcommand.OneLineDescription,
-                            secondCommand.Command, 
-                            secondCommand.OneLineDescription);
-                    });
-                });
+                WhenTheUserDoesNotSpecifyACommandThenShowAvailableCommands(commands, writer, firstcommand, secondCommand, new string[0]);
+                WhenTheUserDoesNotSpecifyACommandThenShowAvailableCommands(commands, writer, firstcommand, secondCommand, new [] { "help"});
 
                 ShouldShowHelpWhenRequested(commands, new string[] { "command-c", "/?" });
                 ShouldShowHelpWhenRequested(commands, new string[] { "help", "command-c" });
             });
+        }
+
+        private void WhenTheUserDoesNotSpecifyACommandThenShowAvailableCommands(List<ConsoleCommand> commands, StringWriter writer,
+                                                                                ConsoleCommand firstcommand,
+                                                                                ConsoleCommand secondCommand, string[] arguments)
+        {
+            when("the user does not specify a command", delegate
+                {
+                    arrange(() => ConsoleCommandDispatcher.DispatchCommand(commands, arguments, writer));
+
+                    then("the output contains a list of available commands", delegate
+                        {
+                            var output = writer.ToString();
+
+                            Expect.That(output).ContainsInOrder(
+                                firstcommand.Command,
+                                firstcommand.OneLineDescription,
+                                secondCommand.Command,
+                                secondCommand.OneLineDescription);
+                        });
+                });
         }
 
         private void ShouldShowHelpWhenRequested(List<ConsoleCommand> commands, string[] consoleArguments)
