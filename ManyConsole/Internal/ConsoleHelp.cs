@@ -12,6 +12,7 @@ namespace ManyConsole.Internal
     {
         public static void ShowSummaryOfCommands(IEnumerable<ConsoleCommand> commands, TextWriter console)
         {
+            console.WriteLine();
             console.WriteLine("Available commands are:");
             console.WriteLine();
 
@@ -34,6 +35,7 @@ namespace ManyConsole.Internal
         {
             var haveOptions = selectedCommand.GetActualOptions().Count > 0;
 
+            console.WriteLine();
             console.WriteLine("'" + selectedCommand.Command + "' - " + selectedCommand.OneLineDescription);
             console.WriteLine();
             console.Write("Expected usage: {0} {1} ", AppDomain.CurrentDomain.FriendlyName, selectedCommand.Command);

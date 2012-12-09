@@ -85,8 +85,6 @@ namespace ManyConsole
                 if (!ConsoleHelpAsException.WriterErrorMessage(e, console))
                     throw;
 
-                console.WriteLine();
-
                 if (selectedCommand != null)
                 {
                     if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
