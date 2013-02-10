@@ -17,6 +17,17 @@ namespace ManyConsole
         private string continuePrompt;
 
         public ConsoleModeCommand(
+            TextWriter outputStream = null,
+            TextReader inputStream = null,
+            string friendlyContinueText = null,
+            OptionSet options = null)
+            : this(() => new ConsoleCommand[0], outputStream, inputStream, friendlyContinueText, options)
+        {
+            _commandSource = () => new ConsoleCommand[0];
+        }
+
+        [Obsolete("Its preferred to override ConsoleModeCommand method.")]
+        public ConsoleModeCommand(
             Func<IEnumerable<ConsoleCommand>> commandSource,
             TextWriter outputStream = null,
             TextReader inputStream = null,
@@ -39,6 +50,11 @@ namespace ManyConsole
             continuePrompt = friendlyContinueText ?? FriendlyContinuePrompt;
         }
 
+        public virtual IEnumerable<ConsoleCommand> PrepareNextCommands()
+        {
+            return _commandSource();
+        }
+
         public override int Run(string[] remainingArguments)
         {
             string[] args;
@@ -55,13 +71,13 @@ namespace ManyConsole
             {
                 if (input.Trim().Equals("?"))
                 {
-                    ConsoleCommandDispatcher.DispatchCommand(_commandSource(), new string[] { }, _outputStream);
+                    ConsoleHelp.ShowSummaryOfCommands(PrepareNextCommands(), _outputStream);
                 }
                 else
                 {
                     args = CommandLineParser.Parse(input);
 
-                    var result = ConsoleCommandDispatcher.DispatchCommand(_commandSource(), args, _outputStream);
+                    var result = ConsoleCommandDispatcher.DispatchCommand(PrepareNextCommands(), args, _outputStream);
                     if (result != 0)
                     {
                         haveError = true;
