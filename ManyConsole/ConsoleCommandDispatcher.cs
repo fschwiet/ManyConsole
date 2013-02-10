@@ -14,7 +14,7 @@ namespace ManyConsole
             return DispatchCommand(new [] {command}, arguments, consoleOut);
         }
 
-        public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut)
+        public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut, bool skipExeInExpectedUsage = false)
         {
             ConsoleCommand selectedCommand = null;
 
@@ -54,7 +54,7 @@ namespace ManyConsole
                         if (selectedCommand == null)
                             ConsoleHelp.ShowSummaryOfCommands(commands, console);
                         else
-                            ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+                            ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
 
                         return -1;
                     }
@@ -88,7 +88,7 @@ namespace ManyConsole
                 if (selectedCommand != null)
                 {
                     if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
-                        ConsoleHelp.ShowCommandHelp(selectedCommand, console);
+                        ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
                 }
                 else
                 {

@@ -31,17 +31,24 @@ namespace ManyConsole.Internal
             console.WriteLine();
         }
 
-        public static void ShowCommandHelp(ConsoleCommand selectedCommand, TextWriter console)
+        public static void ShowCommandHelp(ConsoleCommand selectedCommand, TextWriter console, bool skipExeInExpectedUsage = false)
         {
             var haveOptions = selectedCommand.GetActualOptions().Count > 0;
 
             console.WriteLine();
             console.WriteLine("'" + selectedCommand.Command + "' - " + selectedCommand.OneLineDescription);
             console.WriteLine();
-            console.Write("Expected usage: {0} {1} ", AppDomain.CurrentDomain.FriendlyName, selectedCommand.Command);
+            console.Write("Expected usage:");
+
+            if (!skipExeInExpectedUsage)
+            {
+                console.Write(" " + AppDomain.CurrentDomain.FriendlyName);
+            }
+
+            console.Write(" " + selectedCommand.Command);
 
             if (haveOptions)
-                console.Write("<options> ");
+                console.Write(" <options> ");
 
             console.WriteLine(selectedCommand.RemainingArgumentsHelpText);
 

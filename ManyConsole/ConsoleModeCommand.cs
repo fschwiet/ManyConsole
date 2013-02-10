@@ -11,22 +11,21 @@ namespace ManyConsole
     {
         private readonly TextReader _inputStream;
         private readonly TextWriter _outputStream;
-        readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
         IConsoleRedirectionDetection _redirectionDetector = new ConsoleRedirectionDetection();
         public static string FriendlyContinuePrompt = "Enter a command or 'x' to exit or '?' for help";
-        private string continuePrompt;
+        readonly Func<IEnumerable<ConsoleCommand>> _commandSource;
+        private string _continuePrompt;
 
         public ConsoleModeCommand(
             TextWriter outputStream = null,
             TextReader inputStream = null,
-            string friendlyContinueText = null,
             OptionSet options = null)
-            : this(() => new ConsoleCommand[0], outputStream, inputStream, friendlyContinueText, options)
+            : this(() => new ConsoleCommand[0], outputStream, inputStream, null, options)
         {
             _commandSource = () => new ConsoleCommand[0];
         }
 
-        [Obsolete("Its preferred to override ConsoleModeCommand method.")]
+        [Obsolete("Its preferred to override methods on ConsoleModeCommand and use the shorter constructor.")]
         public ConsoleModeCommand(
             Func<IEnumerable<ConsoleCommand>> commandSource,
             TextWriter outputStream = null,
@@ -47,10 +46,23 @@ namespace ManyConsole
                 return commands.Where(c => !(c is ConsoleModeCommand));  // don't cross the beams
             };
 
-            continuePrompt = friendlyContinueText ?? FriendlyContinuePrompt;
+            _continuePrompt = friendlyContinueText ?? FriendlyContinuePrompt;
         }
 
-        public virtual IEnumerable<ConsoleCommand> PrepareNextCommands()
+        /// <summary>
+        /// Writes to the console to prompt the user for their next command.
+        /// Is skipped if commands are being ran without user interaction.
+        /// </summary>
+        public virtual void WritePromptForCommands()
+        {
+            if (!string.IsNullOrEmpty(_continuePrompt))
+                _outputStream.WriteLine(_continuePrompt);        }
+
+        /// <summary>
+        /// Runs to get the next available commands
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<ConsoleCommand> GetNextCommands()
         {
             return _commandSource();
         }
@@ -62,7 +74,9 @@ namespace ManyConsole
             bool isInputRedirected = _redirectionDetector.IsInputRedirected();
 
             if (!isInputRedirected)
-                _outputStream.WriteLine(continuePrompt);
+            {
+                WritePromptForCommands();
+            }
 
             bool haveError = false;
             string input = _inputStream.ReadLine();
@@ -71,13 +85,13 @@ namespace ManyConsole
             {
                 if (input.Trim().Equals("?"))
                 {
-                    ConsoleHelp.ShowSummaryOfCommands(PrepareNextCommands(), _outputStream);
+                    ConsoleHelp.ShowSummaryOfCommands(GetNextCommands(), _outputStream);
                 }
                 else
                 {
                     args = CommandLineParser.Parse(input);
 
-                    var result = ConsoleCommandDispatcher.DispatchCommand(PrepareNextCommands(), args, _outputStream);
+                    var result = ConsoleCommandDispatcher.DispatchCommand(GetNextCommands(), args, _outputStream, true);
                     if (result != 0)
                     {
                         haveError = true;
@@ -90,7 +104,11 @@ namespace ManyConsole
                 if (!isInputRedirected)
                 {
                     _outputStream.WriteLine();
-                    _outputStream.WriteLine(continuePrompt);                    
+
+                    if (!isInputRedirected)
+                    {
+                        WritePromptForCommands();
+                    }
                 }
 
                 input = _inputStream.ReadLine();

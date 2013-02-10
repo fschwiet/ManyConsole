@@ -57,6 +57,7 @@
     <Compile Include="MattsCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatefulConsoleCommand.cs" />
     <Compile Include="ThrowException.cs" />
   </ItemGroup>
   <ItemGroup>
