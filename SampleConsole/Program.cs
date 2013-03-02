@@ -12,16 +12,11 @@ namespace SampleConsole
             // locate any commands in the assembly (or use an IoC container, or whatever source)
             var commands = GetCommands();
 
-            // optionally, include ConsoleModeCommand if you want to allow the user to run
-            // commands from the console.
-            ConsoleModeCommand consoleRunner = new ConsoleModeCommand(GetCommands);
-            commands = commands.Concat(new[] { consoleRunner });
-
-            // run the command for the console input
+            // then run them.
             return ConsoleCommandDispatcher.DispatchCommand(commands, args, Console.Out);
         }
 
-        static IEnumerable<ConsoleCommand> GetCommands()
+        public static IEnumerable<ConsoleCommand> GetCommands()
         {
             return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program));
         }

@@ -8,7 +8,7 @@ namespace MC.AX.DataUtility
     /// <summary>
     /// Example implementation of a ManyConsole command-line argument parser (ConsoleCommand) class
     /// </summary>
-    public class Example : ConsoleCommand
+    public class ExampleCommand : ConsoleCommand
     {
         /// <summary>
         /// Configure command options and describe details in the class contructor
@@ -34,12 +34,14 @@ namespace MC.AX.DataUtility
         ///List Item 1 = "second"
         ///List Item 2 = "the third option"
         /// </example>
-        public Example()
+        public ExampleCommand()
         {
             this.IsCommand("Example", "Example implementation of a ManyConsole command-line argument parser Command");
 
             this.HasOption("b|booleanOption", "Boolean flag option", b => BooleanOption = true);
 
+            //  Setting .Options directly is the old way to do this, you may prefer to call the helper
+            //  method HasOption/HasRequiredOption.
             Options = new OptionSet()
             {
                 {"l|list=", "Values to add to list", v => OptionalArgumentList.Add(v)},

@@ -127,8 +127,6 @@ namespace ManyConsole.Internal
                     readable += separator + MakeObjectReadable(member);
                     separator = ", ";
                 }
-
-                readable = readable;
             }
             else if (value != null)
                 readable = value.ToString();

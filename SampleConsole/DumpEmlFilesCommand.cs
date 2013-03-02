@@ -8,9 +8,9 @@ using NDesk.Options;
 
 namespace SampleConsole
 {
-    public class DumpEmlFiles : ConsoleCommand
+    public class DumpEmlFilesCommand : ConsoleCommand
     {
-        public DumpEmlFiles()
+        public DumpEmlFilesCommand()
         {
             this.IsCommand("dump-eml", "Prints the contents of eml file(s).");
 

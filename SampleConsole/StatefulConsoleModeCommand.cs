@@ -6,13 +6,13 @@ using ManyConsole;
 
 namespace SampleConsole
 {
-    public class StatefulConsoleCommand : ConsoleModeCommand
+    public class StatefulConsoleModeCommand : ConsoleModeCommand
     {
         public int Count = 0;
 
-        public StatefulConsoleCommand()
+        public StatefulConsoleModeCommand()
         {
-            this.IsCommand("stateful", "Runs commands from the console statefully");
+            this.IsCommand("stateful", "Starts a stateful console interface that allows multiple commands to be run.");
         }
 
         public override void WritePromptForCommands()
@@ -24,7 +24,7 @@ namespace SampleConsole
 
         public override IEnumerable<ConsoleCommand> GetNextCommands()
         {
-            return new ConsoleCommand[] {new GetTime(), new MattsCommand(), new DumpEmlFiles(), new DumpEmlFiles()};
+            return new ConsoleCommand[] {new GetTimeCommand(), new MattsCommand(), new DumpEmlFilesCommand(), new DumpEmlFilesCommand()};
         }
     }
 }
