@@ -95,7 +95,11 @@ namespace ManyConsole
             if (selectedCommand != null)
             {
                 if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
+                {
+                    console.WriteLine();
+                    console.WriteLine(e.Message);
                     ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
+                }
             }
             else
             {
