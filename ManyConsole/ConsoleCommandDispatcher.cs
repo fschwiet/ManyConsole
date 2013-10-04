@@ -80,23 +80,29 @@ namespace ManyConsole
 
                 return selectedCommand.Run(remainingArguments.ToArray());
             }
-            catch (Exception e)
+            catch (ConsoleHelpAsException e)
             {
-                if (!ConsoleHelpAsException.WriterErrorMessage(e, console))
-                    throw;
-
-                if (selectedCommand != null)
-                {
-                    if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
-                        ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
-                }
-                else
-                {
-                    ConsoleHelp.ShowSummaryOfCommands(commands, console);
-                }
-
-                return -1;
+                return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
             }
+            catch (NDesk.Options.OptionException e)
+            {
+                return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
+            }
+        }
+
+        private static int DealWithException(Exception e, TextWriter console, bool skipExeInExpectedUsage, ConsoleCommand selectedCommand, IEnumerable<ConsoleCommand> commands)
+        {
+            if (selectedCommand != null)
+            {
+                if (e is ConsoleHelpAsException || e is NDesk.Options.OptionException)
+                    ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
+            }
+            else
+            {
+                ConsoleHelp.ShowSummaryOfCommands(commands, console);
+            }
+
+            return -1;
         }
   
         private static ConsoleCommand GetMatchingCommand(IEnumerable<ConsoleCommand> command, string name)
