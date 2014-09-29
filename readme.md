@@ -2,6 +2,8 @@
 
 Available on Nuget: http://nuget.org/List/Packages/ManyConsole
 
+Thanks to Daniel González for providing some additional documentation: http://dgondotnet.blogspot.dk/2013/08/my-last-console-application-manyconsole.html
+
 NDesk.Options is a great library for processing command-line parameters.  ManyConsole extends NDesk.Options to allow building console applications that support separate commands.
 
 If you are not familiar with NDesk.Options, you should start by using that: http://www.ndesk.org/Options.  Add ManyConsole when you feel the urge to differentiate commands (you'll still need the NDesk.Options usage).
