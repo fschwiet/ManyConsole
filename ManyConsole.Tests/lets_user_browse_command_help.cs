@@ -63,6 +63,15 @@ namespace ManyConsole.Tests
             {
                 var commandC = new TestCommand()
                     .IsCommand("command-c", "one line description for C")
+                    .HasLongDescription(
+@"Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+sed do eiusmod tempor incididunt ut labore et dolore magna
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit
+esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.")
                     .HasAdditionalArguments(0, "<remaining> <args>")
                     .HasOption("o|option=", "option description", v => { });
 
@@ -76,6 +85,7 @@ namespace ManyConsole.Tests
                     Expect.That(output).ContainsInOrder(
                         commandC.Command,
                         commandC.OneLineDescription,
+                        commandC.LongDescription,
                         commandC.RemainingArgumentsHelpText,
                         "-o",
                         "--option",

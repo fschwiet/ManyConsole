@@ -23,6 +23,7 @@ namespace ManyConsole
 
         public string Command { get; private set; }
         public string OneLineDescription { get; private set; }
+        public string LongDescription { get; private set; }
         public OptionSet Options { get; protected set; }
         public bool TraceCommandAfterParse { get; private set; }
         public int? RemainingArgumentsCount { get; private set; }
@@ -34,6 +35,12 @@ namespace ManyConsole
         {
             Command = command;
             OneLineDescription = oneLineDescription;
+            return this;
+        }
+
+        public ConsoleCommand HasLongDescription(string longDescription)
+        {
+            LongDescription = longDescription;
             return this;
         }
 
