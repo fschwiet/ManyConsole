@@ -38,6 +38,13 @@ namespace ManyConsole.Internal
             console.WriteLine();
             console.WriteLine("'" + selectedCommand.Command + "' - " + selectedCommand.OneLineDescription);
             console.WriteLine();
+
+            if (!string.IsNullOrEmpty(selectedCommand.LongDescription))
+            {
+                console.WriteLine(selectedCommand.LongDescription);
+                console.WriteLine();
+            }
+
             console.Write("Expected usage:");
 
             if (!skipExeInExpectedUsage)
@@ -70,6 +77,7 @@ namespace ManyConsole.Internal
             string[] skippedProperties = new []{
                 "Command",
                 "OneLineDescription",
+                "LongDescription",
                 "Options",
                 "TraceCommandAfterParse",
                 "RemainingArgumentsCount",
