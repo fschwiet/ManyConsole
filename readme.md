@@ -117,7 +117,7 @@ Expected usage: ManyConsoleDocumentation.exe PrintFile <options>
                                output.
 ```
 
-It doesn't work and thinks we specified an invalid parameter. This is because you must have an '=' symbol after every command defined, so update the two commands with `f|file=` and `s|strip=`, it should now work:
+It doesn't work and thinks we specified an invalid parameter. This is because options that are followed by a parameter must have an '=' symbol, so update the two commands with `f|file=` and `s|strip=`, it should now work:
 
 ```
 >ManyConsoleDocumentation PrintFile -f "C:\HelloWorld.txt"
