@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using ManyConsole.Internal;
 
 namespace ManyConsole
@@ -130,7 +131,21 @@ namespace ManyConsole
 
         public static IEnumerable<ConsoleCommand> FindCommandsInSameAssemblyAs(Type typeInSameAssembly)
         {
-            var assembly = typeInSameAssembly.Assembly;
+            if (typeInSameAssembly == null)
+                throw new ArgumentNullException("typeInSameAssembly");
+
+            return FindCommandsInAssembly(typeInSameAssembly.Assembly);
+        }
+
+        public static IEnumerable<ConsoleCommand> FindCommandsInAllLoadedAssemblies()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(FindCommandsInAssembly);
+        }
+
+        public static IEnumerable<ConsoleCommand> FindCommandsInAssembly(Assembly assembly)
+        {
+            if (assembly == null)
+                throw new ArgumentNullException("assembly");
 
             var commandTypes = assembly.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(ConsoleCommand)))
