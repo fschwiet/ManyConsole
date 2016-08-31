@@ -67,12 +67,12 @@ public class PrintFileCommand : ConsoleCommand
         HasLongDescription("This can be used to quickly read a file's contents " +
         "while optionally stripping out the ',' character.");
             
-        // Required options/flags.
-        HasRequiredOption("f|file", "The full path of the file.", p => FileLocation = p);
+        // Required options/flags, append '=' to obtain the required value.
+        HasRequiredOption("f|file=", "The full path of the file.", p => FileLocation = p);
 
-        // Optional options/flags.
-        HasOption("s|strip", "Strips ',' from the file before writing to output.", 
-            t => StripCommaCharacter = Convert.ToBoolean(t));
+        // Optional options/flags, append ':' to obtain an optional value, or null if not specified.
+        HasOption("s|strip:", "Strips ',' from the file before writing to output.",
+            t => StripCommaCharacter = t == null ? true : Convert.ToBoolean(t));
     }
 
     public override int Run(string[] remainingArguments)
