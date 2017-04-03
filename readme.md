@@ -24,7 +24,7 @@ To use ManyConsole:
 
 Run this from NuGet Package Management Console:
 
-```
+```posh
 Install-Package ManyConsole
 ```
 
