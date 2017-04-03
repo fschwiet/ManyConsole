@@ -30,7 +30,7 @@ Install-Package ManyConsole
 
 Drop this in to automatically load all of the commands that we'll create next:
 
-```
+```csharp
 public class Program
 {
     public static int Main(string[] args)
@@ -49,7 +49,7 @@ public class Program
 
 Create a command with one optional, one required and a short and long description:
 
-```
+```csharp
 public class PrintFileCommand : ConsoleCommand
 {
     private const int Success = 0;
@@ -139,7 +139,7 @@ Hello world!
 
 Now you can easily supply multiple commands with their own set of unique arguments:
 
-```
+```csharp
 public class EchoCommand : ConsoleCommand
 {
     public string ToEcho { get; set; }
