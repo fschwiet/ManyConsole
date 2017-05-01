@@ -19,6 +19,7 @@ namespace ManyConsole
             RemainingArgumentsHelpText = "";
             OptionsHasd = new OptionSet();
             RequiredOptions = new List<RequiredOptionRecord>();
+	        ConsoleOut = Console.Out;
         }
 
         public string Command { get; private set; }
@@ -30,6 +31,7 @@ namespace ManyConsole
         public string RemainingArgumentsHelpText { get; private set; }
         private OptionSet OptionsHasd { get; set; }
         private List<RequiredOptionRecord> RequiredOptions { get; set; }
+        public TextWriter ConsoleOut { get; set; }
 
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
