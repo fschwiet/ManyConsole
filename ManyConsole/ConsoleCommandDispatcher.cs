@@ -21,9 +21,9 @@ namespace ManyConsole
 
             TextWriter console = consoleOut;
 
-            foreach (var command in commands)
-            {
-                ValidateConsoleCommand(command);
+            foreach (var command in commands) {
+	            command.ConsoleOut = consoleOut;
+				ValidateConsoleCommand(command);
             }
 
             try
