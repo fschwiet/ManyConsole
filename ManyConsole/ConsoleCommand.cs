@@ -64,6 +64,13 @@ namespace ManyConsole
             return this;
         }
 
+        public ConsoleCommand HasMinimumAdditionalArguments(int? count = 0, string helpText = "")
+        {
+            RemainingArgumentsCount = -count;
+            RemainingArgumentsHelpText = helpText;
+            return this;
+        }
+
         public ConsoleCommand AllowsAnyAdditionalArguments(string helpText = "")
         {
             HasAdditionalArguments(null, helpText);
