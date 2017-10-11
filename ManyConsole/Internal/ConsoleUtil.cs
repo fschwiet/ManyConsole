@@ -4,23 +4,14 @@ namespace ManyConsole.Internal
 {
     public abstract class ConsoleUtil
     {
-        public static void VerifyNumberOfArguments(string[] args, int expectedArgumentCount)
+        public static void VerifyNumberOfArguments(string[] args, int? expectedArgumentCountMin, int? expectedArgumentCountMax)
         {
-            if (expectedArgumentCount < 0)
-            {
-                if (args.Count() < (-expectedArgumentCount))
-                    throw new ConsoleHelpAsException(
-                        string.Format("Too few arguments-- expected at least {0}", (-expectedArgumentCount)));
-            }
-            else
-            {
-                if (args.Count() < expectedArgumentCount)
-                    throw new ConsoleHelpAsException(
-                        string.Format("Invalid number of arguments-- expected {0} more.", expectedArgumentCount - args.Count()));
+            if (expectedArgumentCountMin.HasValue && args.Count() < expectedArgumentCountMin.Value)
+                throw new ConsoleHelpAsException(
+                    string.Format("Invalid number of arguments-- expected {0} more.", expectedArgumentCountMin.Value - args.Count()));
 
-                if (args.Count() > expectedArgumentCount)
-                    throw new ConsoleHelpAsException("Extra parameters specified: " + string.Join(", ", args.Skip(expectedArgumentCount).ToArray()));
-            }
+            if (expectedArgumentCountMax.HasValue && args.Count() > expectedArgumentCountMax.Value)
+                throw new ConsoleHelpAsException("Extra parameters specified: " + string.Join(", ", args.Skip(expectedArgumentCountMax.Value).ToArray()));
         }
     }
 }

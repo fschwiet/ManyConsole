@@ -70,7 +70,7 @@ namespace ManyConsole
 
                 selectedCommand.CheckRequiredArguments();
 
-                CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCount);
+                CheckRemainingArguments(remainingArguments, selectedCommand.RemainingArgumentsCountMin, selectedCommand.RemainingArgumentsCountMax);
 
                 var preResult = selectedCommand.OverrideAfterHandlingArgumentsBeforeRun(remainingArguments.ToArray());
 
@@ -144,11 +144,10 @@ namespace ManyConsole
             }
         }
 
-        private static void CheckRemainingArguments(List<string> remainingArguments, int? parametersRequiredAfterOptions)
+        private static void CheckRemainingArguments(List<string> remainingArguments, int? parametersRequiredAfterOptionsMin, int? parametersRequiredAfterOptionsMax)
         {
-            if (parametersRequiredAfterOptions.HasValue)
-                ConsoleUtil.VerifyNumberOfArguments(remainingArguments.ToArray(),
-                    parametersRequiredAfterOptions.Value);
+            ConsoleUtil.VerifyNumberOfArguments(remainingArguments.ToArray(),
+                    parametersRequiredAfterOptionsMin, parametersRequiredAfterOptionsMax);
         }
 
         public static IEnumerable<ConsoleCommand> FindCommandsInSameAssemblyAs(Type typeInSameAssembly)

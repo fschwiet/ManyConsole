@@ -15,7 +15,7 @@ namespace ManyConsole
             OneLineDescription = "";
             Options = new OptionSet();
             TraceCommandAfterParse = true;
-            RemainingArgumentsCount = 0;
+            RemainingArgumentsCountMax = 0;
             RemainingArgumentsHelpText = "";
             OptionsHasd = new OptionSet();
             RequiredOptions = new List<RequiredOptionRecord>();
@@ -27,7 +27,8 @@ namespace ManyConsole
         public string LongDescription { get; private set; }
         public OptionSet Options { get; protected set; }
         public bool TraceCommandAfterParse { get; private set; }
-        public int? RemainingArgumentsCount { get; private set; }
+        public int? RemainingArgumentsCountMin { get; private set; }
+        public int? RemainingArgumentsCountMax { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
         private OptionSet OptionsHasd { get; set; }
         private List<RequiredOptionRecord> RequiredOptions { get; set; }
@@ -59,21 +60,21 @@ namespace ManyConsole
 
         public ConsoleCommand HasAdditionalArguments(int? count = 0, string helpText = "")
         {
-            RemainingArgumentsCount = count;
-            RemainingArgumentsHelpText = helpText;
+            HasAdditionalArgumentsBetween(count, count, helpText);
             return this;
         }
 
-        public ConsoleCommand HasMinimumAdditionalArguments(int? count = 0, string helpText = "")
+        public ConsoleCommand HasAdditionalArgumentsBetween(int? min, int? max, string helpText = "")
         {
-            RemainingArgumentsCount = -count;
+            RemainingArgumentsCountMin = min;
+            RemainingArgumentsCountMax = max;
             RemainingArgumentsHelpText = helpText;
             return this;
         }
 
         public ConsoleCommand AllowsAnyAdditionalArguments(string helpText = "")
         {
-            HasAdditionalArguments(null, helpText);
+            HasAdditionalArgumentsBetween(null, null, helpText);
             return this;
         }
 

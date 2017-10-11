@@ -89,7 +89,8 @@ namespace ManyConsole.Internal
                 "LongDescription",
                 "Options",
                 "TraceCommandAfterParse",
-                "RemainingArgumentsCount",
+                "RemainingArgumentsCountMin",
+                "RemainingArgumentsCountMax",
                 "RemainingArgumentsHelpText",
                 "RequiredOptions"
             };
