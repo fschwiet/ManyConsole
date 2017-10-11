@@ -22,6 +22,7 @@ namespace ManyConsole
         }
 
         public string Command { get; private set; }
+        public List<string> Aliases { get; private set; }
         public string OneLineDescription { get; private set; }
         public string LongDescription { get; private set; }
         public OptionSet Options { get; protected set; }
@@ -30,11 +31,23 @@ namespace ManyConsole
         public string RemainingArgumentsHelpText { get; private set; }
         private OptionSet OptionsHasd { get; set; }
         private List<RequiredOptionRecord> RequiredOptions { get; set; }
-
+        
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
             Command = command;
             OneLineDescription = oneLineDescription;
+            return this;
+        }
+        public ConsoleCommand HasAlias(string alias)
+        {
+            if (!String.IsNullOrEmpty(alias))
+            {
+                if (Aliases == null)
+                {
+                    Aliases = new List<string>();
+                }
+                Aliases.Add(alias);
+            }
             return this;
         }
 

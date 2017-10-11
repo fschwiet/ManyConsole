@@ -13,6 +13,7 @@ namespace SampleConsole
         public EchoStringsCommand()
         {
             IsCommand("echo");
+            HasAlias("--echo");
 
             HasOption("c|comment=",
                            "enter a string, maybe even delimited by double quotes, i.e. - \"See Matt's poorly written code\"",

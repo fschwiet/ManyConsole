@@ -34,7 +34,7 @@ namespace ManyConsole
                 {
                     selectedCommand = commands.First();
 
-                    if (arguments.Count() > 0 && arguments.First().ToLower() == selectedCommand.Command.ToLower())
+                    if (arguments.Count() > 0 && CommandMatchesArgument(selectedCommand, arguments.First()))
                     {
                         remainingArguments = selectedCommand.GetActualOptions().Parse(arguments.Skip(1));
                     }
@@ -109,7 +109,29 @@ namespace ManyConsole
   
         private static ConsoleCommand GetMatchingCommand(IEnumerable<ConsoleCommand> command, string name)
         {
-            return command.FirstOrDefault(c => c.Command.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return command.FirstOrDefault(c => CommandMatchesArgument(c, name));
+        }
+
+        private static bool CommandMatchesArgument(ConsoleCommand command, string arg)
+        {
+            if (String.IsNullOrEmpty(arg))
+            {
+                return false;
+            }
+            if (arg.Equals(command.Command, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            } else if (command.Aliases != null && command.Aliases.Count > 0)
+            {
+                foreach (string alias in command.Aliases)
+                {
+                    if (arg.Equals(alias, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private static void ValidateConsoleCommand(ConsoleCommand command)
