@@ -15,26 +15,40 @@ namespace ManyConsole
             OneLineDescription = "";
             Options = new OptionSet();
             TraceCommandAfterParse = true;
-            RemainingArgumentsCount = 0;
+            RemainingArgumentsCountMax = 0;
             RemainingArgumentsHelpText = "";
             OptionsHasd = new OptionSet();
             RequiredOptions = new List<RequiredOptionRecord>();
         }
 
         public string Command { get; private set; }
+        public List<string> Aliases { get; private set; }
         public string OneLineDescription { get; private set; }
         public string LongDescription { get; private set; }
         public OptionSet Options { get; protected set; }
         public bool TraceCommandAfterParse { get; private set; }
-        public int? RemainingArgumentsCount { get; private set; }
+        public int? RemainingArgumentsCountMin { get; private set; }
+        public int? RemainingArgumentsCountMax { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
         private OptionSet OptionsHasd { get; set; }
         private List<RequiredOptionRecord> RequiredOptions { get; set; }
-
+        
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
             Command = command;
             OneLineDescription = oneLineDescription;
+            return this;
+        }
+        public ConsoleCommand HasAlias(string alias)
+        {
+            if (!String.IsNullOrEmpty(alias))
+            {
+                if (Aliases == null)
+                {
+                    Aliases = new List<string>();
+                }
+                Aliases.Add(alias);
+            }
             return this;
         }
 
@@ -46,14 +60,21 @@ namespace ManyConsole
 
         public ConsoleCommand HasAdditionalArguments(int? count = 0, string helpText = "")
         {
-            RemainingArgumentsCount = count;
+            HasAdditionalArgumentsBetween(count, count, helpText);
+            return this;
+        }
+
+        public ConsoleCommand HasAdditionalArgumentsBetween(int? min, int? max, string helpText = "")
+        {
+            RemainingArgumentsCountMin = min;
+            RemainingArgumentsCountMax = max;
             RemainingArgumentsHelpText = helpText;
             return this;
         }
 
         public ConsoleCommand AllowsAnyAdditionalArguments(string helpText = "")
         {
-            HasAdditionalArguments(null, helpText);
+            HasAdditionalArgumentsBetween(null, null, helpText);
             return this;
         }
 

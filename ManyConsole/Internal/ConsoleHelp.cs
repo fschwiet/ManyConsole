@@ -37,6 +37,14 @@ namespace ManyConsole.Internal
 
             console.WriteLine();
             console.WriteLine("'" + selectedCommand.Command + "' - " + selectedCommand.OneLineDescription);
+            if (selectedCommand.Aliases != null && selectedCommand.Aliases.Count > 0)
+            {
+                console.WriteLine("Aliases:");
+                foreach (string alias in selectedCommand.Aliases)
+                {
+                    console.WriteLine("  " + alias);
+                }
+            }
             console.WriteLine();
 
             if (!string.IsNullOrEmpty(selectedCommand.LongDescription))
@@ -76,11 +84,13 @@ namespace ManyConsole.Internal
 
             string[] skippedProperties = new []{
                 "Command",
+                "Aliases",
                 "OneLineDescription",
                 "LongDescription",
                 "Options",
                 "TraceCommandAfterParse",
-                "RemainingArgumentsCount",
+                "RemainingArgumentsCountMin",
+                "RemainingArgumentsCountMax",
                 "RemainingArgumentsHelpText",
                 "RequiredOptions"
             };
