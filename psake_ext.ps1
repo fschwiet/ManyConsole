@@ -60,7 +60,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute(""$product"")]
 [assembly: AssemblyCopyrightAttribute(""$copyright"")]
 [assembly: AssemblyVersionAttribute(""$version"")]
-[assembly: AssemblyInformationalVersionAttribute(""$version / $commit"")]
+//[assembly: AssemblyInformationalVersionAttribute(""$version / $commit"")]
 [assembly: AssemblyFileVersionAttribute(""$fileVersion"")]
 [assembly: AssemblyDelaySignAttribute(false)]
 "

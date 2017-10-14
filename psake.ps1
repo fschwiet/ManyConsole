@@ -10,7 +10,7 @@ param(
   [Parameter(Position=1,Mandatory=0)]
   [string[]]$taskList = @(),
   [Parameter(Position=2,Mandatory=0)]
-  [string]$framework = '3.5',
+  [string]$framework = '4.5.1',
   [Parameter(Position=3,Mandatory=0)]
   [switch]$docs = $false,
   [Parameter(Position=4,Mandatory=0)]
@@ -20,7 +20,7 @@ param(
 )
 
 remove-module psake -ea 'SilentlyContinue'
-$scriptPath = (join-path (split-Path -parent $MyInvocation.MyCommand.path) "packages\psake.4.2.0.1\tools")
+$scriptPath = (join-path (split-Path -parent $MyInvocation.MyCommand.path) "packages\psake.4.6.0\tools")
 import-module (join-path $scriptPath psake.psm1)
 if (-not(test-path $buildFile))
 {
