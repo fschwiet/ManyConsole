@@ -8,13 +8,13 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: CLSCompliantAttribute(false )]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute("ManyConsole 1.0.0.1")]
+[assembly: AssemblyTitleAttribute("ManyConsole 1.0.0.2")]
 [assembly: AssemblyDescriptionAttribute("A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application.")]
 [assembly: AssemblyCompanyAttribute("n/a")]
-[assembly: AssemblyProductAttribute("ManyConsole 1.0.0.1")]
+[assembly: AssemblyProductAttribute("ManyConsole 1.0.0.2")]
 [assembly: AssemblyCopyrightAttribute("Copyright © Frank Schwieterman 2011")]
-[assembly: AssemblyVersionAttribute("1.0.0.1")]
-//[assembly: AssemblyInformationalVersionAttribute("1.0.0.1 / 0a9af9c")]
-[assembly: AssemblyFileVersionAttribute("1.0.0.1")]
+[assembly: AssemblyVersionAttribute("1.0.0.2")]
+//[assembly: AssemblyInformationalVersionAttribute("1.0.0.2 / acd442e")]
+[assembly: AssemblyFileVersionAttribute("1.0.0.2")]
 [assembly: AssemblyDelaySignAttribute(false)]
 
