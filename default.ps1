@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "1.0.0.1"
+    $version = "1.0.0.2"
 
     $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
 }
