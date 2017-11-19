@@ -1,9 +1,9 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "1.0.0.2"
+    $version = "1.0.0.3"
 
-    $shortDescription = "A library for writing console applications.  Extends NDesk.Options to support separate commands from one console application."
+    $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
 
 import-module .\tools\PSUpdateXML.psm1
@@ -78,11 +78,11 @@ task BuildNuget -depends Build {
             set-xml -exactlyOnce "//licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
             set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/ManyConsole/"
             remove-xml -exactlyOnce "//iconUrl"
-            set-xml -exactlyOnce "//tags" "ndesk ndesk.options command-line console"
-            set-xml -exactlyOnce "//releaseNotes" "Breaking changes for 4.0!  Now using a fluent interface to define command metadata.";
+            set-xml -exactlyOnce "//tags" "mono.options command-line console"
+            set-xml -exactlyOnce "//releaseNotes" "Moved to Mono.Options from NDesk.Options.  Update your references to NDesk.Options if you have any.";
 
             set-xml -exactlyOnce "//dependencies" ""
-            append-xml -exactlyOnce "//dependencies" "<dependency id=`"NDesk.Options`" version=`"0.2`" />"
+            append-xml -exactlyOnce "//dependencies" "<dependency id=`"Mono.Options`" version=`"5.3`" />"
 
             append-xml "." "<summary>Easily mix commands for a console application.</summary>"
         }
