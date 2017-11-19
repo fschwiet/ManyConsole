@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NDesk.Options;
+using Mono.Options;
 using NJasmine;
 
 namespace ManyConsole.Tests

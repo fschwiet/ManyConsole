@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ManyConsole.Internal;
-using NDesk.Options;
+using Mono.Options;
 
 namespace ManyConsole
 {

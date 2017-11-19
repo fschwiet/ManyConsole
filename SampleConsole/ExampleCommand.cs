@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ManyConsole;
-using NDesk.Options;
+using Mono.Options;
 
 namespace MC.AX.DataUtility
 {

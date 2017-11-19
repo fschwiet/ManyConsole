@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ManyConsole;
-using NDesk.Options;
 
 namespace SampleConsole
 {

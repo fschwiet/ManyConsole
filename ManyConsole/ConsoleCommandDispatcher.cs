@@ -85,7 +85,7 @@ namespace ManyConsole
             {
                 return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
             }
-            catch (NDesk.Options.OptionException e)
+            catch (Mono.Options.OptionException e)
             {
                 return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
             }
