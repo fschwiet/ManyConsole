@@ -105,8 +105,7 @@ namespace ManyConsole.Internal
 
             foreach (var property in properties)
             {
-                object value = property.GetValue(consoleCommand, new object[0]);
-                allValuesToTrace[property.Name] = value != null ? value.ToString() : "null";
+                allValuesToTrace[property.Name] = MakeObjectReadable(property.GetValue(consoleCommand, new object[0]));
             }
 
             foreach (var field in fields)
