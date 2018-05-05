@@ -15,6 +15,7 @@ namespace ManyConsole
             OneLineDescription = "";
             Options = new OptionSet();
             TraceCommandAfterParse = true;
+            TraceCommandSkipProperties = new SortedSet<string>(DefaultTraceCommandSkipProperties, StringComparer.Ordinal);
             RemainingArgumentsCountMax = 0;
             RemainingArgumentsHelpText = "";
             OptionsHasd = new OptionSet();
@@ -27,12 +28,28 @@ namespace ManyConsole
         public string LongDescription { get; private set; }
         public OptionSet Options { get; protected set; }
         public bool TraceCommandAfterParse { get; private set; }
+        public ISet<string> TraceCommandSkipProperties { get; private set; }
         public int? RemainingArgumentsCountMin { get; private set; }
         public int? RemainingArgumentsCountMax { get; private set; }
         public string RemainingArgumentsHelpText { get; private set; }
         private OptionSet OptionsHasd { get; set; }
         private List<RequiredOptionRecord> RequiredOptions { get; set; }
-        
+
+        private static readonly string[] DefaultTraceCommandSkipProperties =
+        {
+            nameof(Command),
+            nameof(Aliases),
+            nameof(OneLineDescription),
+            nameof(LongDescription),
+            nameof(Options),
+            nameof(TraceCommandAfterParse),
+            nameof(TraceCommandSkipProperties),
+            nameof(RemainingArgumentsCountMin),
+            nameof(RemainingArgumentsCountMax),
+            nameof(RemainingArgumentsHelpText),
+            nameof(RequiredOptions)
+        };
+
         public ConsoleCommand IsCommand(string command, string oneLineDescription = "")
         {
             Command = command;
@@ -81,6 +98,12 @@ namespace ManyConsole
         public ConsoleCommand SkipsCommandSummaryBeforeRunning()
         {
             TraceCommandAfterParse = false;
+            return this;
+        }
+
+        public ConsoleCommand SkipsPropertyInCommandSummary(string propertyName)
+        {
+            TraceCommandSkipProperties.Add(propertyName);
             return this;
         }
 
