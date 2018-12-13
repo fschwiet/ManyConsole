@@ -8,3 +8,4 @@ _ReSharper.*
 *.sln.cache
 *.dotCover
 *.user
+/.vs
