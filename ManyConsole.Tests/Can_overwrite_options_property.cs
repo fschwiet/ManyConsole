@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Mono.Options;
-using NJasmine;
+using NUnit.Framework;
 
 namespace ManyConsole.Tests
 {
-    public class Can_overwrite_options_property : GivenWhenThenFixture
+    public class Can_overwrite_options_property 
     {
         public class OverwriteCommand : ConsoleCommand
         {
@@ -33,22 +31,20 @@ namespace ManyConsole.Tests
                 return 0;
             }
         }
-        public override void Specify()
+        [Test]
+        public void DoNotLooseOtherArgumentsWhenPropertyOptionsAreOverwritten()
         {
-            it("does not lose other arguments when property Options is overwritten", () =>
-            {
-                var command = new OverwriteCommand();
-                var consoleOutput = new StringBuilder();
+            var command = new OverwriteCommand();
+            var consoleOutput = new StringBuilder();
 
-                var outputCode = ConsoleCommandDispatcher.DispatchCommand(
-                    command, 
-                    new []{"/A", "1", "/B", "2"}, 
-                    new StringWriter(consoleOutput));
+            var outputCode = ConsoleCommandDispatcher.DispatchCommand(
+                command,
+                new[] { "/A", "1", "/B", "2" },
+                new StringWriter(consoleOutput));
 
-                expect(() => String.IsNullOrEmpty(consoleOutput.ToString()));
-                expect(() => outputCode == 0);
-                expect(() => command.Result == "1,2");
-            });
+            Assert.That(String.IsNullOrEmpty(consoleOutput.ToString()), "Console output is not empty");
+            Assert.AreEqual(0, outputCode, "Output is not zero");
+            StringAssert.AreEqualIgnoringCase("1,2", command.Result);
         }
     }
 }

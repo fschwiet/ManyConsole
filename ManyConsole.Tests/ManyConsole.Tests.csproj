@@ -1,107 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A5C602AE-B751-4965-9283-03A3DDBF2F97}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ManyConsole.Tests</RootNamespace>
-    <AssemblyName>ManyConsole.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="FakeItEasy, Version=1.7.4507.61, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FakeItEasy.1.7.4507.61\lib\NET40\FakeItEasy.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Options, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Options.5.3.0.1\lib\net4-client\Mono.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="NJasmine">
-      <HintPath>..\packages\NJasmine.NUnit.0.3.2.0\lib\NJasmine.dll</HintPath>
-    </Reference>
-    <Reference Include="NJasmine.NUnit">
-      <HintPath>..\packages\NJasmine.NUnit.0.3.2.0\lib\NJasmine.NUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PowerAssert">
-      <HintPath>..\packages\PowerAssert.1.0.2\lib\PowerAssert.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
+    <PackageReference Include="FakeItEasy" Version="5.1.1" />
+    <PackageReference Include="Mono.Options" Version="5.3.0.1" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="PowerAssert" Version="1.0.85" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Can_modify_command_behavior_after_parsing_and_before_running.cs" />
-    <Compile Include="Can_overwrite_options_property.cs" />
-    <Compile Include="Can_define_commands_with_aliases.cs" />
-    <Compile Include="Can_verify_number_of_arguments_passed_to_command.cs" />
-    <Compile Include="ConsoleModeCommandSpecs\ConsoleModeCommandSpecification.cs" />
-    <Compile Include="ConsoleModeCommandSpecs\Should_fail_strictly_on_error_when_running_noninteractive.cs" />
-    <Compile Include="ConsoleModeCommandSpecs\Should_give_user_prompt_in_interactive_mode.cs" />
-    <Compile Include="ConsoleModeCommandSpecs\Should_interpret_quotes_properly.cs" />
-    <Compile Include="ConsoleModeCommandSpecs\StatusEchoCommand.cs" />
-    <Compile Include="Console_interface_is_simplified_when_there_is_only_one_command.cs" />
-    <Compile Include="Can_have_required_parameters.cs" />
-    <Compile Include="Can_consume_variable_number_of_arguments.cs" />
-    <Compile Include="lets_user_browse_command_help.cs" />
-    <Compile Include="abstract_commands_arent_loaded.cs" />
-    <Compile Include="Multiple_dispatch_calls_dont_interfere_with_each_other.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Show_useful_error_information.cs" />
-    <Compile Include="show_useful_command_summary.cs" />
-    <Compile Include="TestCommand.cs" />
+    <ProjectReference Include="..\ManyConsole\ManyConsole.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ManyConsole\ManyConsole.csproj">
-      <Project>{90DB8534-C471-47CF-999D-BE7A86070979}</Project>
-      <Name>ManyConsole</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

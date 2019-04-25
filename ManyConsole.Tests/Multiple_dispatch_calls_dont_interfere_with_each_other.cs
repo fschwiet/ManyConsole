@@ -1,40 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using Mono.Options;
-using NJasmine;
-using NJasmine.Extras;
+using NUnit.Framework;
 
 namespace ManyConsole.Tests
 {
-    public class Multiple_dispatch_calls_dont_interfere_with_each_other : GivenWhenThenFixture
+    public class Multiple_dispatch_calls_dont_interfere_with_each_other
     {
-        public override void Specify()
+        [Test]
+        public void RepeatedlyDispatchingCommand()
         {
-            when("repeatedly dispatching a command", delegate
-            {
-                var trace = new StringWriter();
+            var trace = new StringWriter();
 
-                arrange(delegate
-                {
-                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "3" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-y", "4" }, new StringWriter());
-                    ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move" }, new StringWriter());
-                });
+            ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "1", "-y", "2" }, new StringWriter());
+            ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-x", "3" }, new StringWriter());
+            ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move", "-y", "4" }, new StringWriter());
+            ConsoleCommandDispatcher.DispatchCommand(SomeProgram.GetCommands(trace), new[] { "move" }, new StringWriter());
 
-                then("all parameters are evaluated independently", delegate
-                {
-                    Expect.That(trace.ToString()).ContainsInOrder(
-                            "You walk to 1, 2 and find a maze of twisty little passages, all alike.",
-                            "You walk to 3, 0 and find a maze of twisty little passages, all alike.",
-                            "You walk to 0, 4 and find a maze of twisty little passages, all alike.",
-                            "You walk to 0, 0 and find a maze of twisty little passages, all alike."
-                        );
-                });
-            });
+            // all parameters are evaluated independently
+            MyStringAssert.ContainsInOrder(trace.ToString(),
+                        "You walk to 1, 2 and find a maze of twisty little passages, all alike.",
+                        "You walk to 3, 0 and find a maze of twisty little passages, all alike.",
+                        "You walk to 0, 4 and find a maze of twisty little passages, all alike.",
+                        "You walk to 0, 0 and find a maze of twisty little passages, all alike."
+                    );            
         }
 
         public class SomeProgram

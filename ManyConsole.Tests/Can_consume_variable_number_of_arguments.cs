@@ -1,121 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.IO;
-using System.Linq;
 using System.Text;
-using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class Can_consume_variable_number_of_arguments : GivenWhenThenFixture
+    public class Can_consume_variable_number_of_arguments
     {
-        public override void Specify()
+        [Test]
+        public void Expecting2CalledWith0()
         {
-            given("a command expecting at least 2 parameters", delegate
-            {
-                when("the command is called with no parameters", delegate()
-                {
-                    var output = run_command_with_parameters(new[] { "command1" });
-
-                    then("the output has an errorstring asking for at least 2 parameters", delegate()
-                    {
-                        expect(() => output.Contains("Invalid number of arguments-- expected 2 more"));
-                    });
-                });
-
-                when("the command is called with 1 parameter", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command1", "1" });
-
-                    then("the output has an errorstring asking for at least 1 parameter more", delegate ()
-                    {
-                        expect(() => output.Contains("Invalid number of arguments-- expected 1 more"));
-                    });
-                });
-
-                when("the command is called with 2 parameters", delegate()
-                {
-                    var output = run_command_with_parameters(new[] { "command1", "1", "2" });
-
-                    then("the output has no errorstring", delegate()
-                    {
-                        expect(() => output.Trim() == "Executing command1:");
-                    });
-                });
-                
-                when("the command is called with 5 parameters", delegate()
-                {
-                    var output = run_command_with_parameters(new[] { "command1", "1", "2", "3", "4", "5" });
-
-                    then("the output has no errorstring", delegate()
-                    {
-                        expect(() => output.Trim() == "Executing command1:");
-                    });
-                });
-            });
-
-            given("a command expecting between 2 and 5 parameters", delegate
-            {
-                when("the command is called with no parameters", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2" });
-
-                    then("the output has an errorstring asking for at least 2 parameters", delegate ()
-                    {
-                        expect(() => output.Contains("Invalid number of arguments-- expected 2 more"));
-                    });
-                });
-
-                when("the command is called with 1 parameter", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2", "1" });
-
-                    then("the output has an errorstring asking for at least 1 parameter more", delegate ()
-                    {
-                        expect(() => output.Contains("Invalid number of arguments-- expected 1 more"));
-                    });
-                });
-
-                when("the command is called with 2 parameters", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2", "1", "2" });
-
-                    then("the output has no errorstring", delegate ()
-                    {
-                        expect(() => output.Trim() == "Executing command2:");
-                    });
-                });
-                
-                when("the command is called with 4 parameters", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4" });
-
-                    then("the output has no errorstring", delegate ()
-                    {
-                        expect(() => output.Trim() == "Executing command2:");
-                    });
-                });
-
-                when("the command is called with 5 parameters", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4", "5" });
-
-                    then("the output has no errorstring", delegate ()
-                    {
-                        expect(() => output.Trim() == "Executing command2:");
-                    });
-                });
-                
-                when("the command is called with 6 parameters", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4", "5", "6" });
-
-                    then("the output has an errorstring indicating the extra parameters", delegate ()
-                    {
-                        expect(() => output.Contains("Extra parameters specified: 6"));
-                    });
-                });
-            });
+            var output = run_command_with_parameters(new[] { "command1" });
+            StringAssert.Contains("Invalid number of arguments-- expected 2 more", output,
+                "the output does not have an errorstring asking for 2 more parameters");
+        }
+        [Test]
+        public void Expecting2CalledWith1()
+        {
+            var output = run_command_with_parameters(new[] { "command1", "1" });
+            StringAssert.Contains("Invalid number of arguments-- expected 1 more", output,
+                "the output does not have an errorstring asking for 1 more parameter");
+        }
+        [Test]
+        public void Expecting2CalledWith2()
+        {
+            var output = run_command_with_parameters(new[] { "command1", "1", "2" });
+            StringAssert.AreEqualIgnoringCase("Executing command1:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void Expecting2CalledWith5()
+        {
+            var output = run_command_with_parameters(new[] { "command1", "1", "2", "3", "4", "5" });
+            StringAssert.AreEqualIgnoringCase("Executing command1:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void Expecting2To5CalledWith0()
+        {
+            var output = run_command_with_parameters(new[] { "command2" });
+            StringAssert.Contains("Invalid number of arguments-- expected 2 more", output,
+                "the output does not have an errorstring asking for 2 more parameters");
+        }
+        [Test]
+        public void Expecting2To5CalledWith1()
+        {
+            var output = run_command_with_parameters(new[] { "command2", "1" });
+            StringAssert.Contains("Invalid number of arguments-- expected 1 more", output,
+                "the output does not have an errorstring asking for 1 more parameter");
+        }
+        [Test]
+        public void Expecting2To5CalledWith2()
+        {
+            var output = run_command_with_parameters(new[] { "command2", "1", "2" });
+            StringAssert.AreEqualIgnoringCase("Executing command2:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void Expecting2To5CalledWith4()
+        {
+            var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4" });
+            StringAssert.AreEqualIgnoringCase("Executing command2:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void Expecting2To5CalledWith5()
+        {
+            var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4", "5" });
+            StringAssert.AreEqualIgnoringCase("Executing command2:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void Expecting2To5CalledWith6()
+        {
+            var output = run_command_with_parameters(new[] { "command2", "1", "2", "3", "4", "5", "6" });
+            StringAssert.Contains("Extra parameters specified: 6", output,
+                "the output does not have an errorstring iundicating superfluous parameter(s)");
         }
 
         public class CommandWithAtLeast2Parameters : ConsoleCommand
@@ -148,22 +107,19 @@ namespace ManyConsole.Tests
 
         private string run_command_with_parameters(string[] parameters)
         {
-            return arrange(delegate
-            {
-                StringBuilder sb = new StringBuilder();
-                var sw = new StringWriter(sb);
+            StringBuilder sb = new StringBuilder();
+            var sw = new StringWriter(sb);
 
-                ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[]
-                    {
-                        new CommandWithAtLeast2Parameters(),
-                        new CommandWith2To5Parameters()
-                    },
-                    parameters,
-                    sw);
+            ConsoleCommandDispatcher.DispatchCommand(
+                new ConsoleCommand[]
+                {
+                    new CommandWithAtLeast2Parameters(),
+                    new CommandWith2To5Parameters()
+                },
+                parameters,
+                sw);
 
-                return sb.ToString();
-            });
+            return sb.ToString();
         }
     }
 }

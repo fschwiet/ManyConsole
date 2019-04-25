@@ -1,51 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using NJasmine;
 using NUnit.Framework;
 
 namespace ManyConsole.Tests
 {
-    public class Show_useful_error_information : GivenWhenThenFixture
+    public class Show_useful_error_information
     {
         string TextWithinExpectedUsageHelp = "Expected usage:";
 
-        public override void Specify()
+        [Test]
+        public void UserTypesInputRejectedByNDeskOptions()
         {
             var trace = new StringWriter();
 
-            when("the user types in input which is rejected by NDesk.Options", delegate
-            {
-                var lastError = arrange(() => ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[] { new SomeCommandWithAParameter() }, 
-                    new[] { "some", "/a" }, 
-                    trace));
-                
-                then("the error output gives the error message and typical help", delegate
-                {
-                    expect(() => lastError != 0);
-                    
-                    expect(() => trace.ToString().Contains("Missing required value for option '/a'"));
-                    expect(() => trace.ToString().Contains(TextWithinExpectedUsageHelp));
+            var lastError = ConsoleCommandDispatcher.DispatchCommand(
+                    new ConsoleCommand[] { new SomeCommandWithAParameter() },
+                    new[] { "some", "/a" },
+                    trace);
 
-                    expect(() => !trace.ToString().ToLower().Contains("ndesk.options"));
-                    expect(() => !trace.ToString().ToLower().Contains("exception"));
-                });
-            });
+            // the error output gives the error message and typical help
+            Assert.AreNotEqual(0, lastError);
 
-            when("a command causes other unexpected errors", delegate
-            {
-                then("the exception passes through", delegate
-                {
-                    Assert.Throws<InvalidAsynchronousStateException>(() => ConsoleCommandDispatcher.DispatchCommand(
+            StringAssert.Contains("Missing required value for option '/a'", trace.ToString());
+            StringAssert.Contains(TextWithinExpectedUsageHelp, trace.ToString());
+
+            StringAssert.DoesNotContain("ndesk.options", trace.ToString().ToLower());
+            StringAssert.DoesNotContain("exception", trace.ToString().ToLower());
+    
+            // a command causes other unexpected errors
+            Assert.Throws<InvalidAsynchronousStateException>(() => ConsoleCommandDispatcher.DispatchCommand(
                         new ConsoleCommand[] { new SomeCommandThrowingAnException(), },
                         new string[0],
                         trace));
-                });
-            });
         }
 
         class SomeCommandWithAParameter : ConsoleCommand

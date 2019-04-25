@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace ManyConsole.Tests.ConsoleModeCommandSpecs
@@ -28,26 +24,20 @@ namespace ManyConsole.Tests.ConsoleModeCommandSpecs
             }
         }
 
-        public override void Specify()
+        [Test]
+        public void CommandRunWithQuotedInput()
         {
-            when("a command is ran with quoted input", delegate()
-                {
-                    var command = new AccumulateStringsCommand();
+            var command = new AccumulateStringsCommand();
 
-                    arrange(RunConsoleModeCommand(new string[]
-                        {
-                            "accumulate-strings -s \"one two three\" \"four five six\"",
-                            "x",
-                        },
-                        inputIsFromUser: true, command: command));
-
-                then("the output contains a helpful prompt", delegate
+            RunConsoleModeCommand(new string[]
                 {
-                    Assert.That(command.Marked, Is.EquivalentTo(new[] { "one two three" }));
-                    Assert.That(command.Unmarked, Is.EquivalentTo(new[] { "four five six" }));
-                });
-            });
-         
+                    "accumulate-strings -s \"one two three\" \"four five six\"",
+                    "x",
+                },
+                inputIsFromUser: true, command: command).Invoke();
+
+            Assert.That(command.Marked, Is.EquivalentTo(new[] { "one two three" }));
+            Assert.That(command.Unmarked, Is.EquivalentTo(new[] { "four five six" }));         
         }
     }
 }

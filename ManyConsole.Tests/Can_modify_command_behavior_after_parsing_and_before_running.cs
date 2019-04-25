@@ -1,13 +1,13 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class Can_modify_command_behavior_after_parsing_and_before_running : GivenWhenThenFixture
+    public class Can_modify_command_behavior_after_parsing_and_before_running
     {
         public class OverridingCommand : ConsoleCommand
         {
@@ -30,18 +30,17 @@ namespace ManyConsole.Tests
             }
         }
 
-        public override void Specify()
+        [Test]
+        public void ReturnCodeAndHalt()
         {
-            it("can specify a return code and halt execution", () =>
-            {
-                var output = new StringWriter();
-                var command = new OverridingCommand();
+            var output = new StringWriter();
+            var command = new OverridingCommand();
 
-                var exitCode = arrange(() => ConsoleCommandDispatcher.DispatchCommand(command, new[] { "/n", "123" }, output));
+            var exitCode = ConsoleCommandDispatcher.DispatchCommand(command, new[] { "/n", "123" }, output);
 
-                expect(() => exitCode == 123);
-                expect(() => String.IsNullOrEmpty(output.ToString()));
-            });
+            Assert.AreEqual(123, exitCode, "Exit code not 123 as expected");
+            Assert.That(String.IsNullOrEmpty(output.ToString()), "Output is not empty");
         }
+
     }
 }

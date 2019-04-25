@@ -1,46 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.IO;
-using System.Linq;
 using System.Text;
-using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class Can_define_commands_with_aliases : GivenWhenThenFixture
+    public class Can_define_commands_with_aliases
     {
-        public override void Specify()
+        [Test]
+        public void CommandWithTwoAliasesDirect()
         {
-            given("a command with 2 aliases", delegate
-            {
-                when("the arguments specify the command directly", delegate()
-                {
-                    var output = run_command_with_parameters(new[] { "command" });
-
-                    then("the output has no errorstring", delegate()
-                    {
-                        expect(() => output.Trim() == "Executing command:");
-                    });
-                });
-                when("the arguments specifies the first alias", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "--command" });
-
-                    then("the output has no errorstring", delegate ()
-                    {
-                        expect(() => output.Trim() == "Executing command:");
-                    });
-                });
-                when("the arguments specifies the second alias", delegate ()
-                {
-                    var output = run_command_with_parameters(new[] { "-c" });
-
-                    then("the output has no errorstring", delegate ()
-                    {
-                        expect(() => output.Trim() == "Executing command:");
-                    });
-                });
-            });
+            var output = run_command_with_parameters(new[] { "command" });
+            StringAssert.AreEqualIgnoringCase("Executing command:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void CommandWithTwoAliasesFirst()
+        {
+            var output = run_command_with_parameters(new[] { "--command" });
+            StringAssert.AreEqualIgnoringCase("Executing command:", output.Trim(),
+                "unexpected output for valid command");
+        }
+        [Test]
+        public void CommandWithTwoAliasesSecond()
+        {
+            var output = run_command_with_parameters(new[] { "-c" });
+            StringAssert.AreEqualIgnoringCase("Executing command:", output.Trim(),
+                "unexpected output for valid command");
         }
 
         public class CommandWith2Aliases: ConsoleCommand
@@ -60,21 +45,18 @@ namespace ManyConsole.Tests
 
         private string run_command_with_parameters(string[] parameters)
         {
-            return arrange(delegate
-            {
-                StringBuilder sb = new StringBuilder();
-                var sw = new StringWriter(sb);
+            StringBuilder sb = new StringBuilder();
+            var sw = new StringWriter(sb);
 
-                ConsoleCommandDispatcher.DispatchCommand(
-                    new ConsoleCommand[]
-                    {
-                        new CommandWith2Aliases()
-                    },
-                    parameters,
-                    sw);
+            ConsoleCommandDispatcher.DispatchCommand(
+                new ConsoleCommand[]
+                {
+                    new CommandWith2Aliases()
+                },
+                parameters,
+                sw);
 
-                return sb.ToString();
-            });
+            return sb.ToString();
         }
     }
 }

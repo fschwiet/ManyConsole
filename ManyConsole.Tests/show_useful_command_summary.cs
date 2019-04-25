@@ -1,13 +1,11 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class show_useful_command_summary : GivenWhenThenFixture
+    public class show_useful_command_summary
     {
         class SomeCommand : ConsoleCommand
         {
@@ -28,36 +26,29 @@ namespace ManyConsole.Tests
             }
         }
 
-        public override void Specify()
+        [Test]
+        public void RunSimpleCommand()
         {
-            when("a simple command is run", delegate
-            {
-                StringBuilder result = new StringBuilder();
-                arrange(delegate
-                {
-                    var sw = new StringWriter(result);
+            StringBuilder result = new StringBuilder();
+            var sw = new StringWriter(result);
 
-                    ConsoleCommandDispatcher.DispatchCommand(
-                        new ConsoleCommand[]
-                        {
-                            new SomeCommand()
-                        },
-                        new string[] { "thecommand" },
-                        sw);
-                });
-
-                then("the output includes a summary of the command", delegate
+            ConsoleCommandDispatcher.DispatchCommand(
+                new ConsoleCommand[]
                 {
-                    expect(() => result.ToString() == @"
+                    new SomeCommand()
+                },
+                new string[] { "thecommand" },
+                sw);
+
+            // the output includes a summary of the command
+            StringAssert.AreEqualIgnoringCase(@"
 Executing thecommand (One-line description):
     FieldA : abc
     PropertyB : def
     PropertyC : null
     PropertyD : 1, 2, 3
 
-");
-                });
-            });
+", result.ToString());
         }
     }
 }
