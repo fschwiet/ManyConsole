@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "1.0.0.3"
+    $version = "1.0.0.4"
 
     $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
@@ -24,7 +24,8 @@ task GenerateAssemblyInfo {
     $projectFiles | write-host
 	foreach($projectFile in $projectFiles) {
 		
-		$projectDir = [System.IO.Path]::GetDirectoryName($projectFile)
+        $projectDir = [System.IO.Path]::GetDirectoryName($projectFile)
+        
 		$projectName = [System.IO.Path]::GetFileName($projectDir)
 		$asmInfo = [System.IO.Path]::Combine($projectDir, [System.IO.Path]::Combine("Properties", "AssemblyInfo.cs"))
 				
@@ -36,16 +37,13 @@ task GenerateAssemblyInfo {
 			-product "ManyConsole $version" `
 			-version "$version" `
 			-fileversion "$version" `
-			-copyright "Copyright © Frank Schwieterman 2011" `
+			-copyright "Copyright (c) Frank Schwieterman 2011" `
 			-clsCompliant "false"
 	}
 }
 
 task Build -depends Cleanup,GenerateAssemblyInfo {
-    $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
-    $dearlySolution = "$baseDirectory\dearly.sln"
-
-    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" ManyConsole.sln /T:"Clean,Build" /property:OutDir="$buildDirectory\" }    
+    exec { & dotnet build ManyConsole.sln -o "$buildDirectory\" }    
 }
 
 task RunTests {
