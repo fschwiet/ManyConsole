@@ -1,7 +1,7 @@
 properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "1.0.0.4"
+    $version = "1.0.0.3"
 
     $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
@@ -37,17 +37,17 @@ task GenerateAssemblyInfo {
 			-product "ManyConsole $version" `
 			-version "$version" `
 			-fileversion "$version" `
-			-copyright "Copyright (c) Frank Schwieterman 2011" `
+			-copyright "Copyright © Frank Schwieterman 2011" `
 			-clsCompliant "false"
 	}
 }
 
 task Build -depends Cleanup,GenerateAssemblyInfo {
-    exec { & dotnet build ManyConsole.sln -o "$buildDirectory\" }    
+    exec { & dotnet build ManyConsole.sln -o "$buildDirectory\" -c Release }    
 }
 
 task RunTests {
-    exec { & "$baseDirectory\packages\NUnit.Runners.2.6.1\tools\nunit-console.exe" "$buildDirectory\ManyConsole.Tests.dll" -xml:"$buildDirectory\TestResults.xml" }
+    exec { & dotnet test }
 }
 
 task BuildNuget -depends Build {
