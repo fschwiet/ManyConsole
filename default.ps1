@@ -47,7 +47,7 @@ task Build -depends Cleanup,GenerateAssemblyInfo {
 }
 
 task RunTests {
-    exec { & dotnet test }
+    exec { & dotnet test --logger trx }
 }
 
 task BuildNuget -depends Build {
