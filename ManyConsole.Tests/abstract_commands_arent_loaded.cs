@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.Linq;
-using System.Text;
-using NJasmine;
 
 namespace ManyConsole.Tests
 {
-    public class abstract_commands_arent_loaded : GivenWhenThenFixture
+    public class abstract_commands_arent_loaded
     {
         public abstract class AbstractCommand : ConsoleCommand
         {
@@ -30,16 +27,15 @@ namespace ManyConsole.Tests
             }
         }
 
-        public override void Specify()
+        [Test]
+        public void AbstractCommandArentLoaded()
         {
-            it("when loading commands from an assembly, abstract commands are ignored", delegate
-            {
-                var commands = ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(this.GetType());
+            var commands = ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(this.GetType());
 
-                expect(() => commands.Any(c => c.GetType() == typeof(NonabstractCommand)));
-                expect(() => !commands.Any(c => c.GetType() == typeof(AbstractCommand)));
-                expect(() => !commands.Any(c => c.GetType() == typeof(AnotherAbstractCommand)));
-            });
+            Assert.IsTrue(commands.Any(c => c.GetType() == typeof(NonabstractCommand)), "No non-abstract commands are found.");
+            Assert.IsFalse(commands.Any(c => c.GetType() == typeof(AbstractCommand)), "AbstractCommands present - should be ignored.");
+            Assert.IsFalse(commands.Any(c => c.GetType() == typeof(AnotherAbstractCommand)), "AnotherAbstractCommand present - should be ignored.");
         }
+
     }
 }

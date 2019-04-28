@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("ManyConsole 1.0.0.3")]
 [assembly: AssemblyCopyrightAttribute("Copyright © Frank Schwieterman 2011")]
 [assembly: AssemblyVersionAttribute("1.0.0.3")]
-//[assembly: AssemblyInformationalVersionAttribute("1.0.0.3 / 100a1e2")]
+//[assembly: AssemblyInformationalVersionAttribute("1.0.0.3 / a9e781d")]
 [assembly: AssemblyFileVersionAttribute("1.0.0.3")]
 [assembly: AssemblyDelaySignAttribute(false)]
 

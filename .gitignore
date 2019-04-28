@@ -8,3 +8,5 @@ _ReSharper.*
 *.sln.cache
 *.dotCover
 *.user
+.vs
+ManyConsole.Tests/TestResults
