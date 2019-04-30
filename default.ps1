@@ -37,7 +37,7 @@ task GenerateAssemblyInfo {
 			-product "ManyConsole $version" `
 			-version "$version" `
 			-fileversion "$version" `
-			-copyright "Copyright © Frank Schwieterman 2011" `
+			-copyright "Copyright © Frank Schwieterman 2019" `
 			-clsCompliant "false"
 	}
 }
