@@ -54,35 +54,17 @@ task BuildNuget -depends Build {
 
     $nugetTarget = "$buildDirectory\nuget"
 
-    $null = mkdir "$nugetTarget\lib\"
-    $null = mkdir "$nugetTarget\tools\"
-
-    cp "$buildDirectory\ManyConsole.dll" "$nugetTarget\lib\"
-    cp "$buildDirectory\ManyConsole.pdb" "$nugetTarget\lib\"
+    $null = mkdir "$nugetTarget\"
+    cp .\ManyConsole.nuspec "$nugetTarget\"
 
     $old = pwd
     cd $nugetTarget
-
-    ..\..\tools\nuget.exe spec -a ".\lib\ManyConsole.dll"
 
     update-xml "ManyConsole.nuspec" {
 
         for-xml "//package/metadata" {
             set-xml -exactlyOnce "//version" "$version"
-            set-xml -exactlyOnce "//owners" "fschwiet"
-            set-xml -exactlyOnce "//authors" "Frank Schwieterman"
             set-xml -exactlyOnce "//description" $shortDescription
-
-            set-xml -exactlyOnce "//licenseUrl" "https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt"
-            set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/ManyConsole/"
-            remove-xml -exactlyOnce "//iconUrl"
-            set-xml -exactlyOnce "//tags" "mono.options command-line console"
-            set-xml -exactlyOnce "//releaseNotes" "Moved to Mono.Options from NDesk.Options.  Update your references to NDesk.Options if you have any.";
-
-            set-xml -exactlyOnce "//dependencies" ""
-            append-xml -exactlyOnce "//dependencies" "<dependency id=`"Mono.Options`" version=`"5.3`" />"
-
-            append-xml "." "<summary>Easily mix commands for a console application.</summary>"
         }
     }
 
