@@ -1,14 +1,32 @@
-### ManyConsole
 
-Available on Nuget: http://nuget.org/List/Packages/ManyConsole
+<p align="center">
+  <a href="https://github.com/fschwiet/ManyConsole">
+    <img alt="Olive" src="./ManyLogo.png">
+  </a>
+</p>
 
-Thanks to Daniel González for providing some additional documentation: http://dgondotnet.blogspot.dk/2013/08/my-last-console-application-manyconsole.html
+<p align="center">
+  Many Console: More productive console commands.
+</p>
+<p align="center" > <a href="http://dgondotnet.blogspot.dk/2013/08/my-last-console-application-manyconsole.html"> <strong> See documentation </strong> </a></p>
+
+<p align="center">
+  <a href="http://nuget.org/List/Packages/ManyConsole"><img alt="ManyConsole" src="https://img.shields.io/nuget/v/ManyConsole.svg"></a>
+  
+
+# ManyConsole
+
+[ManyConsole](http://nuget.org/List/Packages/ManyConsole) is an extension to Mono.Options for writing console applications with multiple commands
+
+## How it works?
 
 Mono.Options (formerly NDesk.Options) is a great library for processing command-line parameters.  ManyConsole extends Mono.Options to allow building console applications that support separate commands.
 
-If you are not familiar with Mono.Options, you should start by using that: https://components.xamarin.com/gettingstarted/mono.options?version=5.3.0.  Add ManyConsole when you feel the urge to differentiate commands (you'll still need the Mono.Options usage).
+If you are not familiar with Mono.Options, you should start by using that: https://components.xamarin.com/gettingstarted/mono.options?version=5.3.0.1  Add ManyConsole when you feel the urge to differentiate commands (you'll still need the Mono.Options usage).
 
 ManyConsole provides a console interface for the user to list available commands, call and get help for each.
+
+## Using ManyConsole
 
 To use ManyConsole:
 
@@ -191,3 +209,8 @@ Expected usage: ManyConsoleDocumentation.exe Echo <options>
 <options> available:
   -t, --text=VALUE           The text to echo back.
 ```
+
+## Thanks to
+- Daniel González for [providing some additional documentation](http://dgondotnet.blogspot.dk/2013/08/my-last-console-application-manyconsole.html)
+
+- Contributors which helped this project.
