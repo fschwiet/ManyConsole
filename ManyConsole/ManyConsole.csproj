@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <PackageReleaseNotes>Moved to .NET Standard 2.0</PackageReleaseNotes>
+    <Version>2.0.0</Version>
+    <Description>A library for writing console applications.  Extends Mono.Options to support separate commands from one console application.</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseExpression>https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/fschwiet/ManyConsole/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fschwiet/ManyConsole/</RepositoryUrl>
+    <RepositoryType>Public</RepositoryType>
+    <PackageTags>mono.options command-line console options</PackageTags>
+    <Company>fschwiet</Company>
+    <Authors>Frank Schwieterman</Authors>
   </PropertyGroup>
 
   <ItemGroup>
