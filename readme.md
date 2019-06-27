@@ -16,7 +16,7 @@
 
 # ManyConsole
 
-[ManyConsole](http://nuget.org/List/Packages/ManyConsole) is an extension to Mono.Options for writing console applications with multiple commands
+[ManyConsole](http://nuget.org/List/Packages/ManyConsole) is an extension to Mono.Options for writing console applications with multiple commands and targets .NETStandard 2.0, so you can use it almost everywhere.
 
 ## How it works?
 
