@@ -1,1 +1,1 @@
-.\packages\NUnit.Runners.2.6.1\tools\nunit.exe .\ManyConsole.Tests\bin\Debug\ManyConsole.Tests.dll
+.\packages\NUnit.Runners.2.6.1\tools\nunit.exe .\ManyConsole.Tests\bin\Debug\netcoreapp2.2\ManyConsole.Tests.dll
