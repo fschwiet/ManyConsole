@@ -1,7 +1,7 @@
-properties {
+﻿properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "1.0.0.3"
+    $version = "2.0.0-beta"
 
     $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
@@ -18,6 +18,12 @@ task Cleanup {
 }
 
 task GenerateAssemblyInfo {
+
+    $trimmedVersion = $version;
+
+    if ($trimmedVersion.indexOf("-") -gt -1) {
+        $trimmedVersion = $trimmedVersion.Substring(0, $trimmedVersion.indexOf("-"));
+    }
 	
 	$projectFiles = ls -path $base_dir -include *.csproj -recurse
 
@@ -35,9 +41,9 @@ task GenerateAssemblyInfo {
 			-description $shortDescription `
 			-company "n/a" `
 			-product "ManyConsole $version" `
-			-version "$version" `
-			-fileversion "$version" `
-			-copyright "Copyright © Frank Schwieterman 2019" `
+			-version "$trimmedVersion" `
+			-fileversion "$trimmedVersion" `
+			-copyright "Copyright Frank Schwieterman 2019" `
 			-clsCompliant "false"
 	}
 }
