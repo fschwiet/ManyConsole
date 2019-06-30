@@ -10,3 +10,4 @@ _ReSharper.*
 *.user
 .vs
 ManyConsole.Tests/TestResults
+ManyConsoleModeCommand.Test/TestResults

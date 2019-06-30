@@ -67,8 +67,12 @@
     <Compile Include="ThrowException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ManyConsoleModeCommand\ManyConsoleModeCommand.csproj">
+      <Project>{b983a1f4-5a01-494a-969a-72fd67fcc49a}</Project>
+      <Name>ManyConsoleModeCommand</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ManyConsole\ManyConsole.csproj">
-      <Project>{90DB8534-C471-47CF-999D-BE7A86070979}</Project>
+      <Project>{18205c5d-97c7-4314-94cc-8dcf0bca0673}</Project>
       <Name>ManyConsole</Name>
     </ProjectReference>
   </ItemGroup>

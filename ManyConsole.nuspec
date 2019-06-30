@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ManyConsole</id>
+    <version>$version$</version>
+    <authors>Frank Schwieterman</authors>
+    <owners>fschwiet</owners>
+    <licenseUrl>https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/fschwiet/ManyConsole/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library for writing console applications.  Extends Mono.Options to support separate commands from one console application.</description>
+    <releaseNotes>Moved to Mono.Options from NDesk.Options.  Update your references to NDesk.Options if you have any.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>mono.options command-line console</tags>
+    <dependencies>
+      <dependency id="Mono.Options" version="5.3" />
+    </dependencies>
+    <summary>Easily mix commands for a console application.</summary>
+  </metadata>
+  <files>
+    <file src="..\ManyConsole.dll" target="lib\netstandard2.0\ManyConsole.dll" />
+    <file src="..\ManyConsole.pdb" target="lib\netstandard2.0\ManyConsole.pdb" />
+    <file src="..\ManyConsole.dll" target="lib\net46\ManyConsole.dll" />
+    <file src="..\ManyConsole.pdb" target="lib\net46\ManyConsole.pdb" />
+    <file src="..\ManyConsoleModeCommand.dll" target="lib\net46\ManyConsoleModeCommand.dll" />
+    <file src="..\ManyConsoleModeCommand.pdb" target="lib\net46\ManyConsoleModeCommand.pdb" />
+  </files>
+</package>

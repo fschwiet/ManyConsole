@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: CLSCompliantAttribute(false )]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute("ManyConsole.Tests 1.0.0.3")]
+[assembly: AssemblyTitleAttribute("ManyConsoleModeCommand 1.0.0.3")]
 [assembly: AssemblyDescriptionAttribute("A library for writing console applications.  Extends Mono.Options to support separate commands from one console application.")]
 [assembly: AssemblyCompanyAttribute("n/a")]
 [assembly: AssemblyProductAttribute("ManyConsole 1.0.0.3")]
