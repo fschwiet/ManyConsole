@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Frank Schwieterman</authors>
     <owners>fschwiet</owners>
-    <licenseUrl>https://github.com/fschwiet/ManyConsole/blob/master/LICENSE.txt</licenseUrl>
+    <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/fschwiet/ManyConsole/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library for writing console applications.  Extends Mono.Options to support separate commands from one console application.</description>
@@ -24,5 +24,6 @@
     <file src="..\ManyConsole.pdb" target="lib\net46\ManyConsole.pdb" />
     <file src="..\ManyConsoleModeCommand.dll" target="lib\net46\ManyConsoleModeCommand.dll" />
     <file src="..\ManyConsoleModeCommand.pdb" target="lib\net46\ManyConsoleModeCommand.pdb" />
+    <file src="..\..\LICENSE.TXT" target="LICENSE.txt"/>
   </files>
 </package>
