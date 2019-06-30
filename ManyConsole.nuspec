@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/fschwiet/ManyConsole/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library for writing console applications.  Extends Mono.Options to support separate commands from one console application.</description>
-    <releaseNotes>Moved to Mono.Options from NDesk.Options.  Update your references to NDesk.Options if you have any.</releaseNotes>
+    <releaseNotes>.NET standard 2.0 support added in ManyConsole 2.0.  ConsoleModeCommand was split to separte DLL not supported for .NET standard 2.0  </releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>mono.options command-line console</tags>
     <dependencies>

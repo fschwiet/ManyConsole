@@ -1,7 +1,7 @@
 ﻿properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "2.0.0-beta"
+    $version = "2.0.1"
 
     $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
