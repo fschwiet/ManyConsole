@@ -11,3 +11,5 @@ _ReSharper.*
 .vs
 ManyConsole.Tests/TestResults
 ManyConsoleModeCommand.Test/TestResults
+**/Properties/AssemblyInfo.cs
+
