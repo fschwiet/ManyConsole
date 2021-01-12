@@ -61,7 +61,6 @@
     <Compile Include="GetTimeCommand.cs" />
     <Compile Include="MattsCommand.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleConsoleModeCommand.cs" />
     <Compile Include="StatefulConsoleModeCommand.cs" />
     <Compile Include="ThrowException.cs" />
