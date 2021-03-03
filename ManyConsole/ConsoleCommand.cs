@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using ManyConsole.Internal;
 using Mono.Options;
@@ -176,7 +177,8 @@ namespace ManyConsole
             return null;
         }
 
-        public abstract int Run(string[] remainingArguments);
+        public virtual int Run(string[] remainingArguments) => throw new NotImplementedException("Either Run or RunAsync must be overridden.");
+        public virtual Task<int> RunAsync(string[] remainingArguments) => throw new NotImplementedException("Either Run or RunAsync must be overridden.");
 
         public OptionSet GetActualOptions()
         {

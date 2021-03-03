@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using ManyConsole.Internal;
 
 namespace ManyConsole
@@ -12,12 +13,13 @@ namespace ManyConsole
     {
         public static int DispatchCommand(ConsoleCommand command, string[] arguments, TextWriter consoleOut)
         {
-            return DispatchCommand(new [] {command}, arguments, consoleOut);
+            return DispatchCommand(new[] { command }, arguments, consoleOut);
         }
 
-        public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut, bool skipExeInExpectedUsage = false)
+        private static (ConsoleCommand, string[], int?) GetSelectedCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut, bool skipExeInExpectedUsage = false)
         {
             ConsoleCommand selectedCommand = null;
+            List<string> remainingArguments;
 
             TextWriter console = consoleOut;
 
@@ -28,8 +30,6 @@ namespace ManyConsole
 
             try
             {
-                List<string> remainingArguments;
-
                 if (commands.Count() == 1)
                 {
                     selectedCommand = commands.First();
@@ -57,7 +57,7 @@ namespace ManyConsole
                         else
                             ConsoleHelp.ShowCommandHelp(selectedCommand, console, skipExeInExpectedUsage);
 
-                        return -1;
+                        return (null, null, -1);
                     }
 
                     selectedCommand = GetMatchingCommand(commands, arguments.First());
@@ -75,20 +75,46 @@ namespace ManyConsole
                 var preResult = selectedCommand.OverrideAfterHandlingArgumentsBeforeRun(remainingArguments.ToArray());
 
                 if (preResult.HasValue)
-                    return preResult.Value;
+                    return (null, null, preResult);
 
                 ConsoleHelp.ShowParsedCommand(selectedCommand, console);
-
-                return selectedCommand.Run(remainingArguments.ToArray());
+                return (selectedCommand, remainingArguments.ToArray(), null);
             }
             catch (ConsoleHelpAsException e)
             {
-                return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
+                return (null, null, DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands));
             }
             catch (Mono.Options.OptionException e)
             {
-                return DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands);
+                return (null, null, DealWithException(e, console, skipExeInExpectedUsage, selectedCommand, commands));
             }
+        }
+
+        public static int DispatchCommand(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut, bool skipExeInExpectedUsage = false)
+        {
+            var (selectedCommand, remainingArguments, preResult) = GetSelectedCommand(commands, arguments, consoleOut, skipExeInExpectedUsage);
+            if (preResult.HasValue)
+            {
+                return preResult.Value;
+            }
+
+            return selectedCommand.Run(remainingArguments);
+        }
+
+        public static Task<int> DispatchCommandAsync(ConsoleCommand command, string[] arguments, TextWriter consoleOut)
+        {
+            return DispatchCommandAsync(new[] { command }, arguments, consoleOut);
+        }
+
+        public static Task<int> DispatchCommandAsync(IEnumerable<ConsoleCommand> commands, string[] arguments, TextWriter consoleOut, bool skipExeInExpectedUsage = false)
+        {
+            var (selectedCommand, remainingArguments, preResult) = GetSelectedCommand(commands, arguments, consoleOut, skipExeInExpectedUsage);
+            if (preResult.HasValue)
+            {
+                return Task.FromResult(preResult.Value);
+            }
+
+            return selectedCommand.RunAsync(remainingArguments);
         }
 
         private static int DealWithException(Exception e, TextWriter console, bool skipExeInExpectedUsage, ConsoleCommand selectedCommand, IEnumerable<ConsoleCommand> commands)
@@ -106,7 +132,7 @@ namespace ManyConsole
 
             return -1;
         }
-  
+
         private static ConsoleCommand GetMatchingCommand(IEnumerable<ConsoleCommand> command, string name)
         {
             return command.FirstOrDefault(c => CommandMatchesArgument(c, name));
@@ -121,7 +147,8 @@ namespace ManyConsole
             if (arg.Equals(command.Command, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
-            } else if (command.Aliases != null && command.Aliases.Count > 0)
+            }
+            else if (command.Aliases != null && command.Aliases.Count > 0)
             {
                 foreach (string alias in command.Aliases)
                 {
@@ -175,7 +202,7 @@ namespace ManyConsole
 
             List<ConsoleCommand> result = new List<ConsoleCommand>();
 
-            foreach(var commandType in commandTypes)
+            foreach (var commandType in commandTypes)
             {
                 var constructor = commandType.GetConstructor(new Type[] { });
 
