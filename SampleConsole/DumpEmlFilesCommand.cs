@@ -62,7 +62,7 @@ namespace SampleConsole
 
         private void PrintEmlFile(string filepath)
         {
-            var mail = Sasa.Net.Mail.Message.ParseMailMessage(File.ReadAllText(filepath));
+            var mail = Sasa.Net.Mail.Message.Parse(File.ReadAllText(filepath));
 
             Console.WriteLine("SUBJECT:\t{0}", mail.Subject);
             Console.WriteLine("FROM:\t{0}", mail.From);

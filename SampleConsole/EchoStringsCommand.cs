@@ -33,7 +33,7 @@ namespace SampleConsole
                 Console.WriteLine("Your comment is: " + comments);
             }
 
-            Console.WriteLine("The remaining arguments were " + Newtonsoft.Json.JsonConvert.SerializeObject(remainingArguments));
+            Console.WriteLine("The remaining arguments were " + System.Text.Json.JsonSerializer.Serialize(remainingArguments));
 
             return 0;
         }
