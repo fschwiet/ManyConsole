@@ -1,7 +1,7 @@
 ﻿properties {
     $baseDirectory  = resolve-path .
     $buildDirectory = ($buildDirectory, "$baseDirectory\build") | select -first 1
-    $version = "2.0.1"
+    $version = "2.0.2"
 
     $shortDescription = "A library for writing console applications.  Extends Mono.Options to support separate commands from one console application."
 }
@@ -49,7 +49,8 @@ task GenerateAssemblyInfo {
 }
 
 task Build -depends Cleanup,GenerateAssemblyInfo {
-    exec { & dotnet build ManyConsole.sln -o "$buildDirectory\" -c Release }    
+    exec { & dotnet build ManyConsole -o "$buildDirectory\ManyConsole" -c Release }    
+    exec { & dotnet build ManyConsoleModeCommand -o "$buildDirectory\ManyConsoleModeCommand" -c Release }   
 }
 
 task RunTests {
