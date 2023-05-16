@@ -191,3 +191,11 @@ Expected usage: ManyConsoleDocumentation.exe Echo <options>
 <options> available:
   -t, --text=VALUE           The text to echo back.
 ```
+
+### Building the solution, running tests, and packaging the nuget file
+
+- You will probably need to download the old copy of .NET this was built against: https://dotnet.microsoft.com/en-us/download/dotnet/2.2 (the last I built was with SDK 2.2.207)
+- From a powershell window, run psake.ps1
+- This will run the tasks defined in default.ps1, building the project, running the tests and putting together a nupkg file.
+- The version number in default.ps1 needs to be updated when building a new nupkg file for release.
+
